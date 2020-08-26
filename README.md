@@ -17,7 +17,7 @@ This tool can:
 
 The chartsLes graphiques sont générés par une bibliothèque tierce (soit sous forme d'images, par une bibliothèque java, soit dynamiquement dans la page web, par une bibliothèque javascript).
 
-## Outils similaires déjà existants
+## Already existing similar tools
 
 - [gitstats](https://pypi.org/project/gitstats/) 
 
