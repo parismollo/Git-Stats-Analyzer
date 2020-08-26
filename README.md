@@ -11,11 +11,9 @@ This tool can:
 - compute a couple of relevant indicators such as:
   - number of lines or characters added/deleted/changed
   - number of commits
-  - nombre de merge commits
+  - number of merge commits
 - analyze the variations of these indicators in time: for instance sum then in a week, compute a daily average or an average in a sliding window, ...
 - visualize the indicators as charts (histograms, pie charts, etc.) embedded in a generated web page.
-
-The chartsLes graphiques sont générés par une bibliothèque tierce (soit sous forme d'images, par une bibliothèque java, soit dynamiquement dans la page web, par une bibliothèque javascript).
 
 ## Already existing similar tools
 
