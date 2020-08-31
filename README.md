@@ -32,4 +32,5 @@ Visulog contains the following modules:
 - a generator of numerical series (for the indicators mentioned above)
 - a generator of web pages
 - a command line program that calls the other modules using the provided command line parameters
-
+- a shared module for configuration object definitions
+- a shared module for datamodel type definitions
