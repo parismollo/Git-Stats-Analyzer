@@ -28,9 +28,8 @@ This tool can:
 
 Visulog contains the following modules:
 
-- a git log parser
+- data types for storing raw data directly extracted from git history, with relevant parsers
 - a generator of numerical series (for the indicators mentioned above)
 - a generator of web pages
 - a command line program that calls the other modules using the provided command line parameters
 - a shared module for configuration object definitions
-- a shared module for datamodel type definitions
