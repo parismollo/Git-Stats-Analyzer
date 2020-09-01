@@ -1,4 +1,4 @@
-package up.visulog.datamodel;
+package up.visulog.gitrawdata;
 
 import java.io.BufferedReader;
 import java.io.IOException;
