@@ -1,2 +1,2 @@
 rootProject.name = "visulog"
-include("datamodel","parser","analyzer","webgen","cli")
+include("config","datamodel","parser","analyzer","webgen","cli")
