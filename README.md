@@ -28,9 +28,43 @@ This tool can:
 
 Visulog contains the following modules:
 
-- a git log parser
+- data types for storing raw data directly extracted from git history, with relevant parsers
 - a generator of numerical series (for the indicators mentioned above)
 - a generator of web pages
 - a command line program that calls the other modules using the provided command line parameters
 - a shared module for configuration object definitions
-- a shared module for datamodel type definitions
+
+## Usage
+
+### Building the project
+
+1. clone the repository
+    ```
+    git clone git@gaufre.informatique.univ-paris-diderot.fr:adegorre/visulog.git
+    ```
+   or
+    ```
+    git clone https://gaufre.informatique.univ-paris-diderot.fr/adegorre/visulog.git
+    ```
+2. Enter the project folder
+    ```
+    cd visulog
+    ```
+3. run gradle wrapper (it will download all dependencies, including gradle itself)
+    ```
+    ./gradlew build
+    ```
+### Running the software
+
+Currently, it can be run through gradle too. In order to pass program arguments, you need to pass them behind `--args`:
+```
+./gradlew run --args='here are my args'
+```
+
+For instance
+
+```
+./gradlew run --args='. --addPlugin=countCommits'
+```
+
+Will count the commits of each author in the current branch of the git repository present in the current folder (".").

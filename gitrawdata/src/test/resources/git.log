@@ -1,0 +1,41 @@
+commit 6304c1acdc1cbdeb8315528781896abc72a021b8
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Tue Sep 1 12:30:53 2020 +0200
+
+    More gradle configuration (with subprojects)
+
+commit c0cf37d6b32897677e4b8f04be012e5379a7ab80
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Thu Aug 27 23:49:03 2020 +0200
+
+    first setup of project modules and gradle configuration
+
+commit 9e74f1581f23aaad21e2b936091d3ce371336e22
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Mon Aug 31 11:28:28 2020 +0200
+
+    Update README.md - more modules
+
+commit 7484b0cb7b4e69e09c82ed38549750fa2a77f50c
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Thu Aug 27 00:35:19 2020 +0200
+
+    Update README.md - translation...
+
+commit 9aaf6e09cc30909b32c68b4d5bf4ac50f95ecb93
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Thu Aug 27 00:33:46 2020 +0200
+
+    Update README.md - some title left untranslated
+
+commit 969e2247156f27f27fec57b13faf6097bf4e2757
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Thu Aug 27 00:32:47 2020 +0200
+
+    Update README.md -> in English, with some more details
+
+commit 486d76dbfd24ac65eeeeb16e57ae4fd68c8ecb1c
+Author: Aldric Degorre <adegorre@irif.fr>
+Date:   Thu Aug 27 00:02:55 2020 +0200
+
+    Ajout de README.md avec définition des grandes lignes du sujet.
