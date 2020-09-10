@@ -50,21 +50,22 @@ Visulog contains the following modules:
     ```
     cd visulog
     ```
-3. run gradle wrapper (it will download all dependencies, including gradle itself)
+3. run maven
     ```
-    ./gradlew build
+    mvn compile assembly:single
     ```
+    This will actually download dependencies if needed (may require some additional proxy settings), compile the project and make an executable jar (in folder cli/target/).
+
 ### Running the software
 
-Currently, it can be run through gradle too. In order to pass program arguments, you need to pass them behind `--args`:
 ```
-./gradlew run --args='here are my args'
+java -jar generated_single_file_jar_please_rename.jar followed by some args
 ```
 
 For instance
 
 ```
-./gradlew run --args='. --addPlugin=countCommits'
+java -jar visulog-cli-1.0-SNAPSHOT-jar-with-dependencies.jar . --addPlugin=countCommits
 ```
 
 Will count the commits of each author in the current branch of the git repository present in the current folder (".").
