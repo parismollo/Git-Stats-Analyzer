@@ -15,12 +15,14 @@ public class Commit {
     public final String date;
     public final String author;
     public final String description;
+    public final String mergedFrom;
 
-    public Commit(String id, String author, String date, String description) {
+    public Commit(String id, String author, String date, String description, String mergedFrom) {
         this.id = id;
         this.author = author;
         this.date = date;
         this.description = description;
+        this.mergedFrom = mergedFrom;
     }
 
     // TODO: factor this out (similar code will have to be used for all git commands)
@@ -54,29 +56,42 @@ public class Commit {
      */
     public static Optional<Commit> parseCommit(BufferedReader input) {
         try {
-            var idLine = input.readLine();
-            if (idLine == null) return Optional.empty(); // if no line can be read, we are done reading the buffer
-            var idChunks = idLine.split(" ");
+
+            var line = input.readLine();
+            if (line == null) return Optional.empty(); // if no line can be read, we are done reading the buffer
+            var idChunks = line.split(" ");
             if (!idChunks[0].equals("commit")) parseError();
-            var id = idChunks[1];
+            var builder = new CommitBuilder(idChunks[1]);
 
-            var authorLine = input.readLine();
-            if (!authorLine.startsWith("Author: ")) parseError();
-            var author = authorLine.substring(8);
+            line = input.readLine();
+            while (!line.isEmpty()) {
+                var colonPos = line.indexOf(":");
+                var fieldName = line.substring(0, colonPos);
+                var fieldContent = line.substring(colonPos + 1).trim();
+                switch (fieldName) {
+                    case "Author":
+                        builder.setAuthor(fieldContent);
+                        break;
+                    case "Merge":
+                        builder.setMergedFrom(fieldContent);
+                        break;
+                    case "Date":
+                        builder.setDate(fieldContent);
+                        break;
+                    default: // TODO: warn the user that some field was ignored
+                }
+                line = input.readLine(); //prepare next iteration
+                if (line == null) parseError(); // end of stream is not supposed to happen now (commit data incomplete)
+            }
 
-            var dateLine = input.readLine();
-            if (!dateLine.startsWith("Date: ")) parseError();
-            var date = dateLine.substring(6);
-
-            var emptyLine = input.readLine();
-            if (!emptyLine.isEmpty()) parseError();
-
+            // now read the commit message per se
             var description = input
                     .lines() // get a stream of lines to work with
                     .takeWhile(currentLine -> !currentLine.isEmpty()) // take all lines until the first empty one (commits are separated by empty lines). Remark: commit messages are indented with spaces, so any blank line in the message contains at least a couple of spaces.
                     .map(String::trim) // remove indentation
                     .reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
-            return Optional.of(new Commit(id, author, date, description));
+            builder.setDescription(description);
+            return Optional.of(builder.createCommit());
         } catch (IOException e) {
             parseError();
         }
@@ -92,6 +107,7 @@ public class Commit {
     public String toString() {
         return "Commit{" +
                 "id='" + id + '\'' +
+                (mergedFrom != null ? ("mergedFrom...='" + mergedFrom + '\'') : "") + //TODO: find out if this is the only optional field
                 ", date='" + date + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +

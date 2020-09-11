@@ -2,6 +2,7 @@ package up.visulog.analyzer;
 
 import org.junit.Test;
 import up.visulog.gitrawdata.Commit;
+import up.visulog.gitrawdata.CommitBuilder;
 
 import java.util.ArrayList;
 
@@ -15,13 +16,12 @@ public class TestCountCommitsPerAuthorPlugin {
         String[] authors = {"foo", "bar", "baz"};
         var entries = 20;
         for (int i = 0; i < entries; i++) {
-            log.add(new Commit("",
-                    authors[i % 3], "", ""));
+            log.add(new CommitBuilder("").setAuthor(authors[i % 3]).createCommit());
         }
         var res = CountCommitsPerAuthorPlugin.processLog(log);
         assertEquals(authors.length, res.getCommitsPerAuthor().size());
         var sum = res.getCommitsPerAuthor().values()
-                .stream().reduce(0, (acc, cur) -> acc + cur);
+                .stream().reduce(0, Integer::sum);
         assertEquals(entries, sum.longValue());
     }
 }
