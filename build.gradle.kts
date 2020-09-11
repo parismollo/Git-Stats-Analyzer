@@ -10,4 +10,8 @@ allprojects {
         mavenCentral()
     }
 
+    plugins.apply("java")
+
+    java.sourceCompatibility = JavaVersion.VERSION_1_10
+
 }

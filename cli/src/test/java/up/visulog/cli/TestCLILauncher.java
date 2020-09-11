@@ -2,6 +2,7 @@ package up.visulog.cli;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class TestCLILauncher {
@@ -17,6 +18,6 @@ public class TestCLILauncher {
         var config2 = CLILauncher.makeConfigFromCommandLineArgs(new String[] {
             "--nonExistingOption"
         });
-        assertTrue(config2.isEmpty());
+        assertFalse(config2.isPresent());
     }
 }

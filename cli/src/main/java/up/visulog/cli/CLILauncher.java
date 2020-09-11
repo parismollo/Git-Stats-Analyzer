@@ -4,7 +4,7 @@ import up.visulog.analyzer.Analyzer;
 import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 
-import java.nio.file.Path;
+import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class CLILauncher {
     }
 
     static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
-        var gitPath = Path.of(".");
+        var gitPath = FileSystems.getDefault().getPath(".");
         var plugins = new HashMap<String, PluginConfig>();
         for (var arg : args) {
             if (arg.startsWith("--")) {
@@ -50,7 +50,7 @@ public class CLILauncher {
                     }
                 }
             } else {
-                gitPath = Path.of(arg);
+                gitPath = FileSystems.getDefault().getPath(arg);
             }
         }
         return Optional.of(new Configuration(gitPath, plugins));
