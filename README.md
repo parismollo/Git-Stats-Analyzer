@@ -50,7 +50,12 @@ Visulog contains the following modules:
     ```
     cd visulog
     ```
-3. run gradle wrapper (it will download all dependencies, including gradle itself)
+3. Only if you are on a SCRIPT computer (in one of the TP rooms):
+    ```
+    source SCRIPT/envsetup
+    ```
+    This will setup the GRADLE_OPTS environment variable so that gradle uses the SCRIPT proxy for downloading its dependencies. It will also use a custom trust store (the one installed in the system is apparently broken... ).
+4. run gradle wrapper (it will download all dependencies, including gradle itself)
     ```
     ./gradlew build
     ```
