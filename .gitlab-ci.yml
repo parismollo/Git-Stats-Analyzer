@@ -1,0 +1,30 @@
+image: gradle:jdk11-openj9
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script: gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+test:
+  stage: test
+  script: gradle check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
