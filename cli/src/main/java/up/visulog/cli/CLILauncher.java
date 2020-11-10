@@ -19,12 +19,17 @@ public class CLILauncher {
         } else displayHelpAndExit();
     }
 
+//    ['.', '--addPlugin=countCommits', '--addPlugin=myPlugin']
+
     static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
         var gitPath = FileSystems.getDefault().getPath(".");
         var plugins = new HashMap<String, PluginConfig>();
+        var output = Optional.empty();
         for (var arg : args) {
             if (arg.startsWith("--")) {
+                // arg = --addPlugin=countCommits
                 String[] parts = arg.split("=");
+                // parts = ['--addPlugin', 'countCommits']
                 if (parts.length != 2) return Optional.empty();
                 else {
                     String pName = parts[0];
@@ -34,11 +39,12 @@ public class CLILauncher {
                             // TODO: parse argument and make an instance of PluginConfig
 
                             // Let's just trivially do this, before the TODO is fixed:
-
                             if (pValue.equals("countCommits")) plugins.put("countCommits", new PluginConfig() {
                             });
-
+                            if (pValue.equals("myPlugin")) plugins.put("myPlugin", new PluginConfig() {
+                            });
                             break;
+                        // --loadConfigFile=mycofnig.file
                         case "--loadConfigFile":
                             // TODO (load options from a file)
                             break;
