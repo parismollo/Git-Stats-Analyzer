@@ -38,6 +38,11 @@ public class CLILauncher {
                             if (pValue.equals("countCommits")) plugins.put("countCommits", new PluginConfig() {
                             });
 
+                            if (pValue.equals("countCommitsPerWeekday")) {
+                                plugins.put("countCommitsPerWeekday", new PluginConfig(){});
+                                System.out.println("#0 - countCommitsPerWeekday Test");
+                            } // Only for testing - Paris;
+
                             break;
                         case "--loadConfigFile":
                             // TODO (load options from a file)
