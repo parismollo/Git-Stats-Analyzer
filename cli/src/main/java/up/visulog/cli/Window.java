@@ -1,14 +1,9 @@
 package up.visulog.cli;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
 
 public class Window extends JFrame {
 	
@@ -16,46 +11,33 @@ public class Window extends JFrame {
 	
 	public Window(int w, int h) {
 		super();
-		this.setTitle("Visulog");
-		this.setMinimumSize(new Dimension(w, h));
-		this.setResizable(true);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Visulog"); // On change le titre de la fenetre.
+		this.setMinimumSize(new Dimension(w, h)); // On change la taille minimum de la fenetre.
+		this.setResizable(true); // true -> la page est redimensionnable.
+		this.setLocationRelativeTo(null); // null -> permet de centrer la fenetre au milieu de l'ecran.
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On indique qu'il faut que le programme s'arrête lorsqu'on ferme la fenetre.
 
 		//setDefaultLookAndFeelDecorated(true);
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Met la fenetre en plein ecran.
 		
-		JToolBar bar = new JToolBar();
+		this.getContentPane().add(new HomePanel(this), BorderLayout.CENTER); // On ajoute la page d'accueil au panel principal.
 		
-		bar.add(new JButton("save"));
-		JButton color = new JButton("color");
-		bar.add(color);
-		
-		color.addMouseListener(new MouseAdapter() {
-			
-			public void mousePressed(MouseEvent e) {
-				getContentPane().setBackground(Color.RED);
-			}
-			
-		});
-		
-		this.getContentPane().add(bar, BorderLayout.NORTH);
-		this.getContentPane().add(new HomePanel(this), BorderLayout.CENTER);
-		
-		this.setVisible(true);
+		this.setVisible(true); // On affiche la fenetre.
 	}
 
-	public void changePage(int index)
+	public void changePage(int index) // Fonction pour passer d'une page à une autre...
 	{
-		this.getContentPane().removeAll();
+		this.getContentPane().removeAll(); // On vide le panel principal.
 		switch(index)
 		{
+		case 0:
+			getContentPane().add(new HomePanel(this), BorderLayout.CENTER); // On ajoute au panel principale la nouvelle page.
 		case 1:
-			getContentPane().add(new JButton("ahhhh"));
+			// getContentPane().add(new AutrePage(this), BorderLayout.CENTER); // Par exemple...
 			break;
 		}
-		revalidate();
-		repaint();
+		revalidate(); // On indique à java qu'il y a eu des changements.
+		repaint(); // On force Java à re-dessiner tous les elements.
 	}
 	
 }
