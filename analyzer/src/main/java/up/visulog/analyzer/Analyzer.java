@@ -1,12 +1,12 @@
 package up.visulog.analyzer;
 
-import up.visulog.config.Configuration;
-import up.visulog.config.PluginConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import up.visulog.config.Configuration;
+import up.visulog.config.PluginConfig;
 
 public class Analyzer {
     private final Configuration config;
@@ -38,6 +38,7 @@ public class Analyzer {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
             case "countCommitsPerWeekday": return Optional.of(new CountCommitsPerWeekdayPlugin(config));
+            case "countLinesChanged": return Optional.of(new CountLinesChangedlugin(config));
             default : return Optional.empty();
         }
 

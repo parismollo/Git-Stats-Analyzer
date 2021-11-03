@@ -11,6 +11,7 @@ import java.util.Optional;
 public class CLILauncher {
 
     public static void main(String[] args) {
+    	// new Window(600, 600); // De-commenter pour lancer l'interface graphique.
         var config = makeConfigFromCommandLineArgs(args);
         if (config.isPresent()) {
             var analyzer = new Analyzer(config.get());
@@ -43,6 +44,11 @@ public class CLILauncher {
                                 System.out.println("#0 - countCommitsPerWeekday Test");
                             } // Only for testing - Paris;
 
+                            // Plugin pour compter les lignes ajoutées ou supprimées dans les
+                            // fichiers d'un projet git
+                            if(pValue.equals("countLinesChanged"))
+                            	plugins.put("countLinesChanged", new PluginConfig(){});
+                            
                             break;
                         case "--loadConfigFile":
                             // TODO (load options from a file)
