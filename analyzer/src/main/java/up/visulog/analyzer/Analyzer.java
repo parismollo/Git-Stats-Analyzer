@@ -38,7 +38,7 @@ public class Analyzer {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
             case "countCommitsPerWeekday": return Optional.of(new CountCommitsPerWeekdayPlugin(config));
-            case "countLinesChanged": return Optional.of(new CountLinesChangedlugin(config));
+            case "countLinesChanged": return Optional.of(new CountLinesChangedPlugin(config));
             default : return Optional.empty();
         }
 

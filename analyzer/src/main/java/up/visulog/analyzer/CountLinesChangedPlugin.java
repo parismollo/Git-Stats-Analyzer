@@ -7,12 +7,12 @@ import java.util.Map;
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.LinesChanged;
 
-public class CountLinesChangedlugin implements AnalyzerPlugin {
+public class CountLinesChangedPlugin implements AnalyzerPlugin {
 
     private final Configuration configuration;
     private Result result;
 
-    public CountLinesChangedlugin(Configuration generalConfiguration) {
+    public CountLinesChangedPlugin(Configuration generalConfiguration) {
         this.configuration = generalConfiguration;
     }
 
