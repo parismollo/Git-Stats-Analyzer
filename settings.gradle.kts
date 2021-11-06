@@ -1,2 +1,2 @@
 rootProject.name = "visulog"
-include("config","gitrawdata","analyzer","webgen","cli")
+include("config","gitrawdata","analyzer","webgen","cli","graphs")
