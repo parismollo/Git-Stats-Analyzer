@@ -10,6 +10,7 @@ dependencies {
     implementation(project(":analyzer"))
     implementation(project(":config"))
     implementation(project(":gitrawdata"))
+    implementation(project(":graphs"))
     testImplementation("junit:junit:4.+")
 }
 

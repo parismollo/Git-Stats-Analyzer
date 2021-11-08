@@ -1,18 +1,26 @@
 package up.visulog.cli;
 
-import up.visulog.analyzer.Analyzer;
-import up.visulog.config.Configuration;
-import up.visulog.config.PluginConfig;
-
 import java.nio.file.FileSystems;
 import java.util.HashMap;
 import java.util.Optional;
+
+import up.visulog.analyzer.Analyzer;
+import up.visulog.config.Configuration;
+import up.visulog.config.PluginConfig;
+import up.visulog.graphs.ChartCountCommitsPerAuthor;
+import up.visulog.graphs.PrintChart;
 
 public class CLILauncher {
 
     public static void main(String[] args) {
     	// new Window(600, 600); // De-commenter pour lancer l'interface graphique.
+    	
         var config = makeConfigFromCommandLineArgs(args);
+        
+        // De-commenter pour tester l'affichage du graphique pour countCommitsPerAuthor
+    	//var chart = new ChartCountCommitsPerAuthor(config.get());
+        //(new PrintChart(chart, "bar")).afficheChart();
+        
         if (config.isPresent()) {
             var analyzer = new Analyzer(config.get());
             var results = analyzer.computeResults();
