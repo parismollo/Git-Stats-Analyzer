@@ -1,4 +1,4 @@
-package up.visulog.cli;
+package up.visulog.gui;
 
 import java.awt.Color;
 import java.awt.Component;

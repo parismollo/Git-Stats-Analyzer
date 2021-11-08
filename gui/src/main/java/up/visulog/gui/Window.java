@@ -1,4 +1,4 @@
-package up.visulog.cli;
+package up.visulog.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

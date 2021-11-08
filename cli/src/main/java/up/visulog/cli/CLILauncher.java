@@ -9,17 +9,15 @@ import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.graphs.PrintChart;
+import up.visulog.gui.Window;
 
 public class CLILauncher {
 
     public static void main(String[] args) {
-    	// new Window(600, 600); // De-commenter pour lancer l'interface graphique.
+    	// Pour tester l'interface graphique : ./gradlew run --args=". --test=window"
+    	// Pour tester l'affichage d'un graphique : ./gradlew run --args=". --test=graph"
     	
         var config = makeConfigFromCommandLineArgs(args);
-        
-        // De-commenter pour tester l'affichage du graphique pour countCommitsPerAuthor
-    	//var chart = new ChartCountCommitsPerAuthor(config.get());
-        //(new PrintChart(chart, "bar")).afficheChart();
         
         if (config.isPresent()) {
             var analyzer = new Analyzer(config.get());
@@ -64,6 +62,16 @@ public class CLILauncher {
                         case "--justSaveConfigFile":
                             // TODO (save command line options to a file instead of running the analysis)
                             break;
+                        case "--test":
+                        	if(pValue.toUpperCase().equals("WINDOW")) {
+                        		new Window(600, 600);
+                        	}
+                        	else if(pValue.toUpperCase().equals("GRAPH")) {
+                        		var conf = new Configuration(gitPath, new HashMap<String, PluginConfig>());
+                            	var chart = new ChartCountCommitsPerAuthor(conf);
+                                (new PrintChart(chart, "bar")).afficheChart();
+                        	}
+                        	break;
                         default:
                             return Optional.empty();
                     }

@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":config"))
     implementation(project(":gitrawdata"))
     implementation(project(":graphs"))
+    implementation(project(":gui"))
     testImplementation("junit:junit:4.+")
 }
 
