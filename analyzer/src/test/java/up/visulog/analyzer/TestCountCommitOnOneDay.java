@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class TestCountCommitOnOneDay {
     
-    @Test //Pour le moment ces tests ne marchent pas mais c'est le but
+    //@Test //Pour le moment ces tests ne marchent pas mais c'est le but
     //On crée des tests puis on code pour faire en sorte que ça marche
-    public void checkCommitSum() {
+    /*public void checkCommitSum() {
         var log = new ArrayList<Commit>();
         String date = ;
         log.add(new CommitBuilder("").setDate().createCommit());
@@ -19,6 +19,6 @@ public class TestCountCommitOnOneDay {
         var sum = res.getCommitsPerDate().values().stream().reduce(0, Integer::sum);
         assertEquals(entries, sum.longValue());
         assertThat()
-    }
+    }*/
 
 }
