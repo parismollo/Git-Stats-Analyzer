@@ -33,12 +33,12 @@ public class CountCommitsPerAuthorPlugin implements AnalyzerPlugin {
     public Result getResult() {
         if (result == null) run();
         return result;
-    }
-
-    static class Result implements AnalyzerPlugin.Result {
+    } 
+    
+    public static class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> commitsPerAuthor = new HashMap<>();
 
-        Map<String, Integer> getCommitsPerAuthor() {
+        public Map<String, Integer> getCommitsPerAuthor() {
             return commitsPerAuthor;
         }
 
