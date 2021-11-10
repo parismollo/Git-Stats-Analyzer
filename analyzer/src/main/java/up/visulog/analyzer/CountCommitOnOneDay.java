@@ -18,8 +18,9 @@ public class CountCommitOnOneDay implements AnalyzerPlugin {
     static Result processLog(List<Commit> gitLog) {
         var result = new Result();
         for (var commit : gitLog) {
-            var nb = result.commitOnOneDay.getOrDefault(commit.date, 0);
-            result.commitOnOneDay.put(commit.date, nb + 1);
+            String day = commit.date.substring(0,10) + commit.date.substring(20,24);//Pour avoir le jour le mois et l'année
+            var nb = result.commitOnOneDay.getOrDefault(day, 0);
+            result.commitOnOneDay.put(day, nb + 1);
         }
         return result;
     }
