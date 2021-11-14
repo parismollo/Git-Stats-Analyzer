@@ -36,10 +36,10 @@ public class CountCommitsPerWeekdayPlugin implements AnalyzerPlugin {
         return result;
     }
 
-    static class Result implements AnalyzerPlugin.Result {
+    public static class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> commitsPerWeekday = new HashMap<>();
 
-        Map<String, Integer> getCommitsPerDate() {
+        public Map<String, Integer> getCommitsPerDate() {
             return commitsPerWeekday;
         }
 
