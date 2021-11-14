@@ -37,10 +37,10 @@ public class CountLinesChangedPlugin implements AnalyzerPlugin {
         return result;
     }
 
-    static class Result implements AnalyzerPlugin.Result {
+    public static class Result implements AnalyzerPlugin.Result {
         private final Map<String, int[]> linesChanged = new HashMap<>();
 
-        Map<String, int[]> getLinesChangedPerFile() {
+        public Map<String, int[]> getLinesChangedPerFile() {
             return linesChanged;
         }
 

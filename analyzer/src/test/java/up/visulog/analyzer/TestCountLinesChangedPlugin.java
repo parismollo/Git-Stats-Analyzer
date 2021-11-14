@@ -34,7 +34,6 @@ public class TestCountLinesChangedPlugin {
     	
     	var linesChanged = CountLinesChangedPlugin.processLog(list);
     	var results = linesChanged.getLinesChangedPerFile();
-    	int i = 0;
     	for(var res : results.entrySet()) {
     		int index = getIndexOf(res.getKey())-1; // Pour "fichier1.txt" on a 1-1 = 0
     		int[] values = res.getValue();

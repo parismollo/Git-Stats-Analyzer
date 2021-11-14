@@ -1,6 +1,8 @@
 package up.visulog.graphs;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 
@@ -23,6 +25,12 @@ public abstract class ChartAnalysis {
 	
     public abstract CategoryDataset createDataset();
 
+    public HashMap<String, Integer> copy(Map<String, Integer> map) {
+    	HashMap<String, Integer> map2 = new HashMap<>();
+    	map.putAll(map2);
+    	return map2;
+    }
+    
     public static JFreeChart createChart(CategoryDataset dataset, String type,
     									 String title, String titleX, String titleY) {
         JFreeChart chart = null;
