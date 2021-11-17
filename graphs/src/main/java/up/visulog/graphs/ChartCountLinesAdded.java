@@ -14,7 +14,7 @@ public class ChartCountLinesAdded extends ChartAnalysis {
     private Map<String, Integer> data;
 
     public ChartCountLinesAdded(Configuration config) {
-    	super("Fichiers", "Lignes ajoutées");
+    	super("Fichiers", "Lignes ajoutees");
     	var plugin = new CountLinesChangedPlugin(config);
     	Map<String, int[]> temp = plugin.getResult().getLinesChangedPerFile();
     	this.data = new HashMap<>();
@@ -27,7 +27,7 @@ public class ChartCountLinesAdded extends ChartAnalysis {
     }
     
     public ChartCountLinesAdded(Map<String, Integer> data) {
-    	super("Files", "Lignes ajoutées");
+    	super("Files", "Lignes ajoutees");
     	this.data = data;
     	if(this.data == null)
     		this.data = new HashMap<>();
@@ -36,7 +36,7 @@ public class ChartCountLinesAdded extends ChartAnalysis {
     public CategoryDataset createDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for(Entry<String, Integer> line : data.entrySet()) {
-            dataset.addValue(line.getValue(),"Nombre de lignes ajoutées par fichier",line.getKey());
+            dataset.addValue(line.getValue(),"Nombre de lignes ajoutees par fichier",line.getKey());
         }
         return dataset;
     }
