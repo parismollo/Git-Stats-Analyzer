@@ -15,6 +15,6 @@ public class HomeScreen extends JFrame {
     // }
 
     public HomeScreen() throws FontFormatException, IOException {
-        HomeComponents.setGridBagLayout(this, "DinoLog", "src/main/resources/dinosaur.png");
+        HomeComponents.setGridBagLayout(this, "DinoLog - Home", "src/main/resources/dinosaur.png");
     }
 }

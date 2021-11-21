@@ -11,6 +11,6 @@ public class ResultsScreen extends JFrame {
     // }
 
     public ResultsScreen() throws FontFormatException, IOException {
-        ResultsComponents.setGridBagLayout(this, "DinoLog", "src/main/resources/dinosaur.png");
+        ResultsComponents.setGridBagLayout(this, "DinoLog - Results", "src/main/resources/dinosaur.png");
     }
 }
