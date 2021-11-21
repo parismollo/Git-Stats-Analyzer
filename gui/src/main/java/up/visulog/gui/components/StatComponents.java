@@ -34,12 +34,12 @@ public class StatComponents {
 
         // Create elements/buttons
         // SetScreen
-        JButton returnButton = ResultsComponents.createMenuButton("return.png", "return-white.png", "Go back");
+        JButton returnButton = ResultsComponents.createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
         JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle());
-        JButton downloadButton = ResultsComponents.createMenuButton("download-circular-button.png", "download-circular-button-white.png", "Download your results");
+        JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         // List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         List<JRadioButton> dataType = createRadioButton(getDataTypes());
-        JButton runGraph = ResultsComponents.createAnyButton("Run", "stats.png");
+        JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
         setResultsInScreen(frame, projectTitle, dataType, downloadButton, returnButton, runGraph, gbc);
     }
     private static void setResultsInScreen(JFrame frame, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runGraph, GridBagConstraints gbc) {
@@ -123,7 +123,7 @@ public class StatComponents {
             r.setBackground(new Color(88,205,113));
             r.setForeground(Color.white);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("Poppins-Bold.ttf")).deriveFont(12f);
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(12f);
             ge.registerFont(customFont);
             r.setFont(customFont);
             r.revalidate();

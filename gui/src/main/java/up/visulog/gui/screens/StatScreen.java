@@ -11,7 +11,7 @@ public class StatScreen extends JFrame {
     //     new StatScreen();
     // }
 
-    StatScreen() throws FontFormatException, IOException {
-        StatComponents.setGridBagLayout(this, "DinoLog - Stats Generator", "dinosaur.png");
+    public StatScreen() throws FontFormatException, IOException {
+        StatComponents.setGridBagLayout(this, "DinoLog - Stats Generator", "src/main/resources/dinosaur.png");
     }
 }
