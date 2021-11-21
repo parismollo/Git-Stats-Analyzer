@@ -20,7 +20,7 @@ import up.visulog.gui.Gui;
 public class CLILauncher {
 
     public static void main(String[] args) throws FontFormatException, IOException {
-    	// Pour tester l'interface graphique : ./gradlew run --args=". --test=window"
+        // Pour tester l'interface graphique: ./gradlew run --args=". --test=gui"
     	// Pour tester l'affichage d'un graphique : ./gradlew run --args=". --test=graph"
     	
         var config = makeConfigFromCommandLineArgs(args);
@@ -73,7 +73,7 @@ public class CLILauncher {
                         	if(pValue.toUpperCase().equals("WINDOW")) {
                         		new Window(600, 600);
                         	}
-                            else if(pValue.toUpperCase().equals("HOME")) {
+                            else if(pValue.toUpperCase().equals("GUI")) {
                                 Gui.runGui();
                             }
                         	else if(pValue.toUpperCase().equals("GRAPH")) {
