@@ -1,5 +1,7 @@
 package up.visulog.cli;
 
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,10 +15,11 @@ import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.graphs.ChartCountLinesAdded;
 import up.visulog.graphs.PrintChart;
 import up.visulog.gui.Window;
+import up.visulog.gui.Gui;
 
 public class CLILauncher {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FontFormatException, IOException {
     	// Pour tester l'interface graphique : ./gradlew run --args=". --test=window"
     	// Pour tester l'affichage d'un graphique : ./gradlew run --args=". --test=graph"
     	
@@ -29,7 +32,7 @@ public class CLILauncher {
         } else displayHelpAndExit();
     }
 
-    static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) {
+    static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) throws FontFormatException, IOException {
         var gitPath = FileSystems.getDefault().getPath(".");
         var plugins = new HashMap<String, PluginConfig>();
         for (var arg : args) {
@@ -70,6 +73,9 @@ public class CLILauncher {
                         	if(pValue.toUpperCase().equals("WINDOW")) {
                         		new Window(600, 600);
                         	}
+                            else if(pValue.toUpperCase().equals("HOME")) {
+                                Gui.runGui();
+                            }
                         	else if(pValue.toUpperCase().equals("GRAPH")) {
                         		var conf = new Configuration(gitPath, new HashMap<String, PluginConfig>());
                         		var chart = new ChartCountCommitsPerAuthor(conf);

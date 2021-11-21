@@ -1,4 +1,4 @@
-package src.main.java.components;
+package up.visulog.gui.components;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class HomeComponents {
         frame.add(b3, gbc);
     }
     private static JButton setUploadtButton() throws FontFormatException, IOException {
-        Icon icon = new ImageIcon("../resources/cloud-computing.png");
+        Icon icon = new ImageIcon("src/main/resources/cloud-computing.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back
@@ -70,7 +70,7 @@ public class HomeComponents {
         upload_button.setFocusPainted(false);
         upload_button.setForeground(Color.white);
         upload_button.setText(" Upload :)");
-        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("../resources/Poppins-Bold.ttf")).deriveFont(25f);
+        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(25f);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
         ge.registerFont(customFont);
@@ -99,7 +99,7 @@ public class HomeComponents {
             button.addActionListener(e -> Uploader.uploadFile());
     }
     private static JButton setLatestButton() throws FontFormatException, IOException {
-        Icon icon = new ImageIcon("../resources/latest_icon.png");
+        Icon icon = new ImageIcon("src/main/resources/latest_icon.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back
@@ -125,7 +125,7 @@ public class HomeComponents {
                 }
             }
         });
-        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("../resources/Poppins-Bold.ttf")).deriveFont(15f);
+        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(15f);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
         ge.registerFont(customFont);
@@ -134,7 +134,7 @@ public class HomeComponents {
         return latest_button;
     }
     private static JButton setMostLikedButton() throws FontFormatException, IOException {
-        Icon icon = new ImageIcon("../resources/heart.png");
+        Icon icon = new ImageIcon("src/main/resources/heart.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         icon = new ImageIcon(newimg);  // transform it back
@@ -160,7 +160,7 @@ public class HomeComponents {
                 }
             }
         });
-        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("../resources/Poppins-Bold.ttf")).deriveFont(15f);
+        Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(15f);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
         ge.registerFont(customFont);

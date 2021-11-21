@@ -5,6 +5,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.FontFormatException;
+import java.io.IOException;
+
 public class TestCLILauncher {
     /*
     TODO: one can also add integration tests here:
@@ -12,7 +15,7 @@ public class TestCLILauncher {
     - run the whole program with bad command and see whether something that looks like help is printed
      */
     @Test
-    public void testArgumentParser() {
+    public void testArgumentParser() throws FontFormatException, IOException {
         var config1 = CLILauncher.makeConfigFromCommandLineArgs(new String[]{".", "--addPlugin=countCommits"});
         assertTrue(config1.isPresent());
         var config2 = CLILauncher.makeConfigFromCommandLineArgs(new String[] {

@@ -1,9 +1,10 @@
-package src.main.java.components;
+package up.visulog.gui.components;
 import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
-import src.main.java.validators.HomeValidators;
+
+import up.visulog.gui.validators.HomeValidators;
 
 // When user clicks upload, it will run this function bellow
 public class Uploader {

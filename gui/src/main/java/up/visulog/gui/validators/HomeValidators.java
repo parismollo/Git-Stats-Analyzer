@@ -1,4 +1,4 @@
-package src.main.java.validators;
+package up.visulog.gui.validators;
 
 import java.io.File;
 
