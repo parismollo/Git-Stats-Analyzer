@@ -12,7 +12,9 @@ import up.visulog.analyzer.Analyzer;
 import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
+import up.visulog.graphs.ChartCountCommitsPerWeekday;
 import up.visulog.graphs.ChartCountLinesAdded;
+import up.visulog.graphs.ChartCountLinesDeleted;
 import up.visulog.graphs.PrintChart;
 import up.visulog.gui.Window;
 import up.visulog.gui.Gui;
@@ -78,11 +80,12 @@ public class CLILauncher {
                         		var chart = new ChartCountCommitsPerAuthor(conf);
                         		List<String> list = new ArrayList<>();
                         		list.add("jadecrtl");
-                        		list.add("Leopold");
                         		list.add("Victoria");
                         		chart.refreshAuthors(list);
                                 (new PrintChart(chart, "bar")).afficheChart();
                                 (new PrintChart(new ChartCountLinesAdded(conf), "bar")).afficheChart();
+                                (new PrintChart(new ChartCountLinesDeleted(conf), "bar")).afficheChart();
+                                (new PrintChart(new ChartCountCommitsPerWeekday(conf), "bar")).afficheChart();
                         	}
                         	break;
                         case "--mode":
