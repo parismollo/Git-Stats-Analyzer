@@ -16,7 +16,6 @@ import javax.swing.event.ChangeListener;
 public class HomeComponents {
 
     public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath) throws FontFormatException, IOException {
-        setFrame(frame, filePath, 600, 450);
         GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
         GridBagConstraints gbc = new GridBagConstraints();  
         frame.setLayout(GridBagLayoutgrid);  
@@ -27,7 +26,8 @@ public class HomeComponents {
         JButton b2 = setLatestButton();
         JButton b3 = setMostLikedButton();
         setHomeButtons(frame, b1, b2, b3, gbc);
-        frame.getContentPane().setBackground(new Color(88,205,113)); 
+        frame.getContentPane().setBackground(new Color(88,205,113));
+        setFrame(frame, filePath, 600, 450);
     }
     private static void setHomeButtons(JFrame frame, JButton b1, JButton b2, JButton b3, GridBagConstraints gbc) {
         gbc.fill = GridBagConstraints.HORIZONTAL;  
