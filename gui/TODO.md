@@ -7,7 +7,7 @@
 ```
 
 - [x] Allow user to upload file
-- [ ] Run results page 
+- [x] Run results page 
 - [ ] Send data to results page
 - [ ] Run stats page
 - [ ] Run graphs page 

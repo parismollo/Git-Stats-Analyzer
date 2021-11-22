@@ -1,12 +1,13 @@
 package up.visulog.gui.components;
+import java.awt.FontFormatException;
+import java.awt.List;
 import java.io.File;
 import java.io.IOException;
-
-import java.awt.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.screens.ResultsScreen;
 import up.visulog.gui.validators.HomeValidators;
 
@@ -44,6 +45,8 @@ public class Uploader {
 	}
 
 	private static void runAnalysis(File file_path) throws FontFormatException, IOException{
-		new ResultsScreen();
+		var gitlog = Commit.parseLogFromCommand(file_path.toPath());
+		// Then in results write method to process log and send to screen
+		new ResultsScreen(gitlog);
 	}
 }
