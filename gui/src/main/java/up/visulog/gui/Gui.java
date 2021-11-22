@@ -18,4 +18,8 @@ public class Gui {
         new TableScreen();
         
     }
+
+    public static void runDemo() throws FontFormatException, IOException{
+        new HomeScreen();
+    }
 }

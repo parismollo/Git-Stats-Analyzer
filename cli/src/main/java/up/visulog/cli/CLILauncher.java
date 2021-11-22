@@ -88,6 +88,12 @@ public class CLILauncher {
                                 (new PrintChart(new ChartCountLinesAdded(conf), "bar")).afficheChart();
                         	}
                         	break;
+                        case "--mode":
+                            if (pValue.toUpperCase().equals("DEMO")) {
+                                Gui.runDemo();
+    
+                            }
+                            break;
                         default:
                             return Optional.empty();
                     }
