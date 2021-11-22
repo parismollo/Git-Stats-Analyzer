@@ -15,8 +15,8 @@ public class ResultsScreen extends JFrame {
     //     new ResultsScreen();
     // }
 
-    public ResultsScreen(List<Commit> gitlog) throws FontFormatException, IOException {
+    public ResultsScreen(List<Commit> gitlog, String fileName) throws FontFormatException, IOException {
         HashSet<String> authors = ResultsValidators.getAuthors(gitlog);
-        ResultsComponents.setGridBagLayout(this, "DinoLog - Results", "src/main/resources/dinosaur.png");
+        ResultsComponents.setGridBagLayout(this, "DinoLog - Results", "src/main/resources/dinosaur.png", authors, fileName);
     }
 }

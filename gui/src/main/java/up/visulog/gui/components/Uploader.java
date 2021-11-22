@@ -30,7 +30,6 @@ public class Uploader {
 		if (jfc.getSelectedFile() != null) {
 			File file_path = jfc.getSelectedFile();
 			if (HomeValidators.isGitFolder(file_path)) {
-				runAnalysis(file_path);
 				System.out.println("Is git folder!");
 				runAnalysis(file_path);
 			} else {
@@ -44,9 +43,9 @@ public class Uploader {
 		// TODO
 	}
 
-	private static void runAnalysis(File file_path) throws FontFormatException, IOException{
-		var gitlog = Commit.parseLogFromCommand(file_path.toPath());
-		// Then in results write method to process log and send to screen
-		new ResultsScreen(gitlog);
+	private static void runAnalysis(File file) throws FontFormatException, IOException{
+		var gitlog = Commit.parseLogFromCommand(file.toPath());
+		var fileName = file.getName();
+		new ResultsScreen(gitlog, fileName);
 	}
 }

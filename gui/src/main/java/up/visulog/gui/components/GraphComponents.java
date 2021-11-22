@@ -35,7 +35,7 @@ public class GraphComponents {
         // Create elements/buttons
         // SetScreen
         JButton returnButton = ResultsComponents.createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
-        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle());
+        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(""));
         JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         List<JRadioButton> dataType = createRadioButton(getDataTypes());

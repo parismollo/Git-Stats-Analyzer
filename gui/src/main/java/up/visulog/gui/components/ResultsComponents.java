@@ -2,6 +2,7 @@ package up.visulog.gui.components;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -15,7 +16,7 @@ import javax.swing.event.ChangeListener;
 // import src.main.java.components.HomeComponents;
 
 public class ResultsComponents {
-    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath) throws FontFormatException, IOException {
+    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath, HashSet<String> authors, String fileName) throws FontFormatException, IOException {
         /*
         1. Set home layout structure (GridBagLayout)
         2. Create componentes
@@ -33,18 +34,20 @@ public class ResultsComponents {
         frame.setLayout(layout);
 
         JButton return_button = createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
-        JLabel project_title = createProjectTitle(getProjectTitle());
+        JLabel project_title = createProjectTitle(getProjectTitle(fileName));
         JLabel project_description = createProjectDescriptions(getProjectDescription());
-        JLabel project_members = createProjectMembers(getProjectMembers());
+        JLabel project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
         JButton graphs_button = createAnyButton("Generate Graphs", "src/main/resources/stats.png");
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         setResultsInScreen(frame, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
         frame.getContentPane().setBackground(new Color(88,205,113)); 
     }
-    private static String getProjectMembers() {
-        // TODO
-        String s = "Made by Morty, Rick, Beth and Jerry";
+    private static String getProjectMembers(HashSet<String> authors) {
+        String s = "Made by";
+        for (String author : authors) {
+            s+=" "+author;
+        }
         return s;
     }
     private static String getProjectDescription() {
@@ -52,9 +55,9 @@ public class ResultsComponents {
         String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin facilisis ornare augue, nec sagittis felis accumsan a. Suspendisse at nibh ac ante ultricies malesuada sit amet sed lorem. Aenean viverra elit nec quam suscipit, a scelerisque sapien consectetur. Cras faucibus quam neque, consequat tincidunt risus sollicitudin at. In at nibh sed leo fringilla bibendum.";
         return s;
     }
-    public static String getProjectTitle() {
-        // TODO
-        return "Test";
+    public static String getProjectTitle(String filename) {
+        // TODO: temporary, the ideia to to receive a config file and return the name only.
+        return filename;
     }
     private static void setResultsInScreen(JFrame frame, JLabel projectTitle, JLabel projectMembers, JLabel projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
         /* GridLayout
