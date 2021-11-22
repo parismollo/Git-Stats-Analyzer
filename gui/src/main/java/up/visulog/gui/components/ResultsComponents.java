@@ -15,6 +15,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 // import src.main.java.components.HomeComponents;
 
+import up.visulog.gui.screens.GraphScreen;
+import up.visulog.gui.screens.StatScreen;
+
 public class ResultsComponents {
     public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath, HashSet<String> authors, String fileName) throws FontFormatException, IOException {
         /*
@@ -38,7 +41,11 @@ public class ResultsComponents {
         JLabel project_description = createProjectDescriptions(getProjectDescription());
         JLabel project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
+
+        setStatAction(stats_button, fileName);
         JButton graphs_button = createAnyButton("Generate Graphs", "src/main/resources/stats.png");
+        setGraphAction(graphs_button, fileName);
+
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         setResultsInScreen(frame, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
         frame.getContentPane().setBackground(new Color(88,205,113)); 
@@ -240,5 +247,28 @@ public class ResultsComponents {
         icon = new ImageIcon(newimg);  // transform it back
         return icon;
     }
-
+    private static void setGraphAction(JButton button, String filename){ 
+        button.addActionListener(e -> {
+            try {
+                // Uploader.uploadFile();
+                new GraphScreen(filename);
+            } catch (FontFormatException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+    }
+    private static void setStatAction(JButton button, String filename){ 
+        button.addActionListener(e -> {
+            try {
+                // Uploader.uploadFile();
+                new StatScreen(filename);
+            } catch (FontFormatException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+}
 }

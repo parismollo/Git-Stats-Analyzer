@@ -22,7 +22,7 @@ import javax.swing.JRadioButton;
 // import javax.swing.event.ChangeListener;
 public class GraphComponents {
 
-    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath) throws FontFormatException, IOException {
+    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath, String filename) throws FontFormatException, IOException {
         HomeComponents.setFrame(frame, filePath, 600, 350);
         GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
         GridBagConstraints gbc = new GridBagConstraints();  
@@ -35,7 +35,7 @@ public class GraphComponents {
         // Create elements/buttons
         // SetScreen
         JButton returnButton = ResultsComponents.createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
-        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(""));
+        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(filename));
         JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         List<JRadioButton> dataType = createRadioButton(getDataTypes());

@@ -11,7 +11,7 @@ public class GraphScreen extends JFrame {
     //     new GraphScreen();
     // }
 
-    public GraphScreen() throws FontFormatException, IOException {
-        GraphComponents.setGridBagLayout(this, "DinoLog - Graphs", "src/main/resources/dinosaur.png");
+    public GraphScreen(String filename) throws FontFormatException, IOException {
+        GraphComponents.setGridBagLayout(this, "DinoLog - Graphs", "src/main/resources/dinosaur.png", filename);
     }
 }
