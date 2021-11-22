@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 // import javax.swing.JList;
 import javax.swing.JRadioButton;
+
+import up.visulog.gui.screens.TableScreen;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
 // import javax.swing.event.ChangeEvent;
@@ -39,10 +41,11 @@ public class StatComponents {
         JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         // List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         List<JRadioButton> dataType = createRadioButton(getDataTypes());
-        JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
-        setResultsInScreen(frame, projectTitle, dataType, downloadButton, returnButton, runGraph, gbc);
+        JButton runStat = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
+        setRunAction(runStat);
+        setResultsInScreen(frame, projectTitle, dataType, downloadButton, returnButton, runStat, gbc);
     }
-    private static void setResultsInScreen(JFrame frame, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runGraph, GridBagConstraints gbc) {
+    private static void setResultsInScreen(JFrame frame, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runStat, GridBagConstraints gbc) {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0;
@@ -86,7 +89,7 @@ public class StatComponents {
         gbc.weightx = 0;
         gbc.gridx = -1;
         gbc.gridy = 7;
-        frame.add(runGraph, gbc);
+        frame.add(runStat, gbc);
 
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -139,6 +142,19 @@ public class StatComponents {
         // TODO (code below is temporary)
         String[] s = {"Commits:Author", "Commits:Weekday", "Lines:Mod"};
         return s;
+    }
+
+    private static void setRunAction(JButton button){ 
+        button.addActionListener(e -> {
+            try {
+                // Uploader.uploadFile();
+                new TableScreen();
+            } catch (FontFormatException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
     }
 
     // private static String[] getGraphTypes() {
