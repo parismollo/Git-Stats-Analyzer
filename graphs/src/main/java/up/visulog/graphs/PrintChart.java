@@ -25,7 +25,7 @@ public class PrintChart extends JFrame {
         setMinimumSize(new Dimension(600, 600)); // On set la taille minimum de la fenetre.
         setTitle("Graph display"); //Titre de la fenetre 
         setLocationRelativeTo(null); // permet de recentrer la fenetre au milieu de l'écran
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Arret du programme lors de la fermeture de la fenetre
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Arret du programme lors de la fermeture de la fenetre
         setVisible(true); // On affiche la fenetre;
     }
 }
