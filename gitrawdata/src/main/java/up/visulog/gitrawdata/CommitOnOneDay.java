@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CommitBetweenTwoDays {
+public class CommitOnOneDay {
     // FIXME: (some of) these fields could have more specialized types than String
     public final String id;
     public final String date;
@@ -17,7 +17,7 @@ public class CommitBetweenTwoDays {
     public final String description;
     public final String mergedFrom;
 
-    public CommitBetweenTwoDays(String id, String author, String date, String description, String mergedFrom) {
+    public CommitOnOneDay(String id, String author, String date, String description, String mergedFrom) {
         this.id = id;
         this.author = author;
         this.date = date;
@@ -29,7 +29,7 @@ public class CommitBetweenTwoDays {
     public static List<Commit> parseLogFromCommand(Path gitPath) {
 
         ProcessBuilder builder =
-                new ProcessBuilder("git", "log","--after='",gitPath.toString().substring(16,dayLength(gitPath.toString()+16)), "--before='",gitPath.toString().substring(dayLength(gitPath.toString()+26), gitPath.toString().length())).directory(gitPath.toFile());
+                new ProcessBuilder("git", "log","--after='",gitPath.toString().substring(16,argLength(gitPath.toString()+16)), "--before='",gitPath.toString().substring(argLength(gitPath.toString()+26), gitPath.toString().length())).directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();
@@ -104,20 +104,26 @@ public class CommitBetweenTwoDays {
         throw new RuntimeException("Wrong commit format.");
     }   
 
-    public static int dayLength(String s){
-        int length = 0;
-        int accumulator = 0;
-        while(s.charAt(accumulator) != '=' || s.length() == accumulator){
-            accumulator++;
-        }
-        for(int j = accumulator;j<s.length()-1;j++){
-            if(s.charAt(j) == ' ' && s.charAt(j+1) == '-'){
-                return length;
-            }
-            length++;
-        }
-        return length;
-    }
+	public static int argLength(String s){
+		int length = 0;
+		int accumulator = 0;
+		while(s.charAt(accumulator) != '=' || s.length() == accumulator){
+			accumulator++;
+		}
+		System.out.println(accumulator);
+		int nbrSpace = 2;
+		for(int j = accumulator+1;j<s.length()-1;j++){
+			if(s.charAt(j) == ' '){
+				nbrSpace--;
+			}
+			if(nbrSpace == 0) {
+				System.out.println(s.substring(0,j));
+				return length;
+			}
+			length++;
+		}
+		return length;
+	}
 
     @Override
     public String toString() {
