@@ -34,22 +34,13 @@ public class HomeComponents {
         gbc.gridx = 1;  
         gbc.gridy = 0;  
         frame.add(b1, gbc); 
-        // gbc.gridx = 1;  
-        // gbc.gridy = 0;  
-        // frame.add(b2, gbc);  
-        // gbc.fill = GridBagConstraints.HORIZONTAL;  
-        // gbc.ipady = 20;  
-        // gbc.gridx = 0;  
-        // gbc.gridy = 1;  
-        // this.add(setUploadtButton(), gbc);  
-        // gbc.gridx = 1;  
-        // gbc.gridy = 1;  
-        // this.add(setUploadtButton(), gbc);  
+ 
         gbc.gridx = 0;  
         gbc.gridy = 2;  
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridwidth = 2;  
         frame.add(b2, gbc);
+        
         gbc.gridx = 0;  
         gbc.gridy = 3;  
         gbc.fill = GridBagConstraints.HORIZONTAL;  
@@ -95,8 +86,16 @@ public class HomeComponents {
         setButtonAction(upload_button);
         return upload_button;
 }
-    private static void setButtonAction(JButton button) { 
-            button.addActionListener(e -> Uploader.uploadFile());
+    private static void setButtonAction(JButton button){ 
+            button.addActionListener(e -> {
+                try {
+                    Uploader.uploadFile();
+                } catch (FontFormatException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            });
     }
     private static JButton setLatestButton() throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/latest_icon.png");

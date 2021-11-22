@@ -6,7 +6,9 @@
 
 ```
 
-- [ ] Allow user to upload file
+- [x] Allow user to upload file
 - [ ] Run results page 
+- [ ] Send data to results page
 - [ ] Run stats page
 - [ ] Run graphs page 
+- [ ] Add pop up for error in uploader message
