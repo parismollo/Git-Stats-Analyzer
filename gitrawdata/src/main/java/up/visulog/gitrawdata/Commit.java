@@ -40,6 +40,20 @@ public class Commit {
         return parseLog(reader);
     }
 
+    public static List<Commit> parseLogFromCommand(Path gitPath, String startDate, String endDate) {
+        ProcessBuilder builder =
+                new ProcessBuilder("git", "log", "--after='"+startDate+"'", "--before='"+endDate+"'").directory(gitPath.toFile());
+        Process process;
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Error running \"git log\".", e);
+        }
+        InputStream is = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        return parseLog(reader);
+    }
+    
     public static List<Commit> parseLog(BufferedReader reader) {
         var result = new ArrayList<Commit>();
         Optional<Commit> commit = parseCommit(reader);
