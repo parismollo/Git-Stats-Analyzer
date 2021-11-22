@@ -16,7 +16,6 @@ import up.visulog.graphs.ChartCountCommitsPerWeekday;
 import up.visulog.graphs.ChartCountLinesAdded;
 import up.visulog.graphs.ChartCountLinesDeleted;
 import up.visulog.graphs.PrintChart;
-import up.visulog.gui.Window;
 import up.visulog.gui.Gui;
 
 public class CLILauncher {
@@ -72,10 +71,7 @@ public class CLILauncher {
                             // TODO (save command line options to a file instead of running the analysis)
                             break;
                         case "--test":
-                        	if(pValue.toUpperCase().equals("WINDOW")) {
-                        		new Window(600, 600);
-                        	}
-                        	else if(pValue.toUpperCase().equals("GRAPH")) {
+                        	if(pValue.toUpperCase().equals("GRAPH")) {
                         		var conf = new Configuration(gitPath, new HashMap<String, PluginConfig>());
                         		var chart = new ChartCountCommitsPerAuthor(conf);
                         		List<String> list = new ArrayList<>();
@@ -91,7 +87,6 @@ public class CLILauncher {
                         case "--mode":
                             if (pValue.toUpperCase().equals("DEMO")) {
                                 Gui.runDemo();
-    
                             }
                             break;
                         default:

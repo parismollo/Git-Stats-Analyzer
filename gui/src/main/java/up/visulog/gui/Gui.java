@@ -2,12 +2,6 @@ package up.visulog.gui;
 import java.awt.FontFormatException;
 import java.io.IOException;
 
-import up.visulog.gui.screens.HomeScreen;
-import up.visulog.gui.screens.ResultsScreen;
-import up.visulog.gui.screens.GraphScreen;
-import up.visulog.gui.screens.StatScreen;
-import up.visulog.gui.screens.TableScreen;
-
 public class Gui {
 
     public static void runGui() throws FontFormatException, IOException {
@@ -15,10 +9,10 @@ public class Gui {
         // new ResultsScreen(null, null);
         // new GraphScreen();
         // new StatScreen();
-        
     }
 
-    public static void runDemo() throws FontFormatException, IOException{
-        new HomeScreen();
+    public static void runDemo() throws FontFormatException, IOException {
+        // new HomeScreen();
+    	new Window("DinoLog", 600, 600);
     }
 }

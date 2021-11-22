@@ -1,53 +1,63 @@
 package up.visulog.gui.components;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import up.visulog.gui.Window;
 
 // import src.main.java.components.Uploader;
 
 public class HomeComponents {
 
-    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath) throws FontFormatException, IOException {
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle) throws FontFormatException, IOException {
+    	window.setTitle(screenTitle);
         GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
         GridBagConstraints gbc = new GridBagConstraints();  
-        frame.setLayout(GridBagLayoutgrid);  
-        frame.setTitle(screenTitle);  
+        panel.setLayout(GridBagLayoutgrid);  
         GridBagLayout layout = new GridBagLayout();  
-        frame.setLayout(layout);
-        JButton b1 = setUploadtButton();
+        panel.setLayout(layout);
+        JButton b1 = setUploadButton(window);
         JButton b2 = setLatestButton();
         JButton b3 = setMostLikedButton();
-        setHomeButtons(frame, b1, b2, b3, gbc);
-        frame.getContentPane().setBackground(new Color(88,205,113));
-        setFrame(frame, filePath, 600, 450);
+        setHomeButtons(panel, b1, b2, b3, gbc);
+        panel.setBackground(new Color(88,205,113));
+        
     }
-    private static void setHomeButtons(JFrame frame, JButton b1, JButton b2, JButton b3, GridBagConstraints gbc) {
+    
+    private static void setHomeButtons(JPanel panel, JButton b1, JButton b2, JButton b3, GridBagConstraints gbc) {
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridx = 1;  
         gbc.gridy = 0;  
-        frame.add(b1, gbc); 
+        panel.add(b1, gbc); 
  
         gbc.gridx = 0;  
         gbc.gridy = 2;  
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridwidth = 2;  
-        frame.add(b2, gbc);
+        panel.add(b2, gbc);
         
         gbc.gridx = 0;  
         gbc.gridy = 3;  
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridwidth = 2;  
-        frame.add(b3, gbc);
+        panel.add(b3, gbc);
     }
-    private static JButton setUploadtButton() throws FontFormatException, IOException {
+    
+    private static JButton setUploadButton(Window window) throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/cloud-computing.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -83,13 +93,14 @@ public class HomeComponents {
             }
         });
         // upload_button.setBackground(Color.white);
-        setButtonAction(upload_button);
+        setButtonAction(window, upload_button);
         return upload_button;
-}
-    private static void setButtonAction(JButton button){ 
+    }
+    
+    private static void setButtonAction(Window window, JButton button){ 
             button.addActionListener(e -> {
                 try {
-                    Uploader.uploadFile();
+                    Uploader.uploadFile(window);
                 } catch (FontFormatException e1) {
                     e1.printStackTrace();
                 } catch (IOException e1) {
@@ -97,6 +108,7 @@ public class HomeComponents {
                 }
             });
     }
+    
     private static JButton setLatestButton() throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/latest_icon.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
@@ -132,6 +144,7 @@ public class HomeComponents {
         latest_button.revalidate();
         return latest_button;
     }
+    
     private static JButton setMostLikedButton() throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/heart.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
@@ -166,16 +179,6 @@ public class HomeComponents {
         latest_button.setFont(customFont);
         latest_button.revalidate();
         return latest_button;
-    }
-    public static void setFrame(JFrame frame, String filePath, int width, int height) {
-        ImageIcon img = new ImageIcon(filePath);
-        frame.setIconImage(img.getImage());
-        frame.setSize(width, height); // 600, 450
-        // setLayout(null);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
     }
 
 }

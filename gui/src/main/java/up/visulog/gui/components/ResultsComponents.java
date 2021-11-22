@@ -1,5 +1,12 @@
 package up.visulog.gui.components;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -7,19 +14,20 @@ import java.util.HashSet;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 // import src.main.java.components.HomeComponents;
 
-import up.visulog.gui.screens.GraphScreen;
-import up.visulog.gui.screens.StatScreen;
+import up.visulog.gui.Window;
 
 public class ResultsComponents {
-    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath, HashSet<String> authors, String fileName) throws FontFormatException, IOException {
+	
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, HashSet<String> authors, String fileName) throws FontFormatException, IOException {
         /*
         1. Set home layout structure (GridBagLayout)
         2. Create componentes
@@ -28,28 +36,27 @@ public class ResultsComponents {
         Info: To modify the style or position, simply go to the function defitinion and add your own style. Otherwise you can
         change the arrangement in the Set function.
         */
-        HomeComponents.setFrame(frame, filePath, 600, 450);
-        GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
+    	window.setTitle(screenTitle);
+    	
         GridBagConstraints gbc = new GridBagConstraints();  
-        frame.setLayout(GridBagLayoutgrid);  
-        frame.setTitle(screenTitle);  
         GridBagLayout layout = new GridBagLayout();  
-        frame.setLayout(layout);
+        panel.setLayout(layout);
 
         JButton return_button = createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
         JLabel project_title = createProjectTitle(getProjectTitle(fileName));
         JLabel project_description = createProjectDescriptions(getProjectDescription());
-        JLabel project_members = createProjectMembers(getProjectMembers(authors));
+        JTextArea project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
 
-        setStatAction(stats_button, fileName);
+        setStatAction(window, stats_button, fileName);
         JButton graphs_button = createAnyButton("Generate Graphs", "src/main/resources/stats.png");
-        setGraphAction(graphs_button, fileName);
+        setGraphAction(window, graphs_button, fileName);
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
-        setResultsInScreen(frame, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
-        frame.getContentPane().setBackground(new Color(88,205,113)); 
+        setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
+        panel.setBackground(new Color(88,205,113)); 
     }
+    
     private static String getProjectMembers(HashSet<String> authors) {
         String s = "Made by";
         for (String author : authors) {
@@ -57,16 +64,19 @@ public class ResultsComponents {
         }
         return s;
     }
+    
     private static String getProjectDescription() {
         // TODO
         String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin facilisis ornare augue, nec sagittis felis accumsan a. Suspendisse at nibh ac ante ultricies malesuada sit amet sed lorem. Aenean viverra elit nec quam suscipit, a scelerisque sapien consectetur. Cras faucibus quam neque, consequat tincidunt risus sollicitudin at. In at nibh sed leo fringilla bibendum.";
         return s;
     }
+    
     public static String getProjectTitle(String filename) {
         // TODO: temporary, the ideia to to receive a config file and return the name only.
         return filename;
     }
-    private static void setResultsInScreen(JFrame frame, JLabel projectTitle, JLabel projectMembers, JLabel projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
+    
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JLabel projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
         /* GridLayout
 
         0 0 1  (Return Button)
@@ -81,7 +91,7 @@ public class ResultsComponents {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.insets = new Insets(0,10,0,0);  //left padding
-        frame.add(projectTitle, gbc);
+        panel.add(projectTitle, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
@@ -89,35 +99,49 @@ public class ResultsComponents {
         gbc.gridy = 3;
         // gbc.anchor = GridBagConstraints.PAGE_END;
         // gbc.insets = new Insets(0,10,0,0);  //left padding
-        frame.add(projectMembers, gbc);
+        panel.add(projectMembers, gbc);
 
+        JPanel pan = new JPanel();
+        pan.setOpaque(false);
+        pan.add(statsButton);
+        pan.add(graphsButton);
+        
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 0.2;
         // gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(statsButton, gbc);
-
+        panel.add(pan, gbc);
+        
+        /*
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 1;
+        gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.weightx = 0.2;
         // gbc.anchor = GridBagConstraints.CENTER;
-        frame.add(graphsButton, gbc);
+        panel.add(statsButton, gbc);
+        
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.2;
+        // gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(graphsButton, gbc);
+        */
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.weightx = 0;
         gbc.gridx = 2;
         gbc.gridy = 5;
-        frame.add(downloadButton, gbc);
+        panel.add(downloadButton, gbc);
         
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0;
         gbc.gridx = 2;
         gbc.gridy = 0;
-        frame.add(returnButton, gbc);
+        panel.add(returnButton, gbc);
 
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -126,7 +150,7 @@ public class ResultsComponents {
         gbc.gridwidth = 3;
         gbc.gridx = 0;
         gbc.gridy = 2;
-        frame.add(projectDescription, gbc);
+        panel.add(projectDescription, gbc);
     }
 
     public static JButton createMenuButton(String icon_path, String icon_path_white, String label) throws FontFormatException, IOException {
@@ -152,6 +176,7 @@ public class ResultsComponents {
         });
         return button;
     }
+    
     public static JButton createAnyButton(String label, String icon_path) throws FontFormatException, IOException {
         Icon icon = new ImageIcon(icon_path);
         Image image = ((ImageIcon) icon).getImage(); // transform it 
@@ -203,18 +228,24 @@ public class ResultsComponents {
         label_button.revalidate();
         return label_button;
     }
-    private static JLabel createProjectMembers(String label) throws FontFormatException, IOException {
-        JLabel members_label = new JLabel(label);  
-        members_label.setBounds(50,50, 100,30);
-        members_label.setForeground(Color.black);
+    
+    private static JTextArea createProjectMembers(String label) throws FontFormatException, IOException {
+        JTextArea members_label = new JTextArea(label);
+        members_label.setEditable(false);
+        members_label.setOpaque(false);
+        members_label.setLineWrap(true); // Pour un retour à ligne automatique
+        members_label.setWrapStyleWord(true); // Pour que les mots ne soient pas coupés
+        //members_label.setBounds(50,50, 100,30);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
         Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(15f);
         ge.registerFont(customFont);
         members_label.setFont(customFont);
+        members_label.setForeground(Color.BLACK);
         members_label.revalidate();
         return members_label;
     }
+    
     private static JLabel createProjectDescriptions(String label) throws FontFormatException, IOException {
         JLabel label_description = new JLabel();  
         label_description.setBounds(50,50, 100,30);
@@ -228,6 +259,7 @@ public class ResultsComponents {
         label_description.setText("<html><p align=\"justify\" style=\"width: 400px\">"+label+"</p></html>");
         return label_description;
     }
+    
     private static JButton createIconButton(String icon_path) {
         Icon icon = createIcon(icon_path);
         JButton button = new JButton(icon);
@@ -247,11 +279,12 @@ public class ResultsComponents {
         icon = new ImageIcon(newimg);  // transform it back
         return icon;
     }
-    private static void setGraphAction(JButton button, String filename){ 
+    
+    private static void setGraphAction(Window window, JButton button, String fileName){ 
         button.addActionListener(e -> {
             try {
                 // Uploader.uploadFile();
-                new GraphScreen(filename);
+                window.openGraphScreen(fileName);
             } catch (FontFormatException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {
@@ -259,11 +292,12 @@ public class ResultsComponents {
             }
         });
     }
-    private static void setStatAction(JButton button, String filename){ 
+    
+    private static void setStatAction(Window window, JButton button, String fileName){ 
         button.addActionListener(e -> {
             try {
                 // Uploader.uploadFile();
-                new StatScreen(filename);
+                window.openStatsScreen(fileName);
             } catch (FontFormatException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {

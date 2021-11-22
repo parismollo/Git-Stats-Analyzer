@@ -7,11 +7,10 @@ import javax.swing.JFrame;
 
 import up.visulog.gui.components.TableComponents;
 public class TableScreen extends JFrame {
-    // public static void main(String[] args) throws FontFormatException, IOException {
-    //     new TableScreen();
-    // }
 
-    public TableScreen() throws FontFormatException, IOException {
+	private static final long serialVersionUID = 1L;
+
+	public TableScreen() throws FontFormatException, IOException {
         TableComponents.setFrameAndTable(this, "DinoLog - Stats Table", "src/main/resources/dinosaur.png");
     }
 }

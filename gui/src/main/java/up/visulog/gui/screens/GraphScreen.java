@@ -3,15 +3,17 @@ package up.visulog.gui.screens;
 import java.awt.FontFormatException;
 import java.io.IOException;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 
+import up.visulog.gui.Window;
 import up.visulog.gui.components.GraphComponents;
-public class GraphScreen extends JFrame {
-    // public static void main(String[] args) throws FontFormatException, IOException {
-    //     new GraphScreen();
-    // }
-
-    public GraphScreen(String filename) throws FontFormatException, IOException {
-        GraphComponents.setGridBagLayout(this, "DinoLog - Graphs", "src/main/resources/dinosaur.png", filename);
+public class GraphScreen extends JPanel {
+	private static final long serialVersionUID = 1L;
+	
+	private Window window;
+	
+    public GraphScreen(Window window, String filename) throws FontFormatException, IOException {
+    	this.window = window;
+        GraphComponents.setGridBagLayout(window, this, window.getProjectName()+" - Graphs", filename);
     }
 }

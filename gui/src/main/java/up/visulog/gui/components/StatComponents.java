@@ -1,5 +1,11 @@
 package up.visulog.gui.components;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.File;
 // import java.io.File;
 import java.io.IOException;
@@ -12,11 +18,12 @@ import javax.swing.ButtonGroup;
 // import javax.swing.Icon;
 // import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 // import javax.swing.JList;
 import javax.swing.JRadioButton;
 
+import up.visulog.gui.Window;
 import up.visulog.gui.screens.TableScreen;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
@@ -24,15 +31,15 @@ import up.visulog.gui.screens.TableScreen;
 // import javax.swing.event.ChangeListener;
 public class StatComponents {
 
-    public static void setGridBagLayout(JFrame frame, String screenTitle, String filePath, String filename) throws FontFormatException, IOException {
-        HomeComponents.setFrame(frame, filePath, 600, 450);
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, String filename) throws FontFormatException, IOException {
+    	window.setTitle(screenTitle);
+
         GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
         GridBagConstraints gbc = new GridBagConstraints();  
-        frame.setLayout(GridBagLayoutgrid);  
-        frame.setTitle(screenTitle);  
+        panel.setLayout(GridBagLayoutgrid);  
         GridBagLayout layout = new GridBagLayout();  
-        frame.setLayout(layout);
-        frame.getContentPane().setBackground(new Color(88,205,113));
+        panel.setLayout(layout);
+        panel.setBackground(new Color(88,205,113));
 
         // Create elements/buttons
         // SetScreen
@@ -43,22 +50,23 @@ public class StatComponents {
         List<JRadioButton> dataType = createRadioButton(getDataTypes());
         JButton runStat = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
         setRunAction(runStat);
-        setResultsInScreen(frame, projectTitle, dataType, downloadButton, returnButton, runStat, gbc);
+        setResultsInScreen(panel, projectTitle, dataType, downloadButton, returnButton, runStat, gbc);
     }
-    private static void setResultsInScreen(JFrame frame, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runStat, GridBagConstraints gbc) {
+    
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runStat, GridBagConstraints gbc) {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0;
         gbc.gridx = 5; //TODO dynamicaly
         gbc.gridy = 0;
-        frame.add(returnButton, gbc);
+        panel.add(returnButton, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.insets = new Insets(0,10,0,0);  //left padding
-        frame.add(projectTitle, gbc);
+        panel.add(projectTitle, gbc);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         // gbc.gridx = 0;
@@ -68,7 +76,7 @@ public class StatComponents {
         int n = 0;
         for (JRadioButton radio: dataType) {
             gbc.gridx = n+1;
-            frame.add(radio, gbc);
+            panel.add(radio, gbc);
             n = n + 1;
         }
 
@@ -80,7 +88,7 @@ public class StatComponents {
         // int i = 0;
         // for (JRadioButton radio: graphTypes) {
         //     gbc.gridx = i+1;
-        //     frame.add(radio, gbc);
+        //     panel.add(radio, gbc);
         //     i = i + 1;
         // }
 
@@ -89,7 +97,7 @@ public class StatComponents {
         gbc.weightx = 0;
         gbc.gridx = -1;
         gbc.gridy = 7;
-        frame.add(runStat, gbc);
+        panel.add(runStat, gbc);
 
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -97,7 +105,7 @@ public class StatComponents {
         gbc.weightx = 0;
         gbc.gridx = 5; //TODO dynamicaly
         gbc.gridy = 8;
-        frame.add(downloadButton, gbc);
+        panel.add(downloadButton, gbc);
     }
 
     // public static JList<String> createListElement() throws FontFormatException, IOException {
@@ -115,6 +123,7 @@ public class StatComponents {
     //     list.setOpaque(false);
     //     return list;
     // }
+    
     public static List<JRadioButton> createRadioButton(String[] dataTypes) throws FontFormatException, IOException {
         // String[] dataTypes = getDataTypes();
         ButtonGroup bg=new ButtonGroup();    
@@ -138,6 +147,7 @@ public class StatComponents {
         return JRadiobuttons;
 
     }
+    
     private static String[] getDataTypes() {
         // TODO (code below is temporary)
         String[] s = {"Commits:Author", "Commits:Weekday", "Lines:Mod"};
@@ -148,7 +158,7 @@ public class StatComponents {
         button.addActionListener(e -> {
             try {
                 // Uploader.uploadFile();
-                new TableScreen();
+                new TableScreen(); // Temporary :)
             } catch (FontFormatException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {

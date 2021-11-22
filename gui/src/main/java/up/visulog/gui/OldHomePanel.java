@@ -22,7 +22,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class HomePanel extends JPanel {
+public class OldHomePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,7 +32,7 @@ public class HomePanel extends JPanel {
 	private ImagePanel chooseFolder; // bouton en forme de dossier
 	private Window win; // On garde un lien vers la fenetre. Pratique pour appeller la methode "changePage(index)".
 	
-	public HomePanel(Window win) {
+	public OldHomePanel(Window win) {
 		super();
 		this.win = win;
 		
@@ -43,7 +43,7 @@ public class HomePanel extends JPanel {
 		errorMsg = new JLabel("It's not a git project !"); // On cree le message d'erreur (qu'on utilisera pas forcement !)
 		errorMsg.setForeground(Color.RED); // On met le texte en couleur rouge.
 		
-		bottomContainer = new JPanel(); // On cree un autre panel où on va mettre le bouton pour selectionner le projet git.
+		bottomContainer = new JPanel(); // On cree un autre panel oï¿½ on va mettre le bouton pour selectionner le projet git.
 		
 		gbc = new GridBagConstraints(); // Contraintes de placements pour le bouton dossier et le message d'erreur.
         gbc.anchor = GridBagConstraints.LINE_END;
@@ -55,12 +55,12 @@ public class HomePanel extends JPanel {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) { // S'execute lorsqu'on lache le click de la souris.
-				String folderPath = getFolderPath(HomePanel.this);
-				if(folderPath.isEmpty()) // L'utilisateur à cliqué sur cancel ou sur croix. Pas de message à afficher.
+				String folderPath = getFolderPath(OldHomePanel.this);
+				if(folderPath.isEmpty()) // L'utilisateur ï¿½ cliquï¿½ sur cancel ou sur croix. Pas de message ï¿½ afficher.
 					return;
 				File folder = new File(folderPath); // On demande de choisir un dossier puis on met son URL dans un objet File.
 				if(!isGitProject(folder)) { // Si ce n'est pas un projet git
-					if(bottomContainer.getComponent(bottomContainer.getComponentCount()-1) == errorMsg) // Le message d'erreur est déjà affiché à l'écran.
+					if(bottomContainer.getComponent(bottomContainer.getComponentCount()-1) == errorMsg) // Le message d'erreur est dï¿½jï¿½ affichï¿½ ï¿½ l'ï¿½cran.
 						return;
 					// Sinon on affiche le message d'erreur en ajoutant le JLabel au bottomContainer :
 
@@ -69,55 +69,55 @@ public class HomePanel extends JPanel {
 					bottomContainer.add(errorMsg, gbc); // On ajoute au bottomContainer et en precisant les contraintes.
 				}
 				else {
-					bottomContainer.remove(errorMsg); // Si le message d'erreur est affiché, on le retire. Sinon on fait rien.
+					bottomContainer.remove(errorMsg); // Si le message d'erreur est affichï¿½, on le retire. Sinon on fait rien.
 					
 					bottomContainer.remove(chooseFolder); // On enleve le bouton.
 					bottomContainer.add(new JLabel("Your project folder is : "+folder.getAbsolutePath())); // On ajoute un texte avec l'adresse du dossier choisi.
 				}
-				revalidate(); // On indique à java qu'il y a eu des changements sur les elements.
-				repaint(); // On force java à re-dessiner tous les elements.
+				revalidate(); // On indique ï¿½ java qu'il y a eu des changements sur les elements.
+				repaint(); // On force java ï¿½ re-dessiner tous les elements.
 				//win.changePage(1); // On change de page. Inutile pour l'instant.
 			}
 			
 		});
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // On indique que les elements de la page doivent etre placés verticalement.
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS)); // On indique que les elements de la page doivent etre placï¿½s verticalement.
 		
 		bottomContainer.setLayout(new GridBagLayout()); // To center items in the panel
 
         gbc.gridx = 1;
         gbc.gridy = 0; // On place le dossier en premier (avant le futur message d'erreur [si il y en a un])
-		bottomContainer.add(chooseFolder, gbc); // On ajoute le bouton en forme de dossier au bottomContainer (JPanel) en précisant les contraintes de placement.
+		bottomContainer.add(chooseFolder, gbc); // On ajoute le bouton en forme de dossier au bottomContainer (JPanel) en prï¿½cisant les contraintes de placement.
 		
-		this.add(welcomeTitle); // On ajoute le titre à notre HomePanel
+		this.add(welcomeTitle); // On ajoute le titre ï¿½ notre HomePanel
 		this.add(bottomContainer); // Puis on ajoute le bottomContainer, qui contient lui meme notre bouton.
 	}
 	
 	public static String getFolderPath(Component comp) { // Demande de selectionner un dossier.
 		JFileChooser choice = new JFileChooser();
-		choice.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // On force l'utilisateur à choisir uniquement des dossiers.
+		choice.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); // On force l'utilisateur ï¿½ choisir uniquement des dossiers.
 		String path = "";
 		int var = choice.showOpenDialog(comp); // On ouvre l'explorateur de fichier et on renvoie 0 ou 1, 2.. selon la maniere dont l'utilisateur quitte l'explorateur (Choose, croix, cancel..)
 		if(var==JFileChooser.APPROVE_OPTION) { // Si il a cliquer sur valider.
-		   path = choice.getSelectedFile().getAbsolutePath(); // On recupere le chemin absolu du dossier selectionné
+		   path = choice.getSelectedFile().getAbsolutePath(); // On recupere le chemin absolu du dossier selectionnï¿½
 		}
 		
-		return path; // On renvoie l'adresse du dossier selectionné ou un string vide.
+		return path; // On renvoie l'adresse du dossier selectionnï¿½ ou un string vide.
 	}
 	
-	public static boolean isGitProject(File path) { // Fonction pour verifier si un dossier correspond bien à un projet git.
+	public static boolean isGitProject(File path) { // Fonction pour verifier si un dossier correspond bien ï¿½ un projet git.
 		if(path == null || !path.exists()) // Si le dossier n'existe pas, on quitte.
 			return false;
 		if(!path.isDirectory()) // Si ce n'est pas un dossier, on part.
 			return false;
 		
-		File[] files = path.listFiles(); // On recupere tous les fichiers et dossiers contenus dans le dossier passé en argurment.
+		File[] files = path.listFiles(); // On recupere tous les fichiers et dossiers contenus dans le dossier passï¿½ en argurment.
 		
 		for(File file : path.listFiles()) // On parcourt le tableau.
 			if(file.isDirectory() && file.getName().equals(".git")) // Si on trouve un dossier qui a pour nom exacte ".git" alors on renvoie true.
 				return true;
 		
-		return false; // Si on à pas trouvé de dossier ".git".
+		return false; // Si on ï¿½ pas trouvï¿½ de dossier ".git".
 	}
 	
 	private class ImagePanel extends JPanel {
@@ -132,11 +132,11 @@ public class HomePanel extends JPanel {
 	    	
 	    	title = new JLabel("+ add project"); // On cree le petit texte sous l'image.
 	    	//title.setFont(new Font("Verdana", Font.BOLD, 30));
-	    	setPreferredSize(dimension); // On met la dimension aux valeurs precisées en parametres.
+	    	setPreferredSize(dimension); // On met la dimension aux valeurs precisï¿½es en parametres.
 	    	setOpaque(false); // La panel est desormais transparent.
 	    	
 	       try {                
-	          image = ImageIO.read(path); // On recupere l'image passé en parametre.
+	          image = ImageIO.read(path); // On recupere l'image passï¿½ en parametre.
 	       } catch (IOException ex) {
 	            ex.printStackTrace();
 	            System.exit(1);
