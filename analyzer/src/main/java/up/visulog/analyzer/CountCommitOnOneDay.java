@@ -2,6 +2,7 @@ package up.visulog.analyzer;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
+import up.visulog.gitrawdata.CommitOnOneDay;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.Map;
 public class CountCommitOnOneDay implements AnalyzerPlugin {
     private final Configuration configuration;
     private Result result;
+    private String day;
 
-    public CountCommitOnOneDay(Configuration generalConfiguration) {
+    public CountCommitOnOneDay(Configuration generalConfiguration, String day) {
         this.configuration = generalConfiguration;
+        this.day = day;
     }
 
     static Result processLog(List<Commit> gitLog) {
@@ -28,7 +31,7 @@ public class CountCommitOnOneDay implements AnalyzerPlugin {
 
     @Override
     public void run() {
-        result = processLog(Commit.parseLogFromCommand(configuration.getGitPath()));
+        result = processLog(CommitOnOneDay.parseLogFromCommand(configuration.getGitPath(), day, day));
     }
 
     @Override

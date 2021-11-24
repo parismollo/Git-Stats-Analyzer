@@ -17,7 +17,7 @@ public class TestCommitOnOneDay {
         var expected = "[Commit{id='96fb0cc5c99c9a92b3fa73aef5f370a3eceef563', date='Sun Nov 14 01:03:14 2021 +0100', author='Leopold Abignoli <leopold.abignoli@gmail.com>', description='Ajout de ChartCountLinesAdded. Modification de ChartCountCommitsPerAuthor.'}]";
         var uri = getClass().getClassLoader().getResource("git.log.--after='2021-11-14.00:00'.--before='2021-11-14.23:59'" ).toURI();
         try (var reader = Files.newBufferedReader(Paths.get(uri))) {
-            var log = Commit.parseLog(reader);
+            var log = CommitOnOneDay.parseLog(reader);
             System.out.println(log);
             assertEquals(expected, log.toString());
         }
