@@ -1,0 +1,5 @@
+commit 96fb0cc5c99c9a92b3fa73aef5f370a3eceef563
+Author: Leopold Abignoli <leopold.abignoli@gmail.com>
+Date:   Sun Nov 14 01:03:14 2021 +0100
+
+    Ajout de ChartCountLinesAdded. Modification de ChartCountCommitsPerAuthor.

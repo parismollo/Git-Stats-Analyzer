@@ -1,0 +1,17 @@
+commit 503cfa8f5504f4a621c60e4aee697e3fce1326f7
+Author: EL ALLAM hafsa <hafsabondy@gmail.com>
+Date:   Tue Nov 16 00:25:55 2021 +0100
+
+    Ajout de ChartCountLinesDeleted
+
+commit 293d5f161b8fd9e1b48e5898426d8ac33e7993ea
+Author: Victoria Batantou <victoria.batantou@gmail.com>
+Date:   Mon Nov 15 00:12:43 2021 +0100
+
+    Ajout de ChartCountCommitsPerWeekday
+
+commit 96fb0cc5c99c9a92b3fa73aef5f370a3eceef563
+Author: Leopold Abignoli <leopold.abignoli@gmail.com>
+Date:   Sun Nov 14 01:03:14 2021 +0100
+
+    Ajout de ChartCountLinesAdded. Modification de ChartCountCommitsPerAuthor.

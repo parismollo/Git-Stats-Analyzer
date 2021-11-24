@@ -26,10 +26,10 @@ public class CommitBetweenTwoDays {
     }
 
     // TODO: factor this out (similar code will have to be used for all git commands)
-    public static List<Commit> parseLogFromCommand(Path gitPath) {
+    public static List<Commit> parseLogFromCommand(Path gitPath, String dayAfter, String dayBefore) {
 
         ProcessBuilder builder =
-                new ProcessBuilder("git", "log","--after='",gitPath.toString().substring(16,dayLength(gitPath.toString()+16)), "--before='",gitPath.toString().substring(dayLength(gitPath.toString()+26), gitPath.toString().length())).directory(gitPath.toFile());
+                new ProcessBuilder("git", "log","--after='" + dayAfter,"--before='" + dayBefore).directory(gitPath.toFile());
         Process process;
         try {
             process = builder.start();
@@ -104,20 +104,6 @@ public class CommitBetweenTwoDays {
         throw new RuntimeException("Wrong commit format.");
     }   
 
-    public static int dayLength(String s){
-        int length = 0;
-        int accumulator = 0;
-        while(s.charAt(accumulator) != '=' || s.length() == accumulator){
-            accumulator++;
-        }
-        for(int j = accumulator;j<s.length()-1;j++){
-            if(s.charAt(j) == ' ' && s.charAt(j+1) == '-'){
-                return length;
-            }
-            length++;
-        }
-        return length;
-    }
 
     @Override
     public String toString() {
