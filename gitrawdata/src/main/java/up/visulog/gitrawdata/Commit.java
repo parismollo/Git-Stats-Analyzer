@@ -54,6 +54,12 @@ public class Commit {
         return parseLog(reader);
     }
     
+    public static List<Commit> parseLogFromCommand(Path gitPath, String day) {
+    	String d1 = day+" 00:00",
+    		   d2 = day+" 23:59";
+    	return parseLogFromCommand(gitPath, d1, d2);
+    }
+    
     public static List<Commit> parseLog(BufferedReader reader) {
         var result = new ArrayList<Commit>();
         Optional<Commit> commit = parseCommit(reader);

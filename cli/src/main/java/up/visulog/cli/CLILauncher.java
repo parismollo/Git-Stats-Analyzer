@@ -3,18 +3,13 @@ package up.visulog.cli;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import up.visulog.analyzer.Analyzer;
 import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
-import up.visulog.graphs.ChartCountCommitsPerWeekday;
-import up.visulog.graphs.ChartCountLinesAdded;
-import up.visulog.graphs.ChartCountLinesDeleted;
 import up.visulog.graphs.PrintChart;
 import up.visulog.gui.Gui;
 
@@ -73,15 +68,15 @@ public class CLILauncher {
                         case "--test":
                         	if(pValue.toUpperCase().equals("GRAPH")) {
                         		var conf = new Configuration(gitPath, new HashMap<String, PluginConfig>());
-                        		var chart = new ChartCountCommitsPerAuthor(conf);
-                        		List<String> list = new ArrayList<>();
+                        		var chart = new ChartCountCommitsPerAuthor(conf, "2021-09-1", "2021-10-1");
+                        		/*List<String> list = new ArrayList<>();
                         		list.add("jadecrtl");
                         		list.add("Victoria");
-                        		chart.refreshAuthors(list);
+                        		chart.refreshAuthors(list);*/
                                 (new PrintChart(chart, "bar")).afficheChart();
-                                (new PrintChart(new ChartCountLinesAdded(conf), "bar")).afficheChart();
+                                /*(new PrintChart(new ChartCountLinesAdded(conf), "bar")).afficheChart();
                                 (new PrintChart(new ChartCountLinesDeleted(conf), "bar")).afficheChart();
-                                (new PrintChart(new ChartCountCommitsPerWeekday(conf), "bar")).afficheChart();
+                                (new PrintChart(new ChartCountCommitsPerWeekday(conf), "bar")).afficheChart();*/
                         	}
                         	break;
                         case "--mode":

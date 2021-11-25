@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CountCommitsBetweenDays implements AnalyzerPlugin {
-    private final Configuration configuration;
-    private Result result;
-    private String startDate, endDate;
+    protected final Configuration configuration;
+    protected Result result;
+    protected String startDate, endDate;
     
     public CountCommitsBetweenDays(Configuration generalConfiguration, String startDate, String endDate) {
         this.configuration = generalConfiguration;
@@ -27,11 +27,14 @@ public class CountCommitsBetweenDays implements AnalyzerPlugin {
         return result;
     }
 
-
     @Override
     public void run() {
-    	// Here is the difference !
-        result = processLog(Commit.parseLogFromCommand(configuration.getGitPath(), startDate, endDate));
+    	if(startDate.equals(endDate)) {
+    		result = processLog(Commit.parseLogFromCommand(configuration.getGitPath(), startDate));
+    	}
+    	else {
+    		result = processLog(Commit.parseLogFromCommand(configuration.getGitPath(), startDate, endDate));
+    	}
     }
 
     @Override
@@ -39,11 +42,11 @@ public class CountCommitsBetweenDays implements AnalyzerPlugin {
         if (result == null) run();
         return result;
     }
-
+    
     public class Result implements AnalyzerPlugin.Result {
         private final Map<String, Integer> commitBetweenDays = new HashMap<>();
 
-        public Map<String, Integer> getCommitsPerDate() {
+        public Map<String, Integer> getCommitsPerDays() {
             return commitBetweenDays;
         }
 

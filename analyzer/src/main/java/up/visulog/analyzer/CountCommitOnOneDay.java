@@ -8,60 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CountCommitOnOneDay implements AnalyzerPlugin {
-    private final Configuration configuration;
-    private Result result;
-    private String day;
-
-    public CountCommitOnOneDay(Configuration generalConfiguration, String day) {
-        this.configuration = generalConfiguration;
-        this.day = day;
-    }
-
-    static Result processLog(List<Commit> gitLog) {
-        var result = new Result();
-        for (var commit : gitLog) {
-            String day = commit.date.substring(0,10) + commit.date.substring(20,24);//Pour avoir le jour le mois et l'année
-            var nb = result.commitOnOneDay.getOrDefault(day, 0);
-            result.commitOnOneDay.put(day, nb + 1);
-        }
-        return result;
-    }
-
+public class CountCommitOnOneDay extends CountCommitsBetweenDays {
+	
+	public CountCommitOnOneDay(Configuration generalConfiguration, String date) {
+		super(generalConfiguration, date, date);
+	}
 
     @Override
     public void run() {
-        result = processLog(CommitOnOneDay.parseLogFromCommand(configuration.getGitPath(), day, day));
+        result = processLog(Commit.parseLogFromCommand(configuration.getGitPath(), startDate));
     }
-
-    @Override
-    public Result getResult() {
-        if (result == null) run();
-        return result;
-    }
-
-    static class Result implements AnalyzerPlugin.Result {
-        private final Map<String, Integer> commitOnOneDay = new HashMap<>();
-
-        Map<String, Integer> getCommitsPerDate() {
-            return commitOnOneDay;
-        }
-
-        @Override
-        public String getResultAsString() {
-            return commitOnOneDay.toString();
-        }
-
-        @Override
-        public String getResultAsHtmlDiv() {
-            StringBuilder html = new StringBuilder("<div>Commits on one day: <ul>");
-            for (var item : commitOnOneDay.entrySet()) {
-                html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
-            }
-            html.append("</ul></div>");
-            return html.toString();
-        }
-    }
-
-
+	
 }

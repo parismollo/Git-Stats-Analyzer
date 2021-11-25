@@ -10,6 +10,7 @@ import java.util.Scanner;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import up.visulog.analyzer.CountCommitsBetweenDays;
 import up.visulog.analyzer.CountCommitsPerAuthorPlugin;
 import up.visulog.config.Configuration;
 
@@ -23,6 +24,18 @@ public class ChartCountCommitsPerAuthor extends ChartAnalysis {
         this.data = plugin.getResult().getCommitsPerAuthor(); // Toujours different de null.
         this.modifiedData = copy(data);
         keepOnlyFirstName(); // On garde que le premier nom de chaque auteur.
+    }
+    
+    public ChartCountCommitsPerAuthor(Configuration config, String startDate, String endDate) {
+    	super("Auteurs", "Commits");
+    	var plugin = new CountCommitsBetweenDays(config, startDate, endDate);
+        this.data = plugin.getResult().getCommitsPerDays(); // Toujours different de null
+        this.modifiedData = copy(data);
+        keepOnlyFirstName(); // On garde que le premier nom de chaque auteur.
+    }
+    
+    public ChartCountCommitsPerAuthor(Configuration config, String date) {
+    	this(config, date, date);
     }
     
     public ChartCountCommitsPerAuthor(Map<String, Integer> data) {
@@ -73,7 +86,7 @@ public class ChartCountCommitsPerAuthor extends ChartAnalysis {
     			tempData.put(author, dataCopy.get(author));
     		}
     	}
-    	if(tempData.size() != 0) // Si aucun des auteurs cités n'existent, alors on laisse la liste comme elle est.
+    	if(tempData.size() != 0) // Si aucun des auteurs cites n'existent alors on laisse la liste comme elle est.
     		modifiedData = tempData;
     }
     
