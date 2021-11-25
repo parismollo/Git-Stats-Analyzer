@@ -46,5 +46,6 @@ public class Uploader {
 		var gitlog = Commit.parseLogFromCommand(file.toPath());
 		var fileName = file.getName();
 		window.openResultsScreen(gitlog, fileName);
+		window.backToResultsScreen();
 	}
 }

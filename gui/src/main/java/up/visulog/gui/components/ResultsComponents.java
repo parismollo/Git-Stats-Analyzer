@@ -1,21 +1,24 @@
 package up.visulog.gui.components;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
@@ -37,7 +40,6 @@ public class ResultsComponents {
         change the arrangement in the Set function.
         */
     	window.setTitle(screenTitle);
-    	
         GridBagConstraints gbc = new GridBagConstraints();  
         GridBagLayout layout = new GridBagLayout();  
         panel.setLayout(layout);
@@ -53,7 +55,7 @@ public class ResultsComponents {
         });
         
         JLabel project_title = createProjectTitle(getProjectTitle(fileName));
-        JLabel project_description = createProjectDescriptions(getProjectDescription());
+        JTextArea project_description = createProjectDescriptions(getProjectDescription());
         JTextArea project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
 
@@ -63,7 +65,7 @@ public class ResultsComponents {
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
-        panel.setBackground(new Color(88,205,113)); 
+        panel.setBackground(new Color(88,205,113));
     }
     
     private static String getProjectMembers(HashSet<String> authors) {
@@ -72,8 +74,8 @@ public class ResultsComponents {
             s+=" "+author;
         }
         
-        if(s.length() > 150)
-        	s = s.substring(0, 150)+"...";
+        /*if(s.length() > 150)
+        	s = s.substring(0, 150)+"...";*/
         
         return s;
     }
@@ -89,7 +91,7 @@ public class ResultsComponents {
         return filename;
     }
     
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JLabel projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
         /* GridLayout
 
         0 0 1  (Return Button)
@@ -99,6 +101,51 @@ public class ResultsComponents {
         1 0 0  (Download Button)
 
         */
+    	panel.setLayout(new BorderLayout());
+    	
+    	JPanel pan = new JPanel();
+    	pan.setOpaque(false);
+    	pan.setLayout(new BorderLayout());
+    	pan.add(projectTitle, BorderLayout.WEST);
+        pan.add(returnButton, BorderLayout.EAST);
+        
+        panel.add(pan, BorderLayout.NORTH);
+        
+        pan = new JPanel();
+        pan.setOpaque(false);
+        pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+        JScrollPane scrollPane = new JScrollPane(projectDescription);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
+    	pan.add(scrollPane);
+        scrollPane = new JScrollPane(projectMembers);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
+    	pan.add(scrollPane);
+    	
+    	panel.add(pan, BorderLayout.CENTER);
+    	
+        pan = new JPanel();
+        pan.setOpaque(false);
+        pan.add(statsButton);
+        pan.add(graphsButton);
+        pan.add(downloadButton);
+        
+        panel.add(pan, BorderLayout.SOUTH);
+        
+        panel.revalidate();
+        panel.repaint();
+        
+        /*
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0.2;
+        // gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(pan, gbc);
+    	
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 0.5;
         gbc.gridx = 0;
@@ -126,7 +173,7 @@ public class ResultsComponents {
         // gbc.anchor = GridBagConstraints.CENTER;
         panel.add(pan, gbc);
         
-        /*
+  //      /*
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -140,9 +187,9 @@ public class ResultsComponents {
         gbc.weightx = 0.2;
         // gbc.anchor = GridBagConstraints.CENTER;
         panel.add(graphsButton, gbc);
-        */
+  //      */
 
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        /*gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_START;
         gbc.weightx = 0;
         gbc.gridx = 2;
@@ -163,7 +210,7 @@ public class ResultsComponents {
         gbc.gridwidth = 3;
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panel.add(projectDescription, gbc);
+        panel.add(projectDescription, gbc);*/
     }
 
     public static JButton createMenuButton(String icon_path, String icon_path_white, String label) throws FontFormatException, IOException {
@@ -197,7 +244,6 @@ public class ResultsComponents {
         icon = new ImageIcon(newimg);  // transform it back
         // String upload_message = "Upload your jurrassic project!";
         JButton button = new JButton(icon);
-        button.setBounds(130, 100, 100, 50);
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
@@ -228,7 +274,7 @@ public class ResultsComponents {
 
     public static JLabel createProjectTitle(String label) throws FontFormatException, IOException {
         JLabel label_button = new JLabel(label);  
-        label_button.setBounds(50,50, 100,30);
+        //label_button.setBounds(50,50, 100,30);
         // 38	97	156
         // 35	46	58
         // 242	24	24
@@ -259,24 +305,29 @@ public class ResultsComponents {
         return members_label;
     }
     
-    private static JLabel createProjectDescriptions(String label) throws FontFormatException, IOException {
-        JLabel label_description = new JLabel();  
-        label_description.setBounds(50,50, 100,30);
+    private static JTextArea createProjectDescriptions(String label) throws FontFormatException, IOException {
+        JTextArea label_description = new JTextArea();
+        label_description.setEditable(false);
+        label_description.setOpaque(false);
+        label_description.setLineWrap(true); // Pour un retour à ligne automatique
+        label_description.setWrapStyleWord(true); // Pour que les mots ne soient pas coupés
+        //label_description.setBounds(50,50, 100,30);
         label_description.setForeground(Color.white);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
         Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(15f);
         ge.registerFont(customFont);
         label_description.setFont(customFont);
+        label_description.setText(label);
+        //label_description.setText("<html><p align=\"justify\" style=\"width: 400px\">"+label+"</p></html>");
         label_description.revalidate();
-        label_description.setText("<html><p align=\"justify\" style=\"width: 400px\">"+label+"</p></html>");
         return label_description;
     }
     
     private static JButton createIconButton(String icon_path) {
         Icon icon = createIcon(icon_path);
         JButton button = new JButton(icon);
-        button.setBounds(130, 100, 100, 50);
+        //button.setBounds(130, 100, 100, 50);
         button.setOpaque(false);
         button.setContentAreaFilled(false);
         button.setBorderPainted(false);
@@ -317,5 +368,6 @@ public class ResultsComponents {
                 e1.printStackTrace();
             }
         });
-}
+    }
+    
 }

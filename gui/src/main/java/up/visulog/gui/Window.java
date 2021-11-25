@@ -1,12 +1,15 @@
 package up.visulog.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.border.EmptyBorder;
 
 import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.components.ResultsComponents;
@@ -43,6 +46,10 @@ public class Window extends JFrame {
 		
 		//setDefaultLookAndFeelDecorated(true);
 		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); // Met la fenetre en plein ecran.
+		
+		int padding = 15;
+		((JComponent) getContentPane()).setBorder(new EmptyBorder(padding, padding, padding, padding));
+		getContentPane().setBackground(new Color(88,205,113));
 		
 		openHomeScreen();
 		
