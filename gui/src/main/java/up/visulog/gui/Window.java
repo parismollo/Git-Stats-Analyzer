@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import up.visulog.gitrawdata.Commit;
+import up.visulog.gui.components.ResultsComponents;
 import up.visulog.gui.screens.GraphScreen;
 import up.visulog.gui.screens.HomeScreen;
 import up.visulog.gui.screens.ResultsScreen;
@@ -18,6 +19,7 @@ public class Window extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private ResultsScreen resultsScreen;
 	private String projectName;
 	
 	public Window(String projectName, int w, int h) throws FontFormatException, IOException {
@@ -26,7 +28,7 @@ public class Window extends JFrame {
 		this.setMinimumSize(new Dimension(w, h)); // On change la taille minimum de la fenetre.
 		this.setResizable(true); // true -> la page est redimensionnable.
 		this.setLocationRelativeTo(null); // null -> permet de centrer la fenetre au milieu de l'ecran.
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On indique qu'il faut que le programme s'arr�te lorsqu'on ferme la fenetre.
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // On indique qu'il faut que le programme s'arrete lorsqu'on ferme la fenetre.
 		/* Exemple pour arrondir les coins. Mais tous les boutons disparaissent
 		 * et la page n'est plus redimensionable. On ne peut plus la bouger non plus.
 		this.setUndecorated(true);
@@ -47,6 +49,10 @@ public class Window extends JFrame {
 		this.setVisible(true); // On affiche la fenetre.
 	}
 
+	public void backToHomeScreen() throws FontFormatException, IOException {
+		openHomeScreen();
+	}
+	
 	public void openHomeScreen() throws FontFormatException, IOException {
 		this.getContentPane().removeAll(); // On vide le panel principal.
 		getContentPane().add(new HomeScreen(this));
@@ -54,9 +60,18 @@ public class Window extends JFrame {
 		repaint();
 	}
 	
+	public void backToResultsScreen() throws FontFormatException, IOException {
+		openResultsScreen(null, null);
+	}
+	
 	public void openResultsScreen(List<Commit> gitlog, String fileName) throws FontFormatException, IOException {
+		if(gitlog != null && fileName != null)
+			resultsScreen = new ResultsScreen(this, gitlog, fileName);
+		else if(resultsScreen == null)
+			return;
+		
 		this.getContentPane().removeAll(); // On vide le panel principal.
-		getContentPane().add(new ResultsScreen(this, gitlog, fileName));
+		getContentPane().add(resultsScreen);
 		revalidate();
 		repaint();
 	}

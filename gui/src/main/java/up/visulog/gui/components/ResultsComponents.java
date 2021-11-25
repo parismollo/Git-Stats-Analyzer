@@ -43,6 +43,15 @@ public class ResultsComponents {
         panel.setLayout(layout);
 
         JButton return_button = createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
+        
+        return_button.addActionListener((event) -> {
+        	try {
+				window.backToHomeScreen();
+			} catch (FontFormatException | IOException e) {
+				e.printStackTrace();
+			}
+        });
+        
         JLabel project_title = createProjectTitle(getProjectTitle(fileName));
         JLabel project_description = createProjectDescriptions(getProjectDescription());
         JTextArea project_members = createProjectMembers(getProjectMembers(authors));
@@ -62,6 +71,10 @@ public class ResultsComponents {
         for (String author : authors) {
             s+=" "+author;
         }
+        
+        if(s.length() > 150)
+        	s = s.substring(0, 150)+"...";
+        
         return s;
     }
     

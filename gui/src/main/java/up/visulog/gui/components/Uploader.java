@@ -18,7 +18,7 @@ public class Uploader {
 		jfc.setDialogTitle("Choose a directory to upload: ");
 		jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-		int returnValue = jfc.showSaveDialog(null);
+		int returnValue = jfc.showOpenDialog(window);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			if (jfc.getSelectedFile().isDirectory()) {
 				System.out.println("You selected the directory: " + jfc.getSelectedFile());
