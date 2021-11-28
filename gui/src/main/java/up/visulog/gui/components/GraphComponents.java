@@ -1,11 +1,12 @@
 package up.visulog.gui.components;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.GridLayout;
 import java.io.File;
 // import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 // import javax.swing.DefaultListModel;
 // import javax.swing.Icon;
@@ -60,7 +62,51 @@ public class GraphComponents {
         setResultsInScreen(panel, projectTitle, graphTypes, dataType, downloadButton, returnButton, runGraph, gbc);
     }
     private static void setResultsInScreen(JPanel panel, JLabel projectTitle, List<JRadioButton> graphTypes, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runGraph, GridBagConstraints gbc) {
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+    	
+    	panel.setLayout(new BorderLayout());
+    	
+    	JPanel pan = new JPanel();
+    	pan.setOpaque(false);
+    	pan.setLayout(new BorderLayout());
+    	pan.add(projectTitle, BorderLayout.WEST);
+        pan.add(returnButton, BorderLayout.EAST);
+        
+        panel.add(pan, BorderLayout.NORTH);
+        
+        pan = new JPanel();
+        pan.setOpaque(false);
+        pan.setLayout(new BorderLayout());
+        
+        JPanel childPan = new JPanel();
+        childPan.setOpaque(false);
+        
+        for (JRadioButton radio: dataType)
+            childPan.add(radio);
+
+        pan.add(childPan, BorderLayout.NORTH);
+        
+        childPan = new JPanel();
+        childPan.setOpaque(false);
+        
+        for (JRadioButton radio: graphTypes)
+            childPan.add(radio);
+        
+        pan.add(childPan, BorderLayout.CENTER);
+        
+        panel.add(pan, BorderLayout.CENTER);
+        
+        pan = new JPanel();
+        pan.setLayout(new BorderLayout());
+        pan.setOpaque(false);
+        
+        pan.add(runGraph, BorderLayout.CENTER);
+        pan.add(downloadButton, BorderLayout.LINE_END);
+        
+        panel.add(pan, BorderLayout.SOUTH);
+        
+        /*
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0;
         gbc.gridx = 5; //TODO dynamicaly
@@ -112,6 +158,7 @@ public class GraphComponents {
         gbc.gridx = 5; //TODO dynamicaly
         gbc.gridy = 8;
         panel.add(downloadButton, gbc);
+        */
     }
 
     // public static JList<String> createListElement() throws FontFormatException, IOException {

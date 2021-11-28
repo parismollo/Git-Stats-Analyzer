@@ -1,11 +1,11 @@
 package up.visulog.gui.components;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.io.File;
 // import java.io.File;
 import java.io.IOException;
@@ -63,7 +63,36 @@ public class StatComponents {
     }
     
     private static void setResultsInScreen(JPanel panel, JLabel projectTitle, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runStat, GridBagConstraints gbc) {
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+    	panel.setLayout(new BorderLayout());
+    	
+    	JPanel pan = new JPanel();
+    	pan.setOpaque(false);
+    	pan.setLayout(new BorderLayout());
+    	pan.add(projectTitle, BorderLayout.WEST);
+        pan.add(returnButton, BorderLayout.EAST);
+        
+        panel.add(pan, BorderLayout.NORTH);
+        
+        pan = new JPanel();
+        pan.setOpaque(false);
+        
+        for (JRadioButton radio: dataType)
+            pan.add(radio);
+        
+        panel.add(pan, BorderLayout.CENTER);
+        
+        pan = new JPanel();
+        pan.setLayout(new BorderLayout());
+        pan.setOpaque(false);
+        
+        pan.add(runStat, BorderLayout.CENTER);
+        pan.add(downloadButton, BorderLayout.LINE_END);
+    	
+        panel.add(pan, BorderLayout.SOUTH);
+        
+        /*
+    	gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weightx = 0;
         gbc.gridx = 5; //TODO dynamicaly
@@ -114,7 +143,7 @@ public class StatComponents {
         gbc.weightx = 0;
         gbc.gridx = 5; //TODO dynamicaly
         gbc.gridy = 8;
-        panel.add(downloadButton, gbc);
+        panel.add(downloadButton, gbc);*/
     }
 
     // public static JList<String> createListElement() throws FontFormatException, IOException {

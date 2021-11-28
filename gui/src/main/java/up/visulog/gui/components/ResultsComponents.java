@@ -113,17 +113,17 @@ public class ResultsComponents {
         
         pan = new JPanel();
         pan.setOpaque(false);
-        pan.setLayout(new BoxLayout(pan, BoxLayout.Y_AXIS));
+        pan.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(projectDescription);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
-    	pan.add(scrollPane);
+    	pan.add(scrollPane, BorderLayout.NORTH);
         scrollPane = new JScrollPane(projectMembers);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(null);
-    	pan.add(scrollPane);
+    	pan.add(scrollPane, BorderLayout.CENTER);
     	
     	panel.add(pan, BorderLayout.CENTER);
     	
