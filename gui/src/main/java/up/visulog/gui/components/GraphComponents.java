@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 // import javax.swing.DefaultListModel;
 // import javax.swing.Icon;
@@ -22,10 +23,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 // import javax.swing.JList;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 
 import org.jfree.chart.ChartPanel;
 
 import up.visulog.config.Configuration;
+import up.visulog.graphs.AuthorsSelector;
 import up.visulog.graphs.ChartAnalysis;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.gui.Window;
@@ -68,6 +71,19 @@ public class GraphComponents {
         datesPanel.add(new JLabel(" ---> "));
         datesPanel.add(d2);
         
+        AuthorsSelector authorsSelector = new AuthorsSelector(config);
+        JPanel authorsPan = new JPanel();
+        authorsPan.setLayout(new BoxLayout(authorsPan, BoxLayout.LINE_AXIS));
+        authorsPan.setOpaque(false);
+        authorsPan.add(new JLabel("Authors : "));
+        JScrollPane scrollPane = new JScrollPane(authorsSelector,
+        		JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+        		JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
+        authorsPan.add(scrollPane);
+        
         //List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         JComboBox<String> graphTypesCB = new JComboBox<String>(getGraphTypes());
         JPanel chartPanel = new JPanel();
@@ -76,11 +92,11 @@ public class GraphComponents {
         JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
         
         setRunGraphActionListener(config, dataType, graphTypesCB, runGraph, chartPanel, d1, d2);
-        setResultsInScreen(panel, projectTitle, datesPanel, graphTypesCB, dataType, chartPanel,
+        setResultsInScreen(panel, projectTitle, authorsPan, datesPanel, graphTypesCB, dataType, chartPanel,
         				   downloadButton, returnButton, runGraph);
     }
     
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JPanel datesPanel,
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JPanel authorsPan, JPanel datesPanel,
     		JComboBox<String> graphTypesCB, List<JRadioButton> dataType, JPanel chartPanel, JButton downloadButton,
     		JButton returnButton, JButton runGraph) {
         
@@ -111,6 +127,7 @@ public class GraphComponents {
 
         childPan.add(childPan2, BorderLayout.NORTH);
         childPan.add(datesPanel, BorderLayout.CENTER);
+        childPan.add(authorsPan, BorderLayout.SOUTH);
         
         pan.add(childPan, BorderLayout.NORTH);
         

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +37,6 @@ public class ResultsComponents {
         change the arrangement in the Set function.
         */
     	window.setTitle(screenTitle);
-        GridBagConstraints gbc = new GridBagConstraints();  
-        GridBagLayout layout = new GridBagLayout();  
-        panel.setLayout(layout);
 
         JButton return_button = createMenuButton("src/main/resources/return.png", "src/main/resources/return-white.png", "Go back");
         
@@ -63,7 +58,7 @@ public class ResultsComponents {
         setGraphAction(window, graphs_button);
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
-        setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
+        setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button);
         panel.setBackground(new Color(88,205,113));
     }
     
@@ -86,11 +81,10 @@ public class ResultsComponents {
     }
     
     public static String getProjectTitle(Configuration config) {
-        // TODO: temporary, the ideia to to receive a config file and return the name only.
         return config.getGitPath().getFileName().toString();
     }
     
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton) {
         /* GridLayout
 
         0 0 1  (Return Button)
