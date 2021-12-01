@@ -58,6 +58,16 @@ public class GraphComponents {
         ButtonGroup dataTypesGroup = new ButtonGroup();
         List<JRadioButton> dataType = createRadioButton(dataTypesGroup, getDataTypes());
         
+        DatePicker d1 = new DatePicker(),
+        		   d2 = new DatePicker();
+        
+        JPanel datesPanel = new JPanel();
+        datesPanel.setOpaque(false);
+        datesPanel.add(new JLabel("Dates : "));
+        datesPanel.add(d1);
+        datesPanel.add(new JLabel(" ---> "));
+        datesPanel.add(d2);
+        
         //List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         JComboBox<String> graphTypesCB = new JComboBox<String>(getGraphTypes());
         JPanel chartPanel = new JPanel();
@@ -65,11 +75,14 @@ public class GraphComponents {
         
         JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
         
-        setRunGraphActionListener(config, dataType, graphTypesCB, runGraph, chartPanel);
-        setResultsInScreen(panel, projectTitle, graphTypesCB, dataType, chartPanel, downloadButton, returnButton, runGraph);
+        setRunGraphActionListener(config, dataType, graphTypesCB, runGraph, chartPanel, d1, d2);
+        setResultsInScreen(panel, projectTitle, datesPanel, graphTypesCB, dataType, chartPanel,
+        				   downloadButton, returnButton, runGraph);
     }
     
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JComboBox<String> graphTypesCB, List<JRadioButton> dataType, JPanel chartPanel, JButton downloadButton, JButton returnButton, JButton runGraph) {
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JPanel datesPanel,
+    		JComboBox<String> graphTypesCB, List<JRadioButton> dataType, JPanel chartPanel, JButton downloadButton,
+    		JButton returnButton, JButton runGraph) {
         
     	
     	panel.setLayout(new BorderLayout());
@@ -87,11 +100,18 @@ public class GraphComponents {
         pan.setLayout(new BorderLayout());
         
         JPanel childPan = new JPanel();
+        childPan.setLayout(new BorderLayout());
         childPan.setOpaque(false);
         
+        JPanel childPan2 = new JPanel();
+        childPan2.setOpaque(false);
+        
         for (JRadioButton radio: dataType)
-            childPan.add(radio);
+            childPan2.add(radio);
 
+        childPan.add(childPan2, BorderLayout.NORTH);
+        childPan.add(datesPanel, BorderLayout.CENTER);
+        
         pan.add(childPan, BorderLayout.NORTH);
         
         childPan = new JPanel();
@@ -224,7 +244,8 @@ public class GraphComponents {
         return tab;
     }
     
-    private static void setRunGraphActionListener(Configuration config, List<JRadioButton> buttons, JComboBox<String> cb, JButton runGraph, JPanel chartPanel) {
+    private static void setRunGraphActionListener(Configuration config, List<JRadioButton> buttons,
+    		JComboBox<String> cb, JButton runGraph, JPanel chartPanel, DatePicker d1, DatePicker d2) {
     	
     	runGraph.addActionListener((event) -> {
     		try {
@@ -233,7 +254,7 @@ public class GraphComponents {
     				return;
     			String dataType = selectedBut.getText();
     			String graphType = (String)cb.getSelectedItem();
-    			refreshChartPanel(config, chartPanel, dataType, graphType);
+    			refreshChartPanel(config, chartPanel, dataType, graphType, d1, d2);
     		} catch(Exception e) {};
     		
     	});
@@ -248,7 +269,9 @@ public class GraphComponents {
     	return null;
     }
     
-    private static void refreshChartPanel(Configuration config, JPanel chartPanel, String dataType, String graphType) {
+    private static void refreshChartPanel(Configuration config, JPanel chartPanel,
+    		String dataType, String graphType, DatePicker d1, DatePicker d2) {
+    	
     	dataType = dataType.toLowerCase();
     	graphType = graphType.toLowerCase();
     	
@@ -256,7 +279,7 @@ public class GraphComponents {
     	ChartPanel chartContainer = null;
     	switch(dataType) {
     	case "commits":
-    		var chart = new ChartCountCommitsPerAuthor(config);
+    		var chart = new ChartCountCommitsPerAuthor(config, d1.getDate(), d2.getDate());
     		chartContainer = chart.createPanel(graphType);
     		break;
     	}
@@ -267,6 +290,8 @@ public class GraphComponents {
     	chartPanel.revalidate();
     	chartPanel.repaint();
     }
+    
+    
     
     // private static void getAndAddElements(DefaultListModel<String> l1) {
     //     l1.addElement("Item1");  

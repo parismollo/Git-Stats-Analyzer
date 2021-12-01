@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
 import up.visulog.config.Configuration;
-import up.visulog.config.PluginConfig;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.screens.GraphScreen;
 import up.visulog.gui.screens.HomeScreen;
