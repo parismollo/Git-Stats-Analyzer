@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
 // import java.io.File;
@@ -14,17 +12,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 // import javax.swing.DefaultListModel;
 // import javax.swing.Icon;
 // import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 // import javax.swing.JList;
 import javax.swing.JRadioButton;
 
+import org.jfree.chart.ChartPanel;
+
+import up.visulog.config.Configuration;
+import up.visulog.graphs.ChartAnalysis;
+import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.gui.Window;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
@@ -32,14 +35,9 @@ import up.visulog.gui.Window;
 // import javax.swing.event.ChangeListener;
 public class GraphComponents {
 
-    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, String filename) throws FontFormatException, IOException {
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, Configuration config) throws FontFormatException, IOException {
     	window.setTitle(screenTitle);
     	
-        GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
-        GridBagConstraints gbc = new GridBagConstraints();  
-        panel.setLayout(GridBagLayoutgrid);  
-        GridBagLayout layout = new GridBagLayout();  
-        panel.setLayout(layout);
         panel.setBackground(new Color(88,205,113));
 
         // Create elements/buttons
@@ -54,14 +52,24 @@ public class GraphComponents {
 			}
         });
         
-        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(filename));
+        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(config));
         JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
-        List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
-        List<JRadioButton> dataType = createRadioButton(getDataTypes());
+        
+        ButtonGroup dataTypesGroup = new ButtonGroup();
+        List<JRadioButton> dataType = createRadioButton(dataTypesGroup, getDataTypes());
+        
+        //List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
+        JComboBox<String> graphTypesCB = new JComboBox<String>(getGraphTypes());
+        JPanel chartPanel = new JPanel();
+        chartPanel.setOpaque(false);
+        
         JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
-        setResultsInScreen(panel, projectTitle, graphTypes, dataType, downloadButton, returnButton, runGraph, gbc);
+        
+        setRunGraphActionListener(config, dataType, graphTypesCB, runGraph, chartPanel);
+        setResultsInScreen(panel, projectTitle, graphTypesCB, dataType, chartPanel, downloadButton, returnButton, runGraph);
     }
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, List<JRadioButton> graphTypes, List<JRadioButton> dataType, JButton downloadButton, JButton returnButton, JButton runGraph, GridBagConstraints gbc) {
+    
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JComboBox<String> graphTypesCB, List<JRadioButton> dataType, JPanel chartPanel, JButton downloadButton, JButton returnButton, JButton runGraph) {
         
     	
     	panel.setLayout(new BorderLayout());
@@ -87,10 +95,13 @@ public class GraphComponents {
         pan.add(childPan, BorderLayout.NORTH);
         
         childPan = new JPanel();
+        childPan.setLayout(new BorderLayout());
         childPan.setOpaque(false);
         
-        for (JRadioButton radio: graphTypes)
-            childPan.add(radio);
+        childPan.add(graphTypesCB, BorderLayout.NORTH);
+        childPan.add(chartPanel, BorderLayout.CENTER);
+        /*for (JRadioButton radio: graphTypes)
+            childPan.add(radio);*/
         
         pan.add(childPan, BorderLayout.CENTER);
         
@@ -176,9 +187,9 @@ public class GraphComponents {
     //     list.setOpaque(false);
     //     return list;
     // }
-    public static List<JRadioButton> createRadioButton(String[] dataTypes) throws FontFormatException, IOException {
+    
+    public static List<JRadioButton> createRadioButton(ButtonGroup bg, String[] dataTypes) throws FontFormatException, IOException {
         // String[] dataTypes = getDataTypes();
-        ButtonGroup bg=new ButtonGroup();    
         List<JRadioButton> JRadiobuttons = new ArrayList<JRadioButton>();
         
         for(String type: dataTypes) {
@@ -199,6 +210,7 @@ public class GraphComponents {
         return JRadiobuttons;
 
     }
+    
     private static String[] getDataTypes() {
         // TODO (code below is temporary)
         String[] s = {"Modifications", "Merges", "Commits"};
@@ -206,10 +218,56 @@ public class GraphComponents {
     }
 
     private static String[] getGraphTypes() {
-        // TODO (code below is temporary)
-        String[] s = {"Pie", "Histogram", "Distribution"};
-        return s;
+        String[] tab = ChartAnalysis.getGraphTypes();
+        for(int i=0;i<tab.length;i++)
+        	tab[i] = Character.toUpperCase(tab[i].charAt(0))+tab[i].substring(1);
+        return tab;
     }
+    
+    private static void setRunGraphActionListener(Configuration config, List<JRadioButton> buttons, JComboBox<String> cb, JButton runGraph, JPanel chartPanel) {
+    	
+    	runGraph.addActionListener((event) -> {
+    		try {
+    			JRadioButton selectedBut = getSelectedButton(buttons);
+    			if(selectedBut == null)
+    				return;
+    			String dataType = selectedBut.getText();
+    			String graphType = (String)cb.getSelectedItem();
+    			refreshChartPanel(config, chartPanel, dataType, graphType);
+    		} catch(Exception e) {};
+    		
+    	});
+    	
+    }
+    
+    private static JRadioButton getSelectedButton(List<JRadioButton> buttons) {
+    	for(JRadioButton b : buttons) {
+    		if(b.isSelected())
+    			return b;
+    	}
+    	return null;
+    }
+    
+    private static void refreshChartPanel(Configuration config, JPanel chartPanel, String dataType, String graphType) {
+    	dataType = dataType.toLowerCase();
+    	graphType = graphType.toLowerCase();
+    	
+    	chartPanel.removeAll();
+    	ChartPanel chartContainer = null;
+    	switch(dataType) {
+    	case "commits":
+    		var chart = new ChartCountCommitsPerAuthor(config);
+    		chartContainer = chart.createPanel(graphType);
+    		break;
+    	}
+    	if(chartContainer == null)
+    		return;
+    	chartPanel.setLayout(new GridLayout());
+    	chartPanel.add(chartContainer);
+    	chartPanel.revalidate();
+    	chartPanel.repaint();
+    }
+    
     // private static void getAndAddElements(DefaultListModel<String> l1) {
     //     l1.addElement("Item1");  
     //     l1.addElement("Item2");  

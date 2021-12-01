@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.Window;
 import up.visulog.gui.components.ResultsComponents;
@@ -17,9 +18,9 @@ public class ResultsScreen extends JPanel {
 	
 	private Window window;
 	
-    public ResultsScreen(Window window, List<Commit> gitlog, String fileName) throws FontFormatException, IOException {
+    public ResultsScreen(Window window, List<Commit> gitlog, Configuration config) throws FontFormatException, IOException {
     	this.window = window;
         HashSet<String> authors = ResultsValidators.getAuthors(gitlog);
-        ResultsComponents.setGridBagLayout(window, this, window.getProjectName()+" - Results", authors, fileName);
+        ResultsComponents.setGridBagLayout(window, this, window.getProjectName()+" - Results", authors, config);
     }
 }

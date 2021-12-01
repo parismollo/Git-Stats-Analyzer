@@ -4,15 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Path;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.border.EmptyBorder;
 
+import up.visulog.config.Configuration;
+import up.visulog.config.PluginConfig;
 import up.visulog.gitrawdata.Commit;
-import up.visulog.gui.components.ResultsComponents;
 import up.visulog.gui.screens.GraphScreen;
 import up.visulog.gui.screens.HomeScreen;
 import up.visulog.gui.screens.ResultsScreen;
@@ -23,6 +24,7 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private ResultsScreen resultsScreen;
+	private Configuration config;
 	private String projectName;
 	
 	public Window(String projectName, int w, int h) throws FontFormatException, IOException {
@@ -68,14 +70,14 @@ public class Window extends JFrame {
 	}
 	
 	public void backToResultsScreen() throws FontFormatException, IOException {
-		openResultsScreen(null, null);
+		openResultsScreen();
 	}
 	
-	public void openResultsScreen(List<Commit> gitlog, String fileName) throws FontFormatException, IOException {
-		if(gitlog != null && fileName != null)
-			resultsScreen = new ResultsScreen(this, gitlog, fileName);
-		else if(resultsScreen == null)
-			return;
+	public void openResultsScreen() throws FontFormatException, IOException {
+		if(resultsScreen == null) {
+			var gitlog = Commit.parseLogFromCommand(config.getGitPath());
+			resultsScreen = new ResultsScreen(this, gitlog, config);
+		}
 		
 		this.getContentPane().removeAll(); // On vide le panel principal.
 		getContentPane().add(resultsScreen);
@@ -83,22 +85,31 @@ public class Window extends JFrame {
 		repaint();
 	}
 	
-	public void openGraphScreen(String fileName) throws FontFormatException, IOException {
+	public void openGraphScreen() throws FontFormatException, IOException {
 		this.getContentPane().removeAll(); // On vide le panel principal.
-		getContentPane().add(new GraphScreen(this, fileName));
+		getContentPane().add(new GraphScreen(this, config));
 		revalidate();
 		repaint();
 	}
 	
-	public void openStatsScreen(String fileName) throws FontFormatException, IOException {
+	public void openStatsScreen() throws FontFormatException, IOException {
 		this.getContentPane().removeAll(); // On vide le panel principal.
-		getContentPane().add(new StatScreen(this, fileName));
+		getContentPane().add(new StatScreen(this, config));
 		revalidate();
 		repaint();
 	}
 	
 	public String getProjectName() {
 		return projectName;
+	}
+	
+	public void setConfiguration(Path fileName) {
+		setConfiguration(new Configuration(fileName));
+	}
+	
+	public void setConfiguration(Configuration configuration) {
+		this.config = configuration;
+		this.resultsScreen = null;
 	}
 	
 }

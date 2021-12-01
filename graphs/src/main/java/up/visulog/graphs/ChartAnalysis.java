@@ -56,6 +56,10 @@ public abstract class ChartAnalysis {
         return chart;
     }
     
+    public static String[] getGraphTypes() {
+    	return new String[] {"bar", "line", "pie"};
+    }
+    
     public JFreeChart createChart(String type) {
     	return createChart(createDataset(), type, "", titleX, titleY);
     }

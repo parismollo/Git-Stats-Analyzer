@@ -1,7 +1,6 @@
 package up.visulog.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -12,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,11 +24,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 // import src.main.java.components.HomeComponents;
 
+import up.visulog.config.Configuration;
 import up.visulog.gui.Window;
 
 public class ResultsComponents {
 	
-    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, HashSet<String> authors, String fileName) throws FontFormatException, IOException {
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, HashSet<String> authors, Configuration config) throws FontFormatException, IOException {
         /*
         1. Set home layout structure (GridBagLayout)
         2. Create componentes
@@ -54,14 +53,14 @@ public class ResultsComponents {
 			}
         });
         
-        JLabel project_title = createProjectTitle(getProjectTitle(fileName));
+        JLabel project_title = createProjectTitle(getProjectTitle(config));
         JTextArea project_description = createProjectDescriptions(getProjectDescription());
         JTextArea project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
 
-        setStatAction(window, stats_button, fileName);
+        setStatAction(window, stats_button);
         JButton graphs_button = createAnyButton("Generate Graphs", "src/main/resources/stats.png");
-        setGraphAction(window, graphs_button, fileName);
+        setGraphAction(window, graphs_button);
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button, gbc);
@@ -86,9 +85,9 @@ public class ResultsComponents {
         return s;
     }
     
-    public static String getProjectTitle(String filename) {
+    public static String getProjectTitle(Configuration config) {
         // TODO: temporary, the ideia to to receive a config file and return the name only.
-        return filename;
+        return config.getGitPath().getFileName().toString();
     }
     
     private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton, GridBagConstraints gbc) {
@@ -344,11 +343,11 @@ public class ResultsComponents {
         return icon;
     }
     
-    private static void setGraphAction(Window window, JButton button, String fileName){ 
+    private static void setGraphAction(Window window, JButton button){ 
         button.addActionListener(e -> {
             try {
                 // Uploader.uploadFile();
-                window.openGraphScreen(fileName);
+                window.openGraphScreen();
             } catch (FontFormatException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {
@@ -357,11 +356,11 @@ public class ResultsComponents {
         });
     }
     
-    private static void setStatAction(Window window, JButton button, String fileName){ 
+    private static void setStatAction(Window window, JButton button){ 
         button.addActionListener(e -> {
             try {
                 // Uploader.uploadFile();
-                window.openStatsScreen(fileName);
+                window.openStatsScreen();
             } catch (FontFormatException e1) {
                 e1.printStackTrace();
             } catch (IOException e1) {

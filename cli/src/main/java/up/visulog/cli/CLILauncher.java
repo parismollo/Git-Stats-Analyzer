@@ -81,7 +81,7 @@ public class CLILauncher {
                         	break;
                         case "--mode":
                             if (pValue.toUpperCase().equals("DEMO")) {
-                                Gui.runDemo();
+                                Gui.runGui();
                             }
                             break;
                         default:

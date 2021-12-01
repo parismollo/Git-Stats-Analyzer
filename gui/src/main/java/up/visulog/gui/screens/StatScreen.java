@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
+import up.visulog.config.Configuration;
 import up.visulog.gui.Window;
 import up.visulog.gui.components.StatComponents;
 public class StatScreen extends JPanel {
@@ -12,8 +13,8 @@ public class StatScreen extends JPanel {
 	
 	private Window window;
 	
-    public StatScreen(Window window, String filename) throws FontFormatException, IOException {
+    public StatScreen(Window window, Configuration config) throws FontFormatException, IOException {
     	this.window = window;
-        StatComponents.setGridBagLayout(window, this, window.getProjectName()+" - Stats Generator", filename);
+        StatComponents.setGridBagLayout(window, this, window.getProjectName()+" - Stats Generator", config);
     }
 }

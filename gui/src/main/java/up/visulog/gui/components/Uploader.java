@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.Window;
 import up.visulog.gui.validators.HomeValidators;
@@ -30,7 +31,8 @@ public class Uploader {
 			File file_path = jfc.getSelectedFile();
 			if (HomeValidators.isGitFolder(file_path)) {
 				System.out.println("Is git folder!");
-				runAnalysis(window, file_path);
+				window.setConfiguration(file_path.toPath());
+				runAnalysis(window);
 			} else {
 				displayError();
 				System.out.println("Is not a git folder!");
@@ -42,10 +44,8 @@ public class Uploader {
 		// TODO
 	}
 
-	private static void runAnalysis(Window window, File file) throws FontFormatException, IOException{
-		var gitlog = Commit.parseLogFromCommand(file.toPath());
-		var fileName = file.getName();
-		window.openResultsScreen(gitlog, fileName);
+	private static void runAnalysis(Window window) throws FontFormatException, IOException{
+		window.openResultsScreen();
 		window.backToResultsScreen();
 	}
 }

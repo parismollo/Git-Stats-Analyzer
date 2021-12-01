@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 // import javax.swing.JList;
 import javax.swing.JRadioButton;
 
+import up.visulog.config.Configuration;
 import up.visulog.gui.Window;
 import up.visulog.gui.screens.TableScreen;
 // import javax.swing.SwingConstants;
@@ -31,7 +32,7 @@ import up.visulog.gui.screens.TableScreen;
 // import javax.swing.event.ChangeListener;
 public class StatComponents {
 
-    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, String filename) throws FontFormatException, IOException {
+    public static void setGridBagLayout(Window window, JPanel panel, String screenTitle, Configuration config) throws FontFormatException, IOException {
     	window.setTitle(screenTitle);
 
         GridBagLayout GridBagLayoutgrid = new GridBagLayout();  
@@ -53,7 +54,7 @@ public class StatComponents {
 			}
         });
         
-        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(filename));
+        JLabel projectTitle = ResultsComponents.createProjectTitle(ResultsComponents.getProjectTitle(config));
         JButton downloadButton = ResultsComponents.createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         // List<JRadioButton> graphTypes = createRadioButton(getGraphTypes());
         List<JRadioButton> dataType = createRadioButton(getDataTypes());
