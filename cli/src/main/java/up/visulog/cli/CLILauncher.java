@@ -50,7 +50,12 @@ public class CLILauncher {
                             if (pValue.equals("countCommitsPerWeekday")) {
                                 plugins.put("countCommitsPerWeekday", new PluginConfig(){});
                                 System.out.println("#0 - countCommitsPerWeekday Test");
-                            } // Only for testing - Paris;
+                            }
+
+                            if (pValue.equals("countMergeCommits")) {
+                                plugins.put("countMergeCommits", new PluginConfig(){});
+                                System.out.println("#0 - countMergeCommits Test");
+                            } // To update (testing)
 
                             // Plugin pour compter les lignes ajout�es ou supprim�es dans les
                             // fichiers d'un projet git
