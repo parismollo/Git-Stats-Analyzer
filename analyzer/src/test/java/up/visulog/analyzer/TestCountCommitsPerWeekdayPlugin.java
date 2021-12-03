@@ -2,8 +2,6 @@ package up.visulog.analyzer;
 
 import org.junit.Test;
 
-import up.visulog.analyzer.CountCommitsPerWeekdayPlugin;
-import up.visulog.analyzer.CountCommitsPerWeekdayPlugin.Result;
 import up.visulog.gitrawdata.Commit;
 import up.visulog.gitrawdata.CommitBuilder;
 
