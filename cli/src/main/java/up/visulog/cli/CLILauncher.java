@@ -49,13 +49,18 @@ public class CLILauncher {
 
                             if (pValue.equals("countCommitsPerWeekday")) {
                                 plugins.put("countCommitsPerWeekday", new PluginConfig(){});
-                                System.out.println("#0 - countCommitsPerWeekday Test");
+                                System.out.println("Output of countCommitsPerWeekday: ");
                             }
 
-                            if (pValue.equals("countMergeCommits")) {
-                                plugins.put("countMergeCommits", new PluginConfig(){});
-                                System.out.println("#0 - countMergeCommits Test");
-                            } // To update (testing)
+                            if (pValue.equals("countMergesCommits")) {
+                                plugins.put("countMergesCommits", new PluginConfig(){});
+                                System.out.println("Output of countMergesCommits");
+                            } 
+
+                            if (pValue.equals("countMergesPerAuthor")) {
+                                plugins.put("countMergesPerAuthor", new PluginConfig(){});
+                                System.out.println("Output of countMergesPerAuthor");
+                            } 
 
                             // Plugin pour compter les lignes ajout�es ou supprim�es dans les
                             // fichiers d'un projet git

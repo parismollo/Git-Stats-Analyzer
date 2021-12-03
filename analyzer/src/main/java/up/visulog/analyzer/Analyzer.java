@@ -47,7 +47,8 @@ public class Analyzer {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
             case "countCommitsPerWeekday": return Optional.of(new CountCommitsPerWeekdayPlugin(config));
-            case "countMergeCommits": return Optional.of(new CountMergeCommitsPlugin(config));
+            case "countMergesCommits": return Optional.of(new CountMergeCommitsPlugin(config));
+            case "countMergesPerAuthor": return Optional.of(new CountMergePerAuthorPlugin(config));
             case "countLinesChanged": return Optional.of(new CountLinesChangedPlugin(config));
             case "countOnOneDay" : if(dayA.equals(dayB))
             return Optional.of(new CountCommitOnOneDay(config, dayA));
