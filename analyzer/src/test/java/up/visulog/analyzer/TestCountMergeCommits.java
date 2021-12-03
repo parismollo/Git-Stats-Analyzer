@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 public class TestCountMergeCommits {
-    /* Let's check whetherthe sum of the commits of each weekday is equal to the total number of commits */
     @Test
     public void checkBranchSum() {
         int expectedResult = 3;
