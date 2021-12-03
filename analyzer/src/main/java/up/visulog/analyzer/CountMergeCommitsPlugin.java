@@ -17,11 +17,16 @@ public class CountMergeCommitsPlugin implements AnalyzerPlugin {
 
     static Result processLog(List<Commit> gitLog) {
         var result = new Result();
+        int mergeComitCounter = 0;
         for (var commit : gitLog) {
-            String mergedFrom = commit.mergedFrom;
-            var nb = result.mergeCommits.getOrDefault(mergedFrom, 0);
-            result.mergeCommits.put(mergedFrom, nb + 1);
+            // String mergedFrom = commit.mergedFrom;
+            // var nb = result.mergeCommits.getOrDefault(mergedFrom, 0);
+            // result.mergeCommits.put(mergedFrom, nb + 1);
+            if (commit.mergedFrom != null) {
+                mergeComitCounter++; // If the information exists, is because there was a merge.
+            }
         }
+        result.totalMergeComits = mergeComitCounter;
         return result;
     }
 
@@ -37,24 +42,22 @@ public class CountMergeCommitsPlugin implements AnalyzerPlugin {
     }
 
     public static class Result implements AnalyzerPlugin.Result {
-        private final Map<String, Integer> mergeCommits = new HashMap<>();
+        // private final Map<String, Integer> mergeCommits = new HashMap<>();
+        private int totalMergeComits = 0;
 
-        public Map<String, Integer> getCommitsPerDate() {
-            return mergeCommits;
+        public int getTotalMergeCommits() {
+            return totalMergeComits;
         }
 
         @Override
         public String getResultAsString() {
-            return mergeCommits.toString();
+            return String.valueOf(totalMergeComits);
         }
 
         @Override
         public String getResultAsHtmlDiv() {
-            StringBuilder html = new StringBuilder("<div>Commits per weekday: <ul>");
-            for (var item : mergeCommits.entrySet()) {
-                html.append("<li>").append(item.getKey()).append(": ").append(item.getValue()).append("</li>");
-            }
-            html.append("</ul></div>");
+            StringBuilder html = new StringBuilder("Number of merge commits:");
+            html.append(this.totalMergeComits);
             return html.toString();
         }
     }
