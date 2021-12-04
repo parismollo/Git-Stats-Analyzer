@@ -86,8 +86,8 @@ public class ChartCountCommitsPerAuthor extends ChartAnalysis {
     			tempData.put(author, dataCopy.get(author));
     		}
     	}
-    	if(tempData.size() != 0) // Si aucun des auteurs cites n'existent alors on laisse la liste comme elle est.
-    		modifiedData = tempData;
+    	//if(tempData.size() != 0) // Si aucun des auteurs cites n'existent alors on laisse la liste comme elle est.
+    	modifiedData = tempData;
     }
     
     public CategoryDataset createDataset() {

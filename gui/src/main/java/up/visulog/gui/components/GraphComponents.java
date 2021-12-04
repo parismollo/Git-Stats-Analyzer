@@ -28,7 +28,6 @@ import javax.swing.JScrollPane;
 import org.jfree.chart.ChartPanel;
 
 import up.visulog.config.Configuration;
-import up.visulog.graphs.AuthorsSelector;
 import up.visulog.graphs.ChartAnalysis;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.gui.Window;
@@ -60,18 +59,36 @@ public class GraphComponents {
         
         ButtonGroup dataTypesGroup = new ButtonGroup();
         List<JRadioButton> dataType = createRadioButton(dataTypesGroup, getDataTypes());
+        dataType.get(dataType.size()-1).setSelected(true);
+        
+        JComboBox<String> datesSpinner = new JComboBox<String>(getDatesIntervals());
         
         DatePicker d1 = new DatePicker(),
         		   d2 = new DatePicker();
         
         JPanel datesPanel = new JPanel();
+        JPanel customDatesPanel = new JPanel();
+        customDatesPanel.setOpaque(false);
+        customDatesPanel.setVisible(false);
+        customDatesPanel.add(d1);
+        customDatesPanel.add(new JLabel(" >>> "));
+        customDatesPanel.add(d2);
+        
         datesPanel.setOpaque(false);
         datesPanel.add(new JLabel("Dates : "));
-        datesPanel.add(d1);
-        datesPanel.add(new JLabel(" ---> "));
-        datesPanel.add(d2);
+        datesPanel.add(datesSpinner);
+        datesPanel.add(customDatesPanel);
+
+        
+        datesSpinner.addActionListener((event) -> {
+        	if(datesSpinner.getSelectedIndex() == 4)
+        		customDatesPanel.setVisible(true);
+        	else
+        		customDatesPanel.setVisible(false);
+        });
         
         AuthorsSelector authorsSelector = new AuthorsSelector(config);
+        
         JPanel authorsPan = new JPanel();
         authorsPan.setLayout(new BoxLayout(authorsPan, BoxLayout.LINE_AXIS));
         authorsPan.setOpaque(false);
@@ -91,7 +108,7 @@ public class GraphComponents {
         
         JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
         
-        setRunGraphActionListener(config, dataType, graphTypesCB, runGraph, chartPanel, d1, d2);
+        setRunGraphActionListener(config, dataType, authorsSelector, graphTypesCB, runGraph, chartPanel, datesSpinner, d1, d2);
         setResultsInScreen(panel, projectTitle, authorsPan, datesPanel, graphTypesCB, dataType, chartPanel,
         				   downloadButton, returnButton, runGraph);
     }
@@ -248,6 +265,10 @@ public class GraphComponents {
 
     }
     
+    private static String[] getDatesIntervals() {
+    	return new String[] {"Last 15 days", "Last month", "Last 3 months", "All time", "Custom"};
+    }
+    
     private static String[] getDataTypes() {
         // TODO (code below is temporary)
         String[] s = {"Modifications", "Merges", "Commits"};
@@ -262,7 +283,8 @@ public class GraphComponents {
     }
     
     private static void setRunGraphActionListener(Configuration config, List<JRadioButton> buttons,
-    		JComboBox<String> cb, JButton runGraph, JPanel chartPanel, DatePicker d1, DatePicker d2) {
+    		AuthorsSelector authorsSelector, JComboBox<String> cb, JButton runGraph, JPanel chartPanel,
+    		JComboBox<String> datesSpinner, DatePicker d1, DatePicker d2) {
     	
     	runGraph.addActionListener((event) -> {
     		try {
@@ -270,8 +292,34 @@ public class GraphComponents {
     			if(selectedBut == null)
     				return;
     			String dataType = selectedBut.getText();
+    			List<String> authors = authorsSelector.getAuthorsList();
     			String graphType = (String)cb.getSelectedItem();
-    			refreshChartPanel(config, chartPanel, dataType, graphType, d1, d2);
+    			
+    			String date1 = d1.getDate(),
+    				   date2 = d2.getDate();
+    			
+    			int index = datesSpinner.getSelectedIndex();
+    			
+    			switch(index) {
+	    			case 0: // Last 15 days
+	    				date1 = DatePicker.getStringDate(-14);
+	    				date2 = DatePicker.getStringDate(0); // Today
+	    				break;
+	    			case 1: // Last month
+	    				date1 = DatePicker.getStringDate(-29);
+	    				date2 = DatePicker.getStringDate(0); // Today
+	    				break;
+	    			case 2: // Last 3 months
+	    				date1 = DatePicker.getStringDate(-89);
+	    				date2 = DatePicker.getStringDate(0); // Today
+	    				break;
+	    			case 3: // All time
+	    				date1 = null;
+	    				date2 = null;
+	    				break;
+    			}
+
+    			refreshChartPanel(config, chartPanel, dataType, authors, graphType, date1, date2);
     		} catch(Exception e) {};
     		
     	});
@@ -287,7 +335,7 @@ public class GraphComponents {
     }
     
     private static void refreshChartPanel(Configuration config, JPanel chartPanel,
-    		String dataType, String graphType, DatePicker d1, DatePicker d2) {
+    		String dataType, List<String> authors, String graphType, String d1, String d2) {
     	
     	dataType = dataType.toLowerCase();
     	graphType = graphType.toLowerCase();
@@ -295,8 +343,22 @@ public class GraphComponents {
     	chartPanel.removeAll();
     	ChartPanel chartContainer = null;
     	switch(dataType) {
+    	case "merges":
+    		/*
+    		 
+    		var chart = new ChartCountMergesPerAuthor(config, d1.getDate(), d2.getDate());
+    		chart.refreshAuthors(authors);
+    		chartContainer = chart.createPanel(graphType);
+    		 
+    		 */
+    		break;
     	case "commits":
-    		var chart = new ChartCountCommitsPerAuthor(config, d1.getDate(), d2.getDate());
+    		ChartCountCommitsPerAuthor chart;
+    		if(d1 != null && d2 != null)
+    			chart = new ChartCountCommitsPerAuthor(config, d1, d2);
+    		else
+    			chart = new ChartCountCommitsPerAuthor(config);
+    		chart.refreshAuthors(authors);
     		chartContainer = chart.createPanel(graphType);
     		break;
     	}
@@ -307,15 +369,5 @@ public class GraphComponents {
     	chartPanel.revalidate();
     	chartPanel.repaint();
     }
-    
-    
-    
-    // private static void getAndAddElements(DefaultListModel<String> l1) {
-    //     l1.addElement("Item1");  
-    //     l1.addElement("Item2");  
-    //     l1.addElement("Item3");  
-    //     l1.addElement("Item4");  
-    //     // TODO (code above is temporary)
-    // }
     
 }
