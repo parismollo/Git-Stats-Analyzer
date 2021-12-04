@@ -6,9 +6,11 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import up.visulog.config.Configuration;
@@ -79,7 +81,12 @@ public class Window extends JFrame {
 		}
 		
 		this.getContentPane().removeAll(); // On vide le panel principal.
-		getContentPane().add(resultsScreen);
+		JScrollPane jScrollPane = new JScrollPane(resultsScreen);
+		jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// getContentPane().add(resultsScreen);
+		getContentPane().add(jScrollPane);
 		revalidate();
 		repaint();
 	}
