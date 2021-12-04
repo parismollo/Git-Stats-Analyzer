@@ -11,7 +11,7 @@ import up.visulog.config.Configuration;
 import up.visulog.config.PluginConfig;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.graphs.PrintChart;
-import up.visulog.gui.Gui;
+import up.visulog.gui.*;
 
 public class CLILauncher {
 

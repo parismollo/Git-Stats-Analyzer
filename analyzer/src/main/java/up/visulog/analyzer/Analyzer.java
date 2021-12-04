@@ -53,6 +53,7 @@ public class Analyzer {
             case "countOnOneDay" : if(dayA.equals(dayB))
             return Optional.of(new CountCommitOnOneDay(config, dayA));
             case "countBetweenDays" : return Optional.of(new CountCommitsBetweenDays(config, dayA, dayB));
+            case "countCommitLinesChaned" : return Optional.of(new CountCommitLinesChanged(config));
             default : return Optional.empty();
         }
 

@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.nio.file.FileSystems;
@@ -131,8 +132,16 @@ public class CommitLinesChanged extends Commit{
         throw new RuntimeException("Wrong --numstat format.");
     }
 
-    public ArrayList<LinesChanged> geList(){
+    public ArrayList<LinesChanged> getList(){
         return this.LinesChangedlist;
+    }
+
+    public String getAuthor(){
+        return this.author;
+    }
+
+    public String getDate(){
+        return this.date;
     }
 
     @Override
@@ -143,6 +152,7 @@ public class CommitLinesChanged extends Commit{
                 ", date='" + date + '\'' +
                 ", author='" + author + '\'' +
                 ", description='" + description + '\'' +
+                ", lines changed='" + Arrays.toString(LinesChangedlist.toArray())+
                 '}';
     }
 }
