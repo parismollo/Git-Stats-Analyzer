@@ -1,4 +1,4 @@
-package up.visulog.graphs;
+package up.visulog.gui.components;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import up.visulog.config.Configuration;
+import up.visulog.graphs.ChartCountCommitsPerAuthor;
 
 public class AuthorsSelector extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -42,6 +43,15 @@ public class AuthorsSelector extends JPanel {
 		}
 		pan.setPreferredSize(new Dimension((int)pan.getPreferredSize().getWidth()+30, 50));
 		this.add(pan);
+	}
+	
+	public List<String> getAuthorsList() {
+		List<String> list = new ArrayList<String>();
+		for(int i=0;i<authorsBoxes.size();i++) {
+			if(authorsBoxes.get(i).isSelected())
+				list.add(authors.get(i));
+		}
+		return list;
 	}
 	
 }
