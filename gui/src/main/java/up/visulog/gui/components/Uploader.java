@@ -6,8 +6,8 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
-import up.visulog.config.Configuration;
-import up.visulog.gitrawdata.Commit;
+// import up.visulog.config.Configuration;
+// import up.visulog.gitrawdata.Commit;
 import up.visulog.gui.Window;
 import up.visulog.gui.validators.HomeValidators;
 
@@ -24,6 +24,7 @@ public class Uploader {
 			if (jfc.getSelectedFile().isDirectory()) {
 				System.out.println("You selected the directory: " + jfc.getSelectedFile());
 			}else {
+				window.openWarningDialog("Sorry, but this is not a git folder. Only folders with .git will work!");
 				System.out.println("Empty or null");
 			}
 		}
@@ -35,15 +36,11 @@ public class Uploader {
 				window.setConfiguration(file_path.toPath());
 				runAnalysis(window);
 			} else {
-				displayError();
+				window.openWarningDialog("Sorry, but this is not a git folder. Only folders with .git will work!");
 				System.out.println("Is not a git folder!");
 			}
 		}
     }
-
-	private static void displayError() {
-		// TODO
-	}
 
 	private static void runAnalysis(Window window) throws FontFormatException, IOException{
 		window.openResultsScreen();

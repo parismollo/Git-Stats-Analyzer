@@ -32,10 +32,9 @@ public class HomeComponents {
         panel.setLayout(layout);
         JButton b1 = setUploadButton(window);
         JButton b2 = setLatestButton(window);
-        JButton b3 = setMostLikedButton();
+        JButton b3 = setMostLikedButton(window);
         setHomeButtons(panel, b1, b2, b3, gbc);
         panel.setBackground(new Color(88,205,113));
-        
     }
     
     private static void setHomeButtons(JPanel panel, JButton b1, JButton b2, JButton b3, GridBagConstraints gbc) {
@@ -151,13 +150,13 @@ public class HomeComponents {
             try {
                 Uploader.forceAnalysis(window);
             } catch (Exception exc) {
-                System.out.print("No projects so far...");
+                window.openWarningDialog("Sorry, but this is empty...Try again after running some projects!");
                 // exc.printStackTrace();
             }
         });
 }
     
-    private static JButton setMostLikedButton() throws FontFormatException, IOException {
+    private static JButton setMostLikedButton(Window window) throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/heart.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -190,7 +189,14 @@ public class HomeComponents {
         ge.registerFont(customFont);
         latest_button.setFont(customFont);
         latest_button.revalidate();
+        setMostLikedAction(window, latest_button);
         return latest_button;
     }
+
+    private static void setMostLikedAction(Window window, JButton button){ 
+        button.addActionListener(e -> {
+            window.openWarningDialog("Sorry, but this is not implemented yet....Try again soon!");
+        });
+}
 
 }

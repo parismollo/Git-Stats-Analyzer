@@ -3,6 +3,7 @@ package up.visulog.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
@@ -105,8 +107,7 @@ public class Window extends JFrame {
 		getContentPane().add(new StatScreen(this, config));
 		revalidate();
 		repaint();
-	}
-	
+	}	
 	public String getProjectName() {
 		return projectName;
 	}
@@ -125,5 +126,22 @@ public class Window extends JFrame {
 	public File getLastProject() {
 		return this.lastProjectPath;
 	}
+
+	public void openWarningDialog(String message) {
+		ImageIcon imageIcon = new ImageIcon("src/main/resources/dinosaur.png");
+		ImageIcon image = new ImageIcon(imageIcon.getImage().getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH));
+		JOptionPane.showMessageDialog(this,
+		message,
+		"Dino says...",
+		JOptionPane.WARNING_MESSAGE, image);
+	}
+
+	public void openInformationDialog(String message) {
+		JOptionPane.showMessageDialog(this,
+		message,
+		"Dino says...", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	
 	
 }
