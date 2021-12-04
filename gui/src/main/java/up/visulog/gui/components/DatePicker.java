@@ -1,5 +1,6 @@
 package up.visulog.gui.components;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -59,5 +60,19 @@ public class DatePicker extends JPanel {
 			   months.getSelectedItem()+"-"+
 			   days.getSelectedItem();
 	}
+	
+	public static Date getDate(Date date, int nb) {
+		return new Date(date.getTime()+nb*24*60*60*1000);
+	}
+	
+    public static String getStringDate(int nb) { // Donne le string de la date situee nb jours avant/apres aujourd'hui
+    	Date d = new Date();
+		int add = (nb > 0 ? -1 : 1);
+        while(nb != 0) {
+            d = DatePicker.getDate(d, -add);
+            nb += add;
+        }
+        return defaultFormat.format(d);
+    }
 	
 }
