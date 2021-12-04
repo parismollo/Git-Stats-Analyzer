@@ -3,12 +3,15 @@ package up.visulog.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import up.visulog.config.Configuration;
@@ -25,6 +28,7 @@ public class Window extends JFrame {
 	private ResultsScreen resultsScreen;
 	private Configuration config;
 	private String projectName;
+	private File lastProjectPath;
 	
 	public Window(String projectName, int w, int h) throws FontFormatException, IOException {
 		this.projectName = projectName;
@@ -79,7 +83,12 @@ public class Window extends JFrame {
 		}
 		
 		this.getContentPane().removeAll(); // On vide le panel principal.
-		getContentPane().add(resultsScreen);
+		JScrollPane jScrollPane = new JScrollPane(resultsScreen);
+		jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		jScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// getContentPane().add(resultsScreen);
+		getContentPane().add(jScrollPane);
 		revalidate();
 		repaint();
 	}
@@ -109,6 +118,12 @@ public class Window extends JFrame {
 	public void setConfiguration(Configuration configuration) {
 		this.config = configuration;
 		this.resultsScreen = null;
+	}
+	public void setLatestProject(File file) {
+		this.lastProjectPath = file;
+	}
+	public File getLastProject() {
+		return this.lastProjectPath;
 	}
 	
 }
