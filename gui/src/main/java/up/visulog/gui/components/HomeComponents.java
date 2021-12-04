@@ -150,10 +150,9 @@ public class HomeComponents {
         button.addActionListener(e -> {
             try {
                 Uploader.forceAnalysis(window);
-            } catch (FontFormatException e1) {
-                e1.printStackTrace();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (Exception exc) {
+                System.out.print("No projects so far...");
+                // exc.printStackTrace();
             }
         });
 }
