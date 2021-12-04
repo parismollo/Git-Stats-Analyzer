@@ -31,7 +31,7 @@ public class HomeComponents {
         GridBagLayout layout = new GridBagLayout();  
         panel.setLayout(layout);
         JButton b1 = setUploadButton(window);
-        JButton b2 = setLatestButton();
+        JButton b2 = setLatestButton(window);
         JButton b3 = setMostLikedButton();
         setHomeButtons(panel, b1, b2, b3, gbc);
         panel.setBackground(new Color(88,205,113));
@@ -109,7 +109,7 @@ public class HomeComponents {
             });
     }
     
-    private static JButton setLatestButton() throws FontFormatException, IOException {
+    private static JButton setLatestButton(Window window) throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/latest_icon.png");
         Image image = ((ImageIcon) icon).getImage(); // transform it 
         Image newimg = image.getScaledInstance(45, 45,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -142,8 +142,21 @@ public class HomeComponents {
         ge.registerFont(customFont);
         latest_button.setFont(customFont);
         latest_button.revalidate();
+        setLatestAction(window, latest_button);
         return latest_button;
     }
+
+    private static void setLatestAction(Window window, JButton button){ 
+        button.addActionListener(e -> {
+            try {
+                Uploader.forceAnalysis(window);
+            } catch (FontFormatException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
+}
     
     private static JButton setMostLikedButton() throws FontFormatException, IOException {
         Icon icon = new ImageIcon("src/main/resources/heart.png");

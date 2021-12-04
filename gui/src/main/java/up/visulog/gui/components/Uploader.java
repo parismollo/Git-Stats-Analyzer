@@ -31,6 +31,7 @@ public class Uploader {
 			File file_path = jfc.getSelectedFile();
 			if (HomeValidators.isGitFolder(file_path)) {
 				System.out.println("Is git folder!");
+				window.setLatestProject(file_path);
 				window.setConfiguration(file_path.toPath());
 				runAnalysis(window);
 			} else {
@@ -47,5 +48,10 @@ public class Uploader {
 	private static void runAnalysis(Window window) throws FontFormatException, IOException{
 		window.openResultsScreen();
 		window.backToResultsScreen();
+	}
+
+	public static void forceAnalysis(Window window) throws FontFormatException, IOException {
+		window.setConfiguration(window.getLastProject().toPath());
+		runAnalysis(window);
 	}
 }

@@ -3,6 +3,7 @@ package up.visulog.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -27,6 +28,7 @@ public class Window extends JFrame {
 	private ResultsScreen resultsScreen;
 	private Configuration config;
 	private String projectName;
+	private File lastProjectPath;
 	
 	public Window(String projectName, int w, int h) throws FontFormatException, IOException {
 		this.projectName = projectName;
@@ -116,6 +118,12 @@ public class Window extends JFrame {
 	public void setConfiguration(Configuration configuration) {
 		this.config = configuration;
 		this.resultsScreen = null;
+	}
+	public void setLatestProject(File file) {
+		this.lastProjectPath = file;
+	}
+	public File getLastProject() {
+		return this.lastProjectPath;
 	}
 	
 }
