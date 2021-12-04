@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Scanner;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -49,7 +50,7 @@ public class ResultsComponents {
         });
         
         JLabel project_title = createProjectTitle(getProjectTitle(config));
-        JTextArea project_description = createProjectDescriptions(getProjectDescription());
+        JTextArea project_description = createProjectDescriptions(getProjectDescription(config));
         JTextArea project_members = createProjectMembers(getProjectMembers(authors));
         JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
 
@@ -74,9 +75,24 @@ public class ResultsComponents {
         return s;
     }
     
-    private static String getProjectDescription() {
-        // TODO
-        String s = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin facilisis ornare augue, nec sagittis felis accumsan a. Suspendisse at nibh ac ante ultricies malesuada sit amet sed lorem. Aenean viverra elit nec quam suscipit, a scelerisque sapien consectetur. Cras faucibus quam neque, consequat tincidunt risus sollicitudin at. In at nibh sed leo fringilla bibendum.";
+    private static String getProjectDescription(Configuration config) {
+        File gitDir = new File(config.getGitPath().toString());
+        File[] subFiles = gitDir.listFiles();
+        String s = "";
+        if (subFiles != null) {
+            for (File file: subFiles) {
+                if(file.getName().equals("README.md")) {
+                    try (Scanner scanner = new Scanner(file)) {
+                        scanner.useDelimiter(" ");
+                        while (scanner.hasNext()) {
+                            s +=" "+scanner.next();
+                        }
+                    } catch (Exception e) {
+                        s = "No description so far...";
+                    }
+                }
+            }
+        }
         return s;
     }
     
