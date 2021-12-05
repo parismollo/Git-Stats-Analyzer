@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountCommitsPerWeekdayPlugin extends PluginConfig {
 	public CountCommitsPerWeekdayPlugin() {
