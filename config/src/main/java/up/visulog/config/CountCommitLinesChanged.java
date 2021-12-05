@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountCommitLinesChanged extends PluginConfig{
 	public CountCommitLinesChanged() {
