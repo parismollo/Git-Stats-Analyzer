@@ -1,18 +1,21 @@
 package up.visulog.analyzer;
 
-import java.util.*;
-
 import up.visulog.config.Configuration;
-import up.visulog.gitrawdata.*;
+import up.visulog.gitrawdata.CommitLinesChanged;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class CountCommitLinesChanged implements AnalyzerPlugin{
-
-    private final Configuration configuration;
-    private Result result;
-
-    public CountCommitLinesChanged(Configuration generalConfiguration) {
+public class CountCommitLinesChangedBetweenDays implements AnalyzerPlugin {
+    protected final Configuration configuration;
+    protected Result result;
+    protected String startDate, endDate;
+    
+    public CountCommitLinesChangedBetweenDays(Configuration generalConfiguration, String startDate, String endDate) {
         this.configuration = generalConfiguration;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     static Result processLog(List<CommitLinesChanged> gitLog) {
@@ -41,19 +44,23 @@ public class CountCommitLinesChanged implements AnalyzerPlugin{
         }
         return res;
     }
-    
+
     @Override
     public void run() {
-        result = processLog(CommitLinesChanged.parseLogFromCommandLinesChanged(configuration.getGitPath()));
-        
+    	if(startDate.equals(endDate)) {
+    		result = processLog(CommitLinesChanged.parseLogFromCommandLinesChanged(configuration.getGitPath(), startDate));
+    	}
+    	else {
+    		result = processLog(CommitLinesChanged.parseLogFromCommandLinesChanged(configuration.getGitPath(), startDate, endDate));
+    	}
     }
 
     @Override
     public Result getResult() {
-        if(result == null) run();
+        if (result == null) run();
         return result;
     }
-
+    
     public static class Result implements AnalyzerPlugin.Result {
         private final Map<String, int[]> commitchanged = new HashMap<>();
 
@@ -82,5 +89,6 @@ public class CountCommitLinesChanged implements AnalyzerPlugin{
             return html.toString();
         }
     }
-    
+
+
 }

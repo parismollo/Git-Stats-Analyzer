@@ -1,6 +1,5 @@
 package up.visulog.gitrawdata;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +35,26 @@ public class CommitLinesChanged extends Commit{
         InputStream is = process.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         return parseLogLinesChanged(reader);
+    }
+
+    public static List<CommitLinesChanged> parseLogFromCommandLinesChanged(Path gitPath, String startDate, String endDate) {
+        ProcessBuilder builder =
+                new ProcessBuilder("git", "log", "--numstat","--after='"+startDate+"'", "--before='"+endDate+"'").directory(gitPath.toFile());
+        Process process;
+        try {
+            process = builder.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Error running \"git log --numstat\".", e);
+        }
+        InputStream is = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        return parseLogLinesChanged(reader);
+    }
+
+    public static List<CommitLinesChanged> parseLogFromCommandLinesChanged(Path gitPath, String day) {
+    	String d1 = day+" 00:00",
+    		   d2 = day+" 23:59";
+    	return parseLogFromCommandLinesChanged(gitPath, d1, d2);
     }
 
     public static List<CommitLinesChanged> parseLogLinesChanged(BufferedReader reader) {
@@ -85,13 +104,13 @@ public class CommitLinesChanged extends Commit{
                     .map(String::trim) // remove indentation
                     .reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
             builder.setDescription(description); 
-
-            while(!line.isEmpty()){ // On lit la parti description du commit 
+            line = input.readLine();
+            while(line != null){ // On lit la parti description du commit 
                 line = input.readLine();
             }
             line = input.readLine();//On arrive ici a la parti numstat de git log --numstat
             var list = new ArrayList<LinesChanged>();
-            while(!line.isEmpty()){
+            while(line != null){
                 Reader inputString = new StringReader(line);
                 BufferedReader read = new BufferedReader(inputString);
                 list.add(parseLinesChanged(read).get());
