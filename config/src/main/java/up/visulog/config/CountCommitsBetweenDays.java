@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountCommitsBetweenDays extends PluginConfig{
 	public CountCommitsBetweenDays() {
