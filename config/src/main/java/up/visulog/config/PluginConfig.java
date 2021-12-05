@@ -7,16 +7,6 @@ import java.util.HashMap;
 public abstract class PluginConfig {
     protected HashMap<String, String> pluginConfig;
 
-    public PluginConfig() {} // constructeur vide temporaire
-
-    public PluginConfig(String graph, String date, String startDate, String endDate) {
-        this.pluginConfig = new HashMap<String, String>();
-        pluginConfig.put("graph", graph);
-        pluginConfig.put("date", date);
-        pluginConfig.put("startDate", startDate);
-        pluginConfig.put("endDate", endDate);
-    }
-    
     public PluginConfig() {
   	this.pluginConfig = new HashMap<String, String>();
         pluginConfig.put("graph", "");
