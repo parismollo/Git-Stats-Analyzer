@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountMergeCommitsPlugin extends PluginConfig {
 	public CountMergeCommitsPlugin() {
