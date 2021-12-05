@@ -16,6 +16,15 @@ public abstract class PluginConfig {
         pluginConfig.put("startDate", startDate);
         pluginConfig.put("endDate", endDate);
     }
+    
+    public PluginConfig() {
+  	this.pluginConfig = new HashMap<String, String>();
+        pluginConfig.put("graph", "");
+        pluginConfig.put("date", "");
+        pluginConfig.put("startDate", "");
+        pluginConfig.put("endDate", "");
+	
+	}
 
     public HashMap<String, String> getPluginConfig() {
         return pluginConfig;
