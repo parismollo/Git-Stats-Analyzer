@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountLinesChangedPlugin extends PluginConfig{
 	public CountLinesChangedPlugin() {
