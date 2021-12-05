@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountCommitsPerAuthorPlugin extends PluginConfig {
 	public CountCommitsPerAuthorPlugin() {
