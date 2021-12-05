@@ -20,6 +20,18 @@ public abstract class PluginConfig {
     public void setGraph(String s) {
   	pluginConfig.put("graph", s);
     }
+    
+    public void setDate(String s) {
+  	pluginConfig.put("date", s);
+    }
+    
+    public void setStartDate(String s) {
+  	pluginConfig.put("startDate", s);
+    }
+    
+    public void setEndDate(String s) {
+  	pluginConfig.put("endDate", s);
+    }
 
     public HashMap<String, String> getPluginConfig() {
         return pluginConfig;
