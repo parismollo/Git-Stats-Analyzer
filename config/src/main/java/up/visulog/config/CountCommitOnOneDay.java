@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountCommitOnOneDay extends PluginConfig{
 	public CountCommitOnOneDay() {
