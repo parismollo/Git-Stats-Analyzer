@@ -1,3 +1,4 @@
+package up.visulog.config;
 
 public class CountMergePerAuthorPlugin extends PluginConfig {
 	public CountMergePerAuthorPlugin() {
