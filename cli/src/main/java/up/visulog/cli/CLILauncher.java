@@ -18,6 +18,7 @@ public class CLILauncher {
     	// Pour tester l'affichage d'un graphique : ./gradlew run --args=". --test=graph"
 
         /* Pour ajouter un nouveau plugin :
+            0. modifier la fonction makePlugin() du fichier Analyzer
             1. créer un fichier "Config" pour le plugin
             2. modifier makeConfigFromCommandLineArgs() (case "--addPlugin") (+ isPluginValid() si besoin)
             3. ajouter le graph correspondant dans createChart() (s'il existe) (+ le main si besoin)
@@ -69,10 +70,13 @@ public class CLILauncher {
                                 case "countCommits" : plugins.put(pValue, new ConfigCountCommitsPerAuthor()); break;
                                 case "countCommitsPerWeekday" : plugins.put(pValue, new ConfigCountCommitsPerWeekday()); break;
                                 case "countCommitLinesChanged" : plugins.put(pValue, new ConfigCountCommitLinesChanged()); break;
+                                case "countCommitLinesChangedOnOneDay" : plugins.put(pValue, new ConfigCountCommitLinesChangedOnOneDay()); break;
+                                case "countCommitLinesChangedBetweenDays" : plugins.put(pValue, new ConfigCountCommitLinesChangedBetweenDays()); break;
                                 case "countCommitOnOneDay" : plugins.put(pValue, new ConfigCountCommitOnOneDay()); break;
                                 case "countCommitsBetweenDays" : plugins.put(pValue, new ConfigCountCommitsBetweenDays()); break;
                                 case "countMergeCommits" : plugins.put(pValue, new ConfigCountMergeCommits()); break;
                                 case "countMergePerAuthor" : plugins.put(pValue, new ConfigCountMergePerAuthor()); break;
+                                case "countMergesBetweenDays" : plugins.put(pValue, new ConfigCountMergesBetweenDays()); break;
                                 case "countLinesChanged" : plugins.put(pValue, new ConfigCountLinesChanged()); break;
                                 default : displayHelpAndExit(); break;
                             }
@@ -121,10 +125,13 @@ public class CLILauncher {
                                 case "countCommits" : System.out.println("--addPlugin=countCommits"); break;
                                 case "countCommitsPerWeekday" : System.out.println("--addPlugin=countCommitsPerWeekday"); break;
                                 case "countCommitLinesChanged" : System.out.println("--addPlugin=countCommitLinesChanged"); break;
+                                case "countCommitLinesChangedOnOneDay" : System.out.println("--addPlugin=countCommitLinesChangedOnOneDay --date=YYYY-MM-DD"); break;
+                                case "countCommitLinesChangedBetweenDays" : System.out.println("--addPlugin=countCommitLinesChangedBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
                                 case "countCommitOnOneDay" : System.out.println("--addPlugin=countCommitOnOneDay --date=YYYY-MM-DD"); break;
                                 case "countCommitsBetweenDays" : System.out.println("--addPlugin=countCommitsBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
                                 case "countMergeCommits" : System.out.println("--addPlugin=countMergeCommits"); break;
                                 case "countMergePerAuthor" : System.out.println("--addPlugin=countMergePerAuthor"); break;
+                                case "countMergesBetweenDays" : System.out.println("--addPlugin=countMergesBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
                                 case "countLineChanged" : System.out.println("--addPlugin=countLineChanged"); break;
                                 default : displayHelpAndExit(); break;
                             }
@@ -187,7 +194,9 @@ public class CLILauncher {
     private static boolean isPluginValid(HashMap<String,PluginConfig> plugins) {
         for(var plugin : plugins.entrySet()) {
             if(!plugin.getValue().isValid()) return false;
-            if(plugin.getValue() instanceof ConfigCountCommitsBetweenDays)
+            if((plugin.getValue() instanceof ConfigCountCommitsBetweenDays)
+                || (plugin.getValue() instanceof ConfigCountMergesBetweenDays)
+                || (plugin.getValue() instanceof ConfigCountCommitLinesChangedBetweenDays))
                 if(!rightDateFormat(plugin.getValue().getStartDate(), plugin.getValue().getEndDate()))
                     return false;
         }
@@ -206,11 +215,14 @@ public class CLILauncher {
                 return Optional.of(new ChartCountCommitsPerAuthor(config, pConfig.getStartDate(), pConfig.getEndDate()));
             // case "countMergeCommits" : Optional.of(return new ChartCountMergePerAuthor(config));
             // case "countMergePerAuthor" : Optional.of(return new ChartCountMergePerAuthor(config));
+            // case "countMergesBetweenDays" : Optional.of(return new ChartCountMergesBetweenDays(config));
             case "countLinesAdded" :
                 return Optional.of(new ChartCountLinesAdded(config));
             case "countLinesDeleted" :
                 return Optional.of(new ChartCountLinesDeleted(config));
-            // case "countCommitLinesChanged" : 
+            // case "countCommitLinesChanged" : Optional.of();
+            // case "countCommitLinesChangedOnOneDay" : Optional.of();
+            // case "countCommitLinesChangedBetweenDays" : Optional.of();
             default :
                 return Optional.empty();
         }
@@ -230,12 +242,15 @@ public class CLILauncher {
         System.out.println("List of avalaible options :");
         System.out.println("    --addPlugin=[plugin name]");
         System.out.println("        °countCommits");
-        System.out.println("        °countCommitLinesChanged");
         System.out.println("        °countCommitsPerWeekday");
+        System.out.println("        °countCommitLinesChanged");
+        System.out.println("        °countCommitLinesChangedOnOneDay --date=YYYY-MM-DD");
+        System.out.println("        °countCommitLinesChangedBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
         System.out.println("        °countCommitOnOneDay --date=YYYY-MM-DD");
         System.out.println("        °countCommitsBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
         System.out.println("        °countMergeCommits");
-        System.out.println("        °countMergeCommitsPerAuthor");
+        System.out.println("        °countMergePerAuthor");
+        System.out.println("        °countMergesBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
         System.out.println("        °countLinesChanged");
         System.out.println("    --graph=[pie/bar/line] (works only if a plugin is added)");
         System.out.println("    --loadConfigFile");

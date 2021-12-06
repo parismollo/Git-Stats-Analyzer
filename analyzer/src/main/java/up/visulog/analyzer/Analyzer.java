@@ -40,10 +40,13 @@ public class Analyzer {
             case "countCommitsPerWeekday": return Optional.of(new CountCommitsPerWeekdayPlugin(config));
             case "countMergeCommits": return Optional.of(new CountMergeCommitsPlugin(config));
             case "countMergePerAuthor": return Optional.of(new CountMergePerAuthorPlugin(config));
+            case "countMergesBetweenDays": return Optional.of(new CountMergesBetweenDaysPlugin(config, pluginConfig.getStartDate(), pluginConfig.getEndDate()));
             case "countLinesChanged": return Optional.of(new CountLinesChangedPlugin(config));
             case "countCommitOnOneDay" : return Optional.of(new CountCommitOnOneDay(config, pluginConfig.getDate()));
             case "countCommitsBetweenDays" : return Optional.of(new CountCommitsBetweenDays(config, pluginConfig.getStartDate(), pluginConfig.getEndDate()));
             case "countCommitLinesChanged" : return Optional.of(new CountCommitLinesChanged(config));
+            case "countCommitLinesChangedOnOneDay" : return Optional.of(new CountCommitLinesChangedOnOneDay(config, pluginConfig.getDate()));
+            case "countCommitLinesChangedBetweenDays" : return Optional.of(new CountCommitLinesChangedBetweenDays(config, pluginConfig.getStartDate(), pluginConfig.getEndDate()));
             default : return Optional.empty();
         }
 
