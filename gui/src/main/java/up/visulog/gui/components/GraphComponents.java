@@ -30,6 +30,7 @@ import org.jfree.chart.ChartPanel;
 import up.visulog.config.Configuration;
 import up.visulog.graphs.ChartAnalysis;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
+import up.visulog.graphs.ChartCountMergeCommitsPerAuthor;
 import up.visulog.gui.Window;
 // import javax.swing.SwingConstants;
 // import javax.swing.SwingConstants;
@@ -344,22 +345,22 @@ public class GraphComponents {
     	ChartPanel chartContainer = null;
     	switch(dataType) {
     	case "merges":
-    		/*
-    		 
-    		var chart = new ChartCountMergesPerAuthor(config, d1.getDate(), d2.getDate());
-    		chart.refreshAuthors(authors);
-    		chartContainer = chart.createPanel(graphType);
-    		 
-    		 */
+    		ChartCountMergeCommitsPerAuthor chartMerges;
+    		if(d1 != null && d2 != null)
+    			chartMerges = new ChartCountMergeCommitsPerAuthor(config, d1, d2);
+    		else
+    			chartMerges = new ChartCountMergeCommitsPerAuthor(config);
+    		chartMerges.refreshAuthors(authors);
+    		chartContainer = chartMerges.createPanel(graphType);
     		break;
     	case "commits":
-    		ChartCountCommitsPerAuthor chart;
+    		ChartCountCommitsPerAuthor chartCommits;
     		if(d1 != null && d2 != null)
-    			chart = new ChartCountCommitsPerAuthor(config, d1, d2);
+    			chartCommits = new ChartCountCommitsPerAuthor(config, d1, d2);
     		else
-    			chart = new ChartCountCommitsPerAuthor(config);
-    		chart.refreshAuthors(authors);
-    		chartContainer = chart.createPanel(graphType);
+    			chartCommits = new ChartCountCommitsPerAuthor(config);
+    		chartCommits.refreshAuthors(authors);
+    		chartContainer = chartCommits.createPanel(graphType);
     		break;
     	}
     	if(chartContainer == null)
