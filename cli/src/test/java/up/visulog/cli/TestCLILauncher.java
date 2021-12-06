@@ -23,4 +23,13 @@ public class TestCLILauncher {
         });
         assertFalse(config2.isPresent());
     }
+
+    /* @Test
+    public void testRightDateFormat() {
+        var date1 = "2021-11-29";
+        var date2 = "2021-11-30";
+        assertTrue(CLILauncher.rightDateFormat(date1, date2));
+        assertFalse(CLILauncher.rightDateFormat(date2, date1));
+        assertFalse(CLILauncher.rightDateFormat(date2, date2));
+    } */
 }

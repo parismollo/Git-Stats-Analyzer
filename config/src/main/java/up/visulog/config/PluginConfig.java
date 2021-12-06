@@ -15,7 +15,7 @@ public abstract class PluginConfig {
         pluginConfig.put("endDate", "");
     }
     
-    //public abstract boolean isValid();
+    public abstract boolean isValid();
     
     public void setGraph(String s) {
   	pluginConfig.put("graph", s);

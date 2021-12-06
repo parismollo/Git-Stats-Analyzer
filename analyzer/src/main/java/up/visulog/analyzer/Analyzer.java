@@ -10,20 +10,11 @@ import up.visulog.config.PluginConfig;
 
 public class Analyzer {
     private final Configuration config;
-    private String dayA;
-    private String dayB;
-    
 
     private AnalyzerResult result;
 
     public Analyzer(Configuration config) {
         this.config = config;
-    }
-
-    public Analyzer(Configuration config, String dayA, String dayB) {
-        this.config = config;
-        this.dayA = dayA;
-        this.dayB = dayB;
     }
 
     public AnalyzerResult computeResults() {
@@ -47,13 +38,12 @@ public class Analyzer {
         switch (pluginName) {
             case "countCommits" : return Optional.of(new CountCommitsPerAuthorPlugin(config));
             case "countCommitsPerWeekday": return Optional.of(new CountCommitsPerWeekdayPlugin(config));
-            case "countMergesCommits": return Optional.of(new CountMergeCommitsPlugin(config));
-            case "countMergesPerAuthor": return Optional.of(new CountMergePerAuthorPlugin(config));
+            case "countMergeCommits": return Optional.of(new CountMergeCommitsPlugin(config));
+            case "countMergePerAuthor": return Optional.of(new CountMergePerAuthorPlugin(config));
             case "countLinesChanged": return Optional.of(new CountLinesChangedPlugin(config));
-            case "countOnOneDay" : if(dayA.equals(dayB))
-            return Optional.of(new CountCommitOnOneDay(config, dayA));
-            case "countBetweenDays" : return Optional.of(new CountCommitsBetweenDays(config, dayA, dayB));
-            case "countCommitLinesChaned" : return Optional.of(new CountCommitLinesChanged(config));
+            case "countCommitOnOneDay" : return Optional.of(new CountCommitOnOneDay(config, pluginConfig.getDate()));
+            case "countCommitsBetweenDays" : return Optional.of(new CountCommitsBetweenDays(config, pluginConfig.getStartDate(), pluginConfig.getEndDate()));
+            case "countCommitLinesChanged" : return Optional.of(new CountCommitLinesChanged(config));
             default : return Optional.empty();
         }
 
