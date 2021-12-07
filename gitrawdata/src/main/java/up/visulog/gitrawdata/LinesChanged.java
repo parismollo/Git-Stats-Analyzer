@@ -55,15 +55,34 @@ public class LinesChanged {
             	parseError();
             
             LinesChangedBuilder builder = new LinesChangedBuilder();
-            builder.setAddedLines(Integer.parseInt(infos[0]));
-            builder.setDeletedLines(Integer.parseInt(infos[1]));
-            builder.setPath(FileSystems.getDefault().getPath(infos[2]));
-            
+
+            builder.setAddedLines(getNumber(infos[0]));
+            builder.setDeletedLines(getNumber(infos[1]));
+
+            if(infos[2].charAt(0) == '{') {
+	            try {
+		            int index = infos[2].indexOf(" => ")+4;
+		            String pathStr = infos[2].substring(index);
+		            int badChar = pathStr.indexOf('}');
+		            
+		            pathStr = pathStr.substring(0, badChar)+pathStr.substring(badChar+1);
+	            	builder.setPath(FileSystems.getDefault().getPath(pathStr));
+	            } catch(Exception e) {}
+        	}
             return Optional.of(builder.createLinesChanged());
         } catch (IOException e) {
             parseError();
         }
         return Optional.empty(); // this is supposed to be unreachable, as parseError should never return
+    }
+    
+    public static int getNumber(String nb) {
+    	int n = 0;
+    	try {
+    		n = Integer.parseInt(nb);
+    	} catch(Exception e) {}
+    	
+    	return n;
     }
     
     private static void parseError() {
