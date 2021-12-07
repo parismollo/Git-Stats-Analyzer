@@ -67,9 +67,10 @@ public class CountCommitLinesChanged implements AnalyzerPlugin{
         }
 
         @Override
-        public String getResultAsHtmlDiv() { // A Faire 
+        public String getResultAsHtmlDiv() {
             StringBuilder html = new StringBuilder("<div>Lines changed in files: <ul>");
             for (var item : commitchanged.entrySet()) {
+            	
             	int[] chars = item.getValue();
                 html.append("<li>").append(item.getKey()).append(": <ul>");
                 if(chars[0] != 0)

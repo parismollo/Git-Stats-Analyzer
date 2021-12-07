@@ -4,16 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.nio.file.FileSystems;
 
-public class CommitLinesChanged extends Commit{
+public class CommitLinesChanged extends Commit {
 
     private ArrayList<LinesChanged> LinesChangedlist = new ArrayList<LinesChanged>();
 
@@ -69,13 +66,14 @@ public class CommitLinesChanged extends Commit{
 
     public static Optional<CommitLinesChanged> parseCommitLinesChanged(BufferedReader input) {
         try {
-
+        	
             var line = input.readLine();
             if (line == null) return Optional.empty(); // if no line can be read, we are done reading the buffer
             var idChunks = line.split(" ");
             if (!idChunks[0].equals("commit")) parseError();
             var builder = new CommitLinesChangedBuilder(idChunks[1]);
-
+            boolean merge = false;
+            
             line = input.readLine();
             while (!line.isEmpty()) {
                 var colonPos = line.indexOf(":");
@@ -87,6 +85,7 @@ public class CommitLinesChanged extends Commit{
                         break;
                     case "Merge":
                         builder.setMergedFrom(fieldContent);
+                        merge = true;
                         break;
                     case "Date":
                         builder.setDate(fieldContent);
@@ -104,62 +103,49 @@ public class CommitLinesChanged extends Commit{
                     .map(String::trim) // remove indentation
                     .reduce("", (accumulator, currentLine) -> accumulator + currentLine); // concatenate everything
             builder.setDescription(description); 
-            line = input.readLine();
-            while(line != null){ // On lit la parti description du commit 
-                line = input.readLine();
-            }
-            line = input.readLine();//On arrive ici a la parti numstat de git log --numstat
+
+            if(merge)
+            	return Optional.of(builder.createCommitLinesChanged());
+            
+           
             var list = new ArrayList<LinesChanged>();
-            while(line != null){
-                Reader inputString = new StringReader(line);
-                BufferedReader read = new BufferedReader(inputString);
-                list.add(parseLinesChanged(read).get());
-                line = input.readLine();
-            }
+            Optional<LinesChanged> linesChanged = Optional.empty();
+            do {
+            	try {
+            		linesChanged = LinesChanged.parseLinesChanged(input);
+            	} catch(Exception e) {
+            		linesChanged = Optional.empty();
+            	}
+
+            	if(linesChanged.isPresent())
+            		list.add(linesChanged.get());
+            	
+            } while(linesChanged.isPresent());
+            
             builder.setArrayList(list);
             
             return Optional.of(builder.createCommitLinesChanged());
-        } catch (IOException e) {
+        } catch (Exception e) {
+        	e.printStackTrace();
             parseError();
         }
         return Optional.empty(); // this is supposed to be unreachable, as parseError should never return
     }
-
-    public static Optional<LinesChanged> parseLinesChanged(BufferedReader input) {
-        try {
-
-            String line = input.readLine();
-            if (line == null) return Optional.empty(); // if no line can be read, we are done reading the buffer
-
-            String[] infos = line.split("\t");
-            if(infos == null || infos.length != 3)
-            	parseError();
-            
-            LinesChangedBuilder builder = new LinesChangedBuilder();
-            builder.setAddedLines(Integer.parseInt(infos[0]));
-            builder.setDeletedLines(Integer.parseInt(infos[1]));
-            builder.setPath(FileSystems.getDefault().getPath(infos[2]));
-            
-            return Optional.of(builder.createLinesChanged());
-        } catch (IOException e) {
-            parseError();
-        }
-        return Optional.empty();
-    }
+    
     // Helper function for generating parsing exceptions. This function *always* quits on an exception. It *never* returns.
     private static void parseError() {
         throw new RuntimeException("Wrong --numstat format.");
     }
 
-    public ArrayList<LinesChanged> getList(){
+    public ArrayList<LinesChanged> getList() {
         return this.LinesChangedlist;
     }
 
-    public String getAuthor(){
+    public String getAuthor() {
         return this.author;
     }
 
-    public String getDate(){
+    public String getDate() {
         return this.date;
     }
 
