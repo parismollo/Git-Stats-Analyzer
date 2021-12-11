@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.io.File;
 // import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,12 @@ import javax.swing.JScrollPane;
 
 import org.jfree.chart.ChartPanel;
 
+import up.visulog.analyzer.AnalyzerPlugin;
+import up.visulog.analyzer.AnalyzerResult;
+import up.visulog.analyzer.CountCommitsBetweenDays;
+import up.visulog.analyzer.CountCommitsPerAuthorPlugin;
+import up.visulog.analyzer.CountMergePerAuthorPlugin;
+import up.visulog.analyzer.CountMergesBetweenDaysPlugin;
 import up.visulog.config.Configuration;
 import up.visulog.graphs.ChartAnalysis;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
@@ -107,16 +114,17 @@ public class GraphComponents {
         JPanel chartPanel = new JPanel();
         chartPanel.setOpaque(false);
         
-        JButton runGraph = ResultsComponents.createAnyButton("Run", "src/main/resources/stats.png");
+        JButton runGraph = ResultsComponents.createAnyButton("Run graph", "src/main/resources/stats.png");
+        JButton runStats = ResultsComponents.createAnyButton("Run stats", "src/main/resources/stats.png");
         
-        setRunGraphActionListener(config, dataType, authorsSelector, graphTypesCB, runGraph, chartPanel, datesSpinner, d1, d2);
+        setRunGraphActionListener(config, dataType, authorsSelector, graphTypesCB, runStats, runGraph, chartPanel, datesSpinner, d1, d2);
         setResultsInScreen(panel, projectTitle, authorsPan, datesPanel, graphTypesCB, dataType, chartPanel,
-        				   downloadButton, returnButton, runGraph);
+        				   downloadButton, returnButton, runGraph, runStats);
     }
     
     private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JPanel authorsPan, JPanel datesPanel,
     		JComboBox<String> graphTypesCB, List<JRadioButton> dataType, JPanel chartPanel, JButton downloadButton,
-    		JButton returnButton, JButton runGraph) {
+    		JButton returnButton, JButton runGraph, JButton runStats) {
         
     	
     	panel.setLayout(new BorderLayout());
@@ -166,7 +174,11 @@ public class GraphComponents {
         pan.setLayout(new BorderLayout());
         pan.setOpaque(false);
         
-        pan.add(runGraph, BorderLayout.CENTER);
+        JPanel tmpPan = new JPanel();
+        tmpPan.setOpaque(false);
+        tmpPan.add(runStats);
+        tmpPan.add(runGraph);
+        pan.add(tmpPan, BorderLayout.CENTER);
         pan.add(downloadButton, BorderLayout.LINE_END);
         
         panel.add(pan, BorderLayout.SOUTH);
@@ -284,10 +296,21 @@ public class GraphComponents {
     }
     
     private static void setRunGraphActionListener(Configuration config, List<JRadioButton> buttons,
-    		AuthorsSelector authorsSelector, JComboBox<String> cb, JButton runGraph, JPanel chartPanel,
-    		JComboBox<String> datesSpinner, DatePicker d1, DatePicker d2) {
+    		AuthorsSelector authorsSelector, JComboBox<String> cb, JButton runStats, JButton runGraph,
+    		JPanel chartPanel, JComboBox<String> datesSpinner, DatePicker d1, DatePicker d2) {
     	
-    	runGraph.addActionListener((event) -> {
+    	runStats.addActionListener(getRunListener(config, false, buttons, authorsSelector, cb, runGraph, 
+				  chartPanel, datesSpinner, d1, d2));
+    	
+    	runGraph.addActionListener(getRunListener(config, true, buttons, authorsSelector, cb, runGraph, 
+    											  chartPanel, datesSpinner, d1, d2));
+    	
+    }
+    
+    private static ActionListener getRunListener(Configuration config, boolean graph, List<JRadioButton> buttons,
+    						      AuthorsSelector authorsSelector, JComboBox<String> cb, JButton runGraph, JPanel chartPanel,
+    						      JComboBox<String> datesSpinner, DatePicker d1, DatePicker d2) {
+    	return (event) -> {
     		try {
     			JRadioButton selectedBut = getSelectedButton(buttons);
     			if(selectedBut == null)
@@ -320,11 +343,10 @@ public class GraphComponents {
 	    				break;
     			}
 
-    			refreshChartPanel(config, chartPanel, dataType, authors, graphType, date1, date2);
+    			refreshChartPanel(config, graph, chartPanel, dataType, authors, graphType, date1, date2);
     		} catch(Exception e) {};
-    		
-    	});
-    	
+    	};
+ 
     }
     
     private static JRadioButton getSelectedButton(List<JRadioButton> buttons) {
@@ -335,38 +357,71 @@ public class GraphComponents {
     	return null;
     }
     
-    private static void refreshChartPanel(Configuration config, JPanel chartPanel,
+    private static void refreshChartPanel(Configuration config, boolean graph, JPanel chartPanel,
     		String dataType, List<String> authors, String graphType, String d1, String d2) {
     	
     	dataType = dataType.toLowerCase();
     	graphType = graphType.toLowerCase();
     	
+    	chartPanel.setLayout(new GridLayout());
     	chartPanel.removeAll();
     	ChartPanel chartContainer = null;
+    	StatsPreview statsPreview = null;
+    	
     	switch(dataType) {
     	case "merges":
-    		ChartCountMergeCommitsPerAuthor chartMerges;
-    		if(d1 != null && d2 != null)
-    			chartMerges = new ChartCountMergeCommitsPerAuthor(config, d1, d2);
-    		else
-    			chartMerges = new ChartCountMergeCommitsPerAuthor(config);
-    		chartMerges.refreshAuthors(authors);
-    		chartContainer = chartMerges.createPanel(graphType);
+    		if(graph) {
+	    		ChartCountMergeCommitsPerAuthor chartMerges;
+	    		if(d1 != null && d2 != null)
+	    			chartMerges = new ChartCountMergeCommitsPerAuthor(config, d1, d2);
+	    		else
+	    			chartMerges = new ChartCountMergeCommitsPerAuthor(config);
+	    		chartMerges.refreshAuthors(authors);
+	    		chartContainer = chartMerges.createPanel(graphType);
+    		}
+    		else {
+    			AnalyzerPlugin.Result merges;
+	    		if(d1 != null && d2 != null)
+	    			merges = (new CountMergesBetweenDaysPlugin(config, d1, d2)).getResult();
+	    		else
+	    			merges = (new CountMergePerAuthorPlugin(config)).getResult();
+    			try {
+					statsPreview = new StatsPreview(merges.getResultAsHtmlDiv());
+				} catch (IOException e) {}
+    		}
     		break;
     	case "commits":
-    		ChartCountCommitsPerAuthor chartCommits;
-    		if(d1 != null && d2 != null)
-    			chartCommits = new ChartCountCommitsPerAuthor(config, d1, d2);
-    		else
-    			chartCommits = new ChartCountCommitsPerAuthor(config);
-    		chartCommits.refreshAuthors(authors);
-    		chartContainer = chartCommits.createPanel(graphType);
+    		if(graph) {
+	    		ChartCountCommitsPerAuthor chartCommits;
+	    		if(d1 != null && d2 != null)
+	    			chartCommits = new ChartCountCommitsPerAuthor(config, d1, d2);
+	    		else
+	    			chartCommits = new ChartCountCommitsPerAuthor(config);
+	    		chartCommits.refreshAuthors(authors);
+	    		chartContainer = chartCommits.createPanel(graphType);
+    		}
+    		else {
+    			AnalyzerPlugin.Result commits;
+	    		if(d1 != null && d2 != null)
+	    			commits = (new CountCommitsBetweenDays(config, d1, d2)).getResult();
+	    		else
+	    			commits = (new CountCommitsPerAuthorPlugin(config)).getResult();
+    			try {
+					statsPreview = new StatsPreview(commits.getResultAsHtmlDiv());
+				} catch (IOException e) {}
+    		}
     		break;
     	}
-    	if(chartContainer == null)
+    	
+    	if(chartContainer == null && graph)
     		return;
-    	chartPanel.setLayout(new GridLayout());
-    	chartPanel.add(chartContainer);
+    	if(statsPreview == null && !graph)
+    		return;
+    	
+    	if(chartContainer != null)
+    		chartPanel.add(chartContainer);
+    	else if(statsPreview != null)
+    		chartPanel.add(new JScrollPane(statsPreview));
     	chartPanel.revalidate();
     	chartPanel.repaint();
     }

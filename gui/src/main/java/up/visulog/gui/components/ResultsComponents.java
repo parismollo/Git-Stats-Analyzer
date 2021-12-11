@@ -52,14 +52,14 @@ public class ResultsComponents {
         JLabel project_title = createProjectTitle(getProjectTitle(config));
         JTextArea project_description = createProjectDescriptions(getProjectDescription(config));
         JTextArea project_members = createProjectMembers(getProjectMembers(authors));
-        JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
+        //JButton stats_button = createAnyButton("Generate Stats", "src/main/resources/stats.png");
 
-        setStatAction(window, stats_button);
-        JButton graphs_button = createAnyButton("Generate Graphs", "src/main/resources/stats.png");
-        setGraphAction(window, graphs_button);
+        //setStatAction(window, stats_button);
+        JButton statsGraphsButton = createAnyButton("Generate Graphs & Stats", "src/main/resources/stats.png");
+        setGraphAction(window, statsGraphsButton);
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
-        setResultsInScreen(panel, project_title, project_members, project_description, stats_button, graphs_button, download_button, return_button);
+        setResultsInScreen(panel, project_title, project_members, project_description, statsGraphsButton, download_button, return_button);
         panel.setBackground(new Color(88,205,113));
     }
     
@@ -101,7 +101,7 @@ public class ResultsComponents {
         return config.getGitPath().getFileName().toString();
     }
     
-    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsButton, JButton graphsButton, JButton downloadButton, JButton returnButton) {
+    private static void setResultsInScreen(JPanel panel, JLabel projectTitle, JTextArea projectMembers, JTextArea projectDescription, JButton statsGraphsButton, JButton downloadButton, JButton returnButton) {
         /* GridLayout
 
         0 0 1  (Return Button)
@@ -139,8 +139,7 @@ public class ResultsComponents {
     	
         pan = new JPanel();
         pan.setOpaque(false);
-        pan.add(statsButton);
-        pan.add(graphsButton);
+        pan.add(statsGraphsButton);
         pan.add(downloadButton);
         
         panel.add(pan, BorderLayout.SOUTH);
