@@ -32,12 +32,12 @@ public class HomeComponents {
         panel.setLayout(layout);
         JButton b1 = setUploadButton(window);
         JButton b2 = setLatestButton(window);
-        JButton b3 = setMostLikedButton(window);
-        setHomeButtons(panel, b1, b2, b3, gbc);
+        // JButton b3 = setMostLikedButton(window);
+        setHomeButtons(panel, b1, b2, gbc);
         panel.setBackground(new Color(88,205,113));
     }
     
-    private static void setHomeButtons(JPanel panel, JButton b1, JButton b2, JButton b3, GridBagConstraints gbc) {
+    private static void setHomeButtons(JPanel panel, JButton b1, JButton b2, GridBagConstraints gbc) {
         gbc.fill = GridBagConstraints.HORIZONTAL;  
         gbc.gridx = 1;  
         gbc.gridy = 0;  
@@ -49,11 +49,11 @@ public class HomeComponents {
         gbc.gridwidth = 2;  
         panel.add(b2, gbc);
         
-        gbc.gridx = 0;  
-        gbc.gridy = 3;  
-        gbc.fill = GridBagConstraints.HORIZONTAL;  
-        gbc.gridwidth = 2;  
-        panel.add(b3, gbc);
+        // gbc.gridx = 0;  
+        // gbc.gridy = 3;  
+        // gbc.fill = GridBagConstraints.HORIZONTAL;  
+        // gbc.gridwidth = 2;  
+        // panel.add(b3, gbc);
     }
     
     private static JButton setUploadButton(Window window) throws FontFormatException, IOException {
@@ -69,7 +69,7 @@ public class HomeComponents {
         upload_button.setBorderPainted(false);
         upload_button.setFocusPainted(false);
         upload_button.setForeground(Color.white);
-        upload_button.setText(" Upload :)");
+        upload_button.setText(" Open Project ");
         Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/resources/Poppins-Bold.ttf")).deriveFont(25f);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         //register the font
@@ -83,11 +83,11 @@ public class HomeComponents {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if (upload_button.getModel().isRollover()) {
-                    upload_button.setText(" Upload ;)");
+                    // upload_button.setText(" Open Folder ;)");
                     upload_button.setForeground(Color.black); // 219,156,159
                 } else {
                     upload_button.setForeground(Color.white);
-                    upload_button.setText(" Upload :)");
+                    // upload_button.setText(" Open Folder :)");
                 }
             }
         });

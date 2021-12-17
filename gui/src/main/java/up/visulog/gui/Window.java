@@ -3,7 +3,10 @@ package up.visulog.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontFormatException;
-import java.awt.Image;
+// import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -12,16 +15,24 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import up.visulog.config.Configuration;
 import up.visulog.gitrawdata.Commit;
+import up.visulog.gui.components.Uploader;
 import up.visulog.gui.screens.GraphScreen;
 import up.visulog.gui.screens.HomeScreen;
 import up.visulog.gui.screens.ResultsScreen;
 import up.visulog.gui.screens.StatScreen;
+
 
 public class Window extends JFrame {
 	
@@ -79,6 +90,8 @@ public class Window extends JFrame {
 	}
 	
 	public void openResultsScreen() throws FontFormatException, IOException {
+
+		JMenuBar menuBar = createMenuBar(createMenuOpenFolder("New Folder"));
 		if(resultsScreen == null) {
 			var gitlog = Commit.parseLogFromCommand(config.getGitPath());
 			resultsScreen = new ResultsScreen(this, gitlog, config);
@@ -90,9 +103,56 @@ public class Window extends JFrame {
 		jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		jScrollPane.setBorder(BorderFactory.createEmptyBorder());
 		// getContentPane().add(resultsScreen);
+		this.setJMenuBar(menuBar);
 		getContentPane().add(jScrollPane);
 		revalidate();
 		repaint();
+	}
+
+	private JMenu createMenuOpenFolder(String title) {
+		JMenu menu = new JMenu("Open");
+		JMenuItem menuItem= new JMenuItem(title);
+		menuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Uploader.uploadFile(Window.this);
+				} catch (FontFormatException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		menu.add(menuItem);
+		return menu;
+	}
+
+	class MenuSelection implements MenuListener {
+
+		@Override
+		public void menuSelected(MenuEvent e) {
+			try {
+				Uploader.uploadFile(Window.this);
+				
+			} catch (FontFormatException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+	
+		@Override
+		public void menuDeselected(MenuEvent e) {
+			System.out.println("menuDeselected");
+		}
+	
+		@Override
+		public void menuCanceled(MenuEvent e) {
+			System.out.println("menuCanceled");
+		}
 	}
 	
 	public void openGraphScreen() throws FontFormatException, IOException {
@@ -142,6 +202,10 @@ public class Window extends JFrame {
 		"Dino says...", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	
+	private static JMenuBar createMenuBar(JMenu openProject) {
+        JMenuBar menu = new JMenuBar();
+        menu.add(openProject);
+        return menu;
+    }
 	
 }
