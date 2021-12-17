@@ -97,14 +97,15 @@ public class Window extends JFrame {
 			resultsScreen = new ResultsScreen(this, gitlog, config);
 		}
 		
-		this.getContentPane().removeAll(); // On vide le panel principal.
-		JScrollPane jScrollPane = new JScrollPane(resultsScreen);
-		jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		jScrollPane.setBorder(BorderFactory.createEmptyBorder());
-		// getContentPane().add(resultsScreen);
+		this.getContentPane().removeAll(); 
+		// On vide le panel principal.
+		// JScrollPane jScrollPane = new JScrollPane(resultsScreen);
+		// jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		// jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// jScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		// getContentPane().add(jScrollPane);
+		getContentPane().add(resultsScreen);
 		this.setJMenuBar(menuBar);
-		getContentPane().add(jScrollPane);
 		revalidate();
 		repaint();
 	}
