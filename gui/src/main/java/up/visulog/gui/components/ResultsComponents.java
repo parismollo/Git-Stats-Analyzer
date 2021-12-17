@@ -14,6 +14,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -60,7 +62,7 @@ public class ResultsComponents {
 
         JButton download_button = createMenuButton("src/main/resources/download-circular-button.png", "src/main/resources/download-circular-button-white.png", "Download your results");
         setResultsInScreen(panel, project_title, project_members, project_description, statsGraphsButton, download_button, return_button);
-        panel.setBackground(new Color(88,205,113));
+        panel.setBackground(new Color(88,205,113)); 
     }
     
     private static String getProjectMembers(HashSet<String> authors) {
@@ -344,7 +346,6 @@ public class ResultsComponents {
 
         return button;
     }
-
     private static Icon createIcon(String icon_path) {
         Icon icon = new ImageIcon(icon_path);
         Image image = ((ImageIcon) icon).getImage(); // transform it 
