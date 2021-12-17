@@ -1,6 +1,7 @@
 package up.visulog.gui.components;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
@@ -24,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 // import src.main.java.components.HomeComponents;
+import javax.swing.plaf.metal.MetalBorders.ScrollPaneBorder;
 
 import up.visulog.config.Configuration;
 import up.visulog.gui.Window;
@@ -118,110 +120,32 @@ public class ResultsComponents {
     	JPanel pan = new JPanel();
     	pan.setOpaque(false);
     	pan.setLayout(new BorderLayout());
-    	pan.add(projectTitle, BorderLayout.WEST);
-        pan.add(returnButton, BorderLayout.EAST);
+    	pan.add(projectTitle, BorderLayout.EAST);
+        pan.add(returnButton, BorderLayout.WEST);
         
         panel.add(pan, BorderLayout.NORTH);
         
         pan = new JPanel();
         pan.setOpaque(false);
         pan.setLayout(new BorderLayout());
-        JScrollPane scrollPane = new JScrollPane(projectDescription);
+
+    	pan.add(projectDescription, BorderLayout.NORTH);
+    	pan.add(projectMembers, BorderLayout.CENTER);
+        
+    	JScrollPane scrollPane = new JScrollPane(pan);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(null);
-    	pan.add(scrollPane, BorderLayout.NORTH);
-        scrollPane = new JScrollPane(projectMembers);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(null);
-    	pan.add(scrollPane, BorderLayout.CENTER);
-    	
-    	panel.add(pan, BorderLayout.CENTER);
-    	
+        scrollPane.setBorder(null);    	
+
+        panel.add(scrollPane, BorderLayout.CENTER);
         pan = new JPanel();
         pan.setOpaque(false);
         pan.add(statsGraphsButton);
         pan.add(downloadButton);
         
         panel.add(pan, BorderLayout.SOUTH);
-        
         panel.revalidate();
         panel.repaint();
-        
-        /*
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0.2;
-        // gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(pan, gbc);
-    	
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0,10,0,0);  //left padding
-        panel.add(projectTitle, gbc);
-
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 0.5;
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        // gbc.anchor = GridBagConstraints.PAGE_END;
-        // gbc.insets = new Insets(0,10,0,0);  //left padding
-        panel.add(projectMembers, gbc);
-
-        JPanel pan = new JPanel();
-        pan.setOpaque(false);
-        pan.add(statsButton);
-        pan.add(graphsButton);
-        
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0.2;
-        // gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(pan, gbc);
-        
-  //      /*
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0.2;
-        // gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(statsButton, gbc);
-        
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.weightx = 0.2;
-        // gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(graphsButton, gbc);
-  //      */
-
-        /*gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        gbc.weightx = 0;
-        gbc.gridx = 2;
-        gbc.gridy = 5;
-        panel.add(downloadButton, gbc);
-        
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.weightx = 0;
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        panel.add(returnButton, gbc);
-
-
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.ipady = 40; 
-        gbc.weightx = 0.0;
-        gbc.gridwidth = 3;
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(projectDescription, gbc);*/
     }
 
     public static JButton createMenuButton(String icon_path, String icon_path_white, String label) throws FontFormatException, IOException {

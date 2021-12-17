@@ -132,8 +132,8 @@ public class GraphComponents {
     	JPanel pan = new JPanel();
     	pan.setOpaque(false);
     	pan.setLayout(new BorderLayout());
-    	pan.add(projectTitle, BorderLayout.WEST);
-        pan.add(returnButton, BorderLayout.EAST);
+    	pan.add(projectTitle, BorderLayout.EAST);
+        pan.add(returnButton, BorderLayout.WEST);
         
         panel.add(pan, BorderLayout.NORTH);
         
