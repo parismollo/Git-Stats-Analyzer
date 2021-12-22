@@ -10,7 +10,6 @@ import java.util.Scanner;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import up.visulog.analyzer.CountCommitsBetweenDays;
 import up.visulog.analyzer.CountMergePerAuthorPlugin;
 import up.visulog.analyzer.CountMergesBetweenDaysPlugin;
 import up.visulog.config.Configuration;
@@ -47,6 +46,18 @@ public class ChartCountMergeCommitsPerAuthor extends ChartAnalysis {
     	this.modifiedData = copy(data);
     	keepOnlyFirstName();
     }
+
+	// si deux auteurs ont le même premier nom, on ajoute un chiffre pour les différencier
+	private String getNewName(HashMap<String, Integer> map, String name) {
+		if(map.containsKey(name)) {
+			int i = 2;
+			while(map.containsKey(name+"("+i+")")) {
+				i++;
+			}
+			name = name+"("+i+")";
+		}
+		return name;
+	}
     
     public void keepOnlyFirstName() {
     	keepOnlyFirstName(modifiedData);
@@ -54,11 +65,13 @@ public class ChartCountMergeCommitsPerAuthor extends ChartAnalysis {
     
     public void keepOnlyFirstName(HashMap<String, Integer> map) {
         Scanner scan;
+		String nName = "";
+		map.clear();
         for(var elt : data.entrySet()) {
         	scan = new Scanner(elt.getKey());
         	if(scan.hasNext()) {
-        		map.remove(elt.getKey());
-	        	map.put(scan.next(), elt.getValue()); // On garde que le premier nom de l'auteur.
+				nName = getNewName(map, scan.next());
+	        	map.put(nName, elt.getValue()); // On garde que le premier nom de l'auteur.
         	}
         	scan.close();
         }

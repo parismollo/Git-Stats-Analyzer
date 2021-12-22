@@ -132,7 +132,7 @@ public class CLILauncher {
                                 case "countMergeCommits" : System.out.println("--addPlugin=countMergeCommits"); break;
                                 case "countMergePerAuthor" : System.out.println("--addPlugin=countMergePerAuthor"); break;
                                 case "countMergesBetweenDays" : System.out.println("--addPlugin=countMergesBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
-                                case "countLineChanged" : System.out.println("--addPlugin=countLineChanged"); break;
+                                case "countLinesChanged" : System.out.println("--addPlugin=countLinesChanged"); break;
                                 default : displayHelpAndExit(); break;
                             }
                             break;
@@ -213,9 +213,12 @@ public class CLILauncher {
                 return Optional.of(new ChartCountCommitsPerAuthor(config, pConfig.getDate()));
             case "countCommitsBetweenDays" : 
                 return Optional.of(new ChartCountCommitsPerAuthor(config, pConfig.getStartDate(), pConfig.getEndDate()));
-            // case "countMergeCommits" : Optional.of(return new ChartCountMergePerAuthor(config));
-            // case "countMergePerAuthor" : Optional.of(return new ChartCountMergePerAuthor(config));
-            // case "countMergesBetweenDays" : Optional.of(return new ChartCountMergesBetweenDays(config));
+            case "countMergeCommits" : 
+                return Optional.of(new ChartCountMergeCommitsPerAuthor(config));
+            case "countMergePerAuthor" : 
+                return Optional.of(new ChartCountMergeCommitsPerAuthor(config));
+            case "countMergesBetweenDays" :
+                return Optional.of(new ChartCountMergeCommitsPerAuthor(config, pConfig.getStartDate(), pConfig.getEndDate()));
             case "countLinesAdded" :
                 return Optional.of(new ChartCountLinesAdded(config));
             case "countLinesDeleted" :

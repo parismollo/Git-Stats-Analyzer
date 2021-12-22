@@ -27,7 +27,7 @@ public abstract class ChartAnalysis {
 
     public HashMap<String, Integer> copy(Map<String, Integer> map) {
     	HashMap<String, Integer> map2 = new HashMap<>();
-    	map.putAll(map2);
+    	map2.putAll(map);
     	return map2;
     }
     
@@ -49,7 +49,6 @@ public abstract class ChartAnalysis {
                 chart = ChartFactory.createPieChart("", tmp, false, true, false);
                 break;
             default :
-                // FIXME: mettre une exception à la place ou autre chose
                 System.out.println("Unknown type of chart");
                 System.exit(1);
         }
