@@ -29,13 +29,16 @@ import javax.swing.JScrollPane;
 import org.jfree.chart.ChartPanel;
 
 import up.visulog.analyzer.AnalyzerPlugin;
-import up.visulog.analyzer.AnalyzerResult;
+import up.visulog.analyzer.CountCommitLinesChanged;
+import up.visulog.analyzer.CountCommitLinesChangedBetweenDays;
 import up.visulog.analyzer.CountCommitsBetweenDays;
 import up.visulog.analyzer.CountCommitsPerAuthorPlugin;
 import up.visulog.analyzer.CountMergePerAuthorPlugin;
 import up.visulog.analyzer.CountMergesBetweenDaysPlugin;
 import up.visulog.config.Configuration;
 import up.visulog.graphs.ChartAnalysis;
+import up.visulog.graphs.ChartCountCommitsLinesAdded;
+import up.visulog.graphs.ChartCountCommitsLinesDeleted;
 import up.visulog.graphs.ChartCountCommitsPerAuthor;
 import up.visulog.graphs.ChartCountMergeCommitsPerAuthor;
 import up.visulog.gui.Window;
@@ -284,7 +287,7 @@ public class GraphComponents {
     
     private static String[] getDataTypes() {
         // TODO (code below is temporary)
-        String[] s = {"Modifications", "Merges", "Commits"};
+        String[] s = {"LinesAdded", "LinesDeleted", "Merges", "Commits"};
         return s;
     }
 
@@ -406,6 +409,48 @@ public class GraphComponents {
 	    			commits = (new CountCommitsBetweenDays(config, d1, d2)).getResult();
 	    		else
 	    			commits = (new CountCommitsPerAuthorPlugin(config)).getResult();
+    			try {
+					statsPreview = new StatsPreview(commits.getResultAsHtmlDiv());
+				} catch (IOException e) {}
+    		}
+    		break;
+    	case "linesadded":
+    		if(graph) {
+	    		ChartCountCommitsLinesAdded chartLinesAdded;
+	    		if(d1 != null && d2 != null)
+	    			chartLinesAdded = new ChartCountCommitsLinesAdded(config, d1, d2);
+	    		else
+	    			chartLinesAdded = new ChartCountCommitsLinesAdded(config);
+	    		chartLinesAdded.refreshAuthors(authors);
+	    		chartContainer = chartLinesAdded.createPanel(graphType);
+    		}
+    		else {
+    			AnalyzerPlugin.Result commits;
+	    		if(d1 != null && d2 != null)
+	    			commits = (new CountCommitLinesChangedBetweenDays(config, d1, d2)).getResult();
+	    		else
+	    			commits = (new CountCommitLinesChanged(config)).getResult();
+    			try {
+					statsPreview = new StatsPreview(commits.getResultAsHtmlDiv());
+				} catch (IOException e) {}
+    		}
+    		break;
+    	case "linesdeleted":
+    		if(graph) {
+	    		ChartCountCommitsLinesDeleted chartLinesDeleted;
+	    		if(d1 != null && d2 != null)
+	    			chartLinesDeleted = new ChartCountCommitsLinesDeleted(config, d1, d2);
+	    		else
+	    			chartLinesDeleted = new ChartCountCommitsLinesDeleted(config);
+	    		chartLinesDeleted.refreshAuthors(authors);
+	    		chartContainer = chartLinesDeleted.createPanel(graphType);
+    		}
+    		else {
+    			AnalyzerPlugin.Result commits;
+	    		if(d1 != null && d2 != null)
+	    			commits = (new CountCommitLinesChangedBetweenDays(config, d1, d2)).getResult();
+	    		else
+	    			commits = (new CountCommitLinesChanged(config)).getResult();
     			try {
 					statsPreview = new StatsPreview(commits.getResultAsHtmlDiv());
 				} catch (IOException e) {}

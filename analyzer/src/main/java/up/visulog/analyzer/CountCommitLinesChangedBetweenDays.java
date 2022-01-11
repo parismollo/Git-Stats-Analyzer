@@ -64,7 +64,7 @@ public class CountCommitLinesChangedBetweenDays implements AnalyzerPlugin {
     public static class Result implements AnalyzerPlugin.Result {
         private final Map<String, int[]> commitchanged = new HashMap<>();
 
-        public Map<String, int[]> getLinesChangedPerFile() {
+        public Map<String, int[]> getLinesChangedPerAuthor() {
             return commitchanged;
         }
 
