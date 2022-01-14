@@ -73,3 +73,6 @@ For instance
 ```
 
 Will count the commits of each author in the current branch of the git repository present in the current folder (".").
+
+Voici le lien vers la vidéo de notre projet :
+https://drive.google.com/file/d/1B9MQBbqh4XYD5vqdK0ji5PB7Nwwo6buv/view?usp=sharing
