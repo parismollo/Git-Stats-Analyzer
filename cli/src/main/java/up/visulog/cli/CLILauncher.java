@@ -38,6 +38,21 @@ public class CLILauncher {
                         (new PrintChart(chartAdd, plugin.getValue().getGraph())).afficheChart();
                         (new PrintChart(chartDel, plugin.getValue().getGraph())).afficheChart();
 
+                    } else if (plugin.getValue() instanceof ConfigCountCommitLinesChanged) { // idem
+                        var chartAdd = createChart("countCommitLinesAdded", plugin.getValue(), config.get()).get();
+                        var chartDel = createChart("countCommitLinesDeleted", plugin.getValue(), config.get()).get();
+                        (new PrintChart(chartAdd, plugin.getValue().getGraph())).afficheChart();
+                        (new PrintChart(chartDel, plugin.getValue().getGraph())).afficheChart();
+                    } else if (plugin.getValue() instanceof ConfigCountCommitLinesChangedOnOneDay) { // idem
+                        var chartAdd = createChart("countCommitLinesAddedOnOneDay", plugin.getValue(), config.get()).get();
+                        var chartDel = createChart("countCommitLinesDeletedOnOneDay", plugin.getValue(), config.get()).get();
+                        (new PrintChart(chartAdd, plugin.getValue().getGraph())).afficheChart();
+                        (new PrintChart(chartDel, plugin.getValue().getGraph())).afficheChart();
+                    } else if (plugin.getValue() instanceof ConfigCountCommitLinesChangedBetweenDays) { // idem
+                        var chartAdd = createChart("countCommitLinesAddedBetweenDays", plugin.getValue(), config.get()).get();
+                        var chartDel = createChart("countCommitLinesDeletedBetweenDays", plugin.getValue(), config.get()).get();
+                        (new PrintChart(chartAdd, plugin.getValue().getGraph())).afficheChart();
+                        (new PrintChart(chartDel, plugin.getValue().getGraph())).afficheChart();
                     } else {
                         var chart = createChart(plugin.getKey(), plugin.getValue(), config.get());
                         if(chart.isPresent()) {
@@ -132,7 +147,7 @@ public class CLILauncher {
                                 case "countCommitsPerWeekday" : System.out.println("--addPlugin=countCommitsPerWeekday"); break;
                                 case "countCommitLinesChanged" : System.out.println("--addPlugin=countCommitLinesChanged"); break;
                                 case "countCommitLinesChangedOnOneDay" : System.out.println("--addPlugin=countCommitLinesChangedOnOneDay --date=YYYY-MM-DD"); break;
-                                case "countCommitLinesChangedBetweenDays" : System.out.println("--addPlugin=countCommitLinesChangedBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
+                                case "countCommitLinesChangedBetweenDays" : System.out.println("--addPlugin=countCommitLinesChangedBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
                                 case "countCommitOnOneDay" : System.out.println("--addPlugin=countCommitOnOneDay --date=YYYY-MM-DD"); break;
                                 case "countCommitsBetweenDays" : System.out.println("--addPlugin=countCommitsBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
                                 case "countMergeCommits" : System.out.println("--addPlugin=countMergeCommits"); break;
@@ -229,9 +244,18 @@ public class CLILauncher {
                 return Optional.of(new ChartCountLinesAdded(config));
             case "countLinesDeleted" :
                 return Optional.of(new ChartCountLinesDeleted(config));
-            // case "countCommitLinesChanged" : Optional.of();
-            // case "countCommitLinesChangedOnOneDay" : Optional.of();
-            // case "countCommitLinesChangedBetweenDays" : Optional.of();
+            case "countCommitLinesAdded" :
+                return Optional.of(new ChartCountCommitsLinesAdded(config));
+            case "countCommitLinesDeleted" :
+                return Optional.of(new ChartCountCommitsLinesDeleted(config));
+            case "countCommitLinesAddedOnOneDay" :
+                return Optional.of(new ChartCountCommitsLinesAdded(config, pConfig.getDate()));
+            case "countCommitLinesDeletedOnOneDay" :
+                return Optional.of(new ChartCountCommitsLinesDeleted(config, pConfig.getDate()));
+            case "countCommitLinesAddedBetweenDays" :
+                return Optional.of(new ChartCountCommitsLinesAdded(config, pConfig.getStartDate(), pConfig.getEndDate()));
+            case "countCommitLinesDeletedBetweenDays" :
+                return Optional.of(new ChartCountCommitsLinesDeleted(config, pConfig.getStartDate(), pConfig.getEndDate()));
             default :
                 return Optional.empty();
         }
