@@ -47,11 +47,10 @@ public class CLILauncher {
                         }
                     }
                 } else {
-                    // System.out.println(style(results.toString()));
                     System.out.println(results.toHTML());
                 }
             }
-        } else displayHelpAndExit();
+        } else displayHelpAndExit(true, false);
     }
 
     static Optional<Configuration> makeConfigFromCommandLineArgs(String[] args) throws FontFormatException, IOException {
@@ -60,7 +59,10 @@ public class CLILauncher {
         for (var arg : args) {
             if (arg.startsWith("--")) {
                 String[] parts = arg.split("=");
-                if (parts.length != 2) return Optional.empty();
+                if (parts.length != 2)  {
+                    if(parts.length == 1 && parts[0].equals("--help")) displayHelpAndExit(false, false);
+                    else return Optional.empty();
+                }
                 else {
                     String pName = parts[0];
                     String pValue = parts[1];
@@ -78,21 +80,22 @@ public class CLILauncher {
                                 case "countMergePerAuthor" : plugins.put(pValue, new ConfigCountMergePerAuthor()); break;
                                 case "countMergesBetweenDays" : plugins.put(pValue, new ConfigCountMergesBetweenDays()); break;
                                 case "countLinesChanged" : plugins.put(pValue, new ConfigCountLinesChanged()); break;
-                                default : displayHelpAndExit(); break;
+                                case "help" : displayHelpAndExit(false, true);
+                                default : displayHelpAndExit(true, true); break;
                             }
                             break;
                         case "--graph": 
                             if(pValue.equals("pie") || pValue.equals("bar") || pValue.equals("line"))
                                 addToPluginConfig(plugins, "graph", pValue);
-                            else displayHelpAndExit(); break;
+                            else displayHelpAndExit(true, false); break;
                         case "--date": 
-                            if(!rightDateFormat(pValue)) displayHelpAndExit();
+                            if(!rightDateFormat(pValue)) displayHelpAndExit(true, false);
                             else addToPluginConfig(plugins, "date", pValue); break;
                         case "--startDate": 
-                            if(!rightDateFormat(pValue)) displayHelpAndExit();
+                            if(!rightDateFormat(pValue)) displayHelpAndExit(true, false);
                             addToPluginConfig(plugins, "startDate", pValue); break;
                         case "--endDate": 
-                            if(!rightDateFormat(pValue)) displayHelpAndExit();
+                            if(!rightDateFormat(pValue)) displayHelpAndExit(true, false);
                             addToPluginConfig(plugins, "endDate", pValue); break;
                         case "--loadConfigFile":
                             // TODO (load options from a file)
@@ -122,6 +125,9 @@ public class CLILauncher {
                         case "--help":
                             System.out.println("Here's the right template for using that command :\n");
                             switch(pValue) {
+                                case "addPlugin" : displayHelpAndExit(false, true); break;
+                                case "mode" : System.out.println("--mode=DEMO"); break;
+                                case "graph" : System.out.println("--graph=[pie/bar/line]"); break;
                                 case "countCommits" : System.out.println("--addPlugin=countCommits"); break;
                                 case "countCommitsPerWeekday" : System.out.println("--addPlugin=countCommitsPerWeekday"); break;
                                 case "countCommitLinesChanged" : System.out.println("--addPlugin=countCommitLinesChanged"); break;
@@ -133,7 +139,7 @@ public class CLILauncher {
                                 case "countMergePerAuthor" : System.out.println("--addPlugin=countMergePerAuthor"); break;
                                 case "countMergesBetweenDays" : System.out.println("--addPlugin=countMergesBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD"); break;
                                 case "countLinesChanged" : System.out.println("--addPlugin=countLinesChanged"); break;
-                                default : displayHelpAndExit(); break;
+                                default : displayHelpAndExit(true, false); break;
                             }
                             break;
                         default:
@@ -231,17 +237,8 @@ public class CLILauncher {
         }
     }
 
-    /* private static String style(String s) {
-        var preRes = s.split(", ");
-        String res = "";
-        for(var line : preRes) {
-            res += line + "; \n";
-        }
-        return res;
-    } */
-
-    private static void displayHelpAndExit() {
-        System.out.println("Wrong command...\n");
+    private static void displayHelpAndExit(boolean error, boolean addPlugin) {
+        if(error) System.out.println("Wrong command...\n");
         System.out.println("List of avalaible options :");
         System.out.println("    --addPlugin=[plugin name]");
         System.out.println("        °countCommits");
@@ -255,10 +252,12 @@ public class CLILauncher {
         System.out.println("        °countMergePerAuthor");
         System.out.println("        °countMergesBetweenDays --startDate=YYYY-MM-DD --endDate=YYYY-MM-DD");
         System.out.println("        °countLinesChanged");
-        System.out.println("    --graph=[pie/bar/line] (works only if a plugin is added)");
-        System.out.println("    --loadConfigFile");
-        System.out.println("    --justSaveConfigFile");
-        System.out.println("    --help=[plugin name]");
+        if(!addPlugin) {
+            System.out.println("    --graph=[pie/bar/line] (works only if a plugin is added)");
+            // System.out.println("    --loadConfigFile");
+            // System.out.println("    --justSaveConfigFile");
+            System.out.println("    --mode=DEMO (to launch the GUI)");
+            System.out.println("    --help=[plugin/option name]"); }
         System.exit(0);
     }
 
